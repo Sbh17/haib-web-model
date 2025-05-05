@@ -20,6 +20,7 @@ import { ChevronLeftIcon, ImageIcon, PlusIcon, X } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ServiceInputCard, { ServiceInput } from '@/components/ServiceInputCard';
+import { SalonRequestService } from '@/types';
 
 const serviceSchema = z.object({
   name: z.string().min(1, { message: 'Service name is required' }),
@@ -110,7 +111,13 @@ const SalonRequest: React.FC = () => {
   
   const addService = () => {
     const currentServices = form.getValues('services') || [];
-    form.setValue('services', [...currentServices, { name: '', description: '', price: '', duration: '' } as ServiceInput]);
+    const newService: SalonRequestService = { 
+      name: '', 
+      description: '', 
+      price: '', 
+      duration: '' 
+    };
+    form.setValue('services', [...currentServices, newService]);
   };
   
   const removeService = (index: number) => {
@@ -128,7 +135,12 @@ const SalonRequest: React.FC = () => {
       // In a real application, you would upload images to a storage service
       // Here we're just sending the image URLs from our preview
       
-      // Make sure we're sending properly typed data
+      // Make sure all services have required fields, and filter out any incomplete ones
+      const validServices = data.services?.filter(service => 
+        service.name && service.price && service.duration
+      ) as SalonRequestService[];
+      
+      // Create properly typed request data
       const requestData = {
         name: data.name,
         description: data.description,
@@ -137,7 +149,7 @@ const SalonRequest: React.FC = () => {
         ownerName: data.ownerName,
         ownerEmail: data.ownerEmail,
         ownerPhone: data.ownerPhone,
-        services: data.services,
+        services: validServices,
         images: data.images,
       };
       
@@ -310,7 +322,7 @@ const SalonRequest: React.FC = () => {
                 {form.watch('services')?.map((service, index) => (
                   <ServiceInputCard
                     key={index}
-                    service={service}
+                    service={service as ServiceInput}
                     index={index}
                     control={form.control}
                     onRemove={() => removeService(index)}

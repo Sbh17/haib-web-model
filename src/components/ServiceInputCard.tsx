@@ -7,13 +7,10 @@ import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Control } from 'react-hook-form';
+import { SalonRequestService } from '@/types';
 
-export interface ServiceInput {
-  name: string;
-  description: string;
-  price: string;
-  duration: string;
-}
+// Update to use the interface from our types file
+export type ServiceInput = SalonRequestService;
 
 interface ServiceInputCardProps {
   service: ServiceInput;

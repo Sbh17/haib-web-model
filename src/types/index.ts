@@ -1,4 +1,5 @@
 
+
 export type UserRole = "user" | "salon_owner" | "admin";
 
 export interface User {
@@ -89,6 +90,14 @@ export interface NewsItem {
   category: string;
 }
 
+// Define a specific interface for the service input in salon requests
+export interface SalonRequestService {
+  name: string;
+  description: string;
+  price: string;
+  duration: string;
+}
+
 export interface SalonRequest {
   id: string;
   name: string;
@@ -100,12 +109,8 @@ export interface SalonRequest {
   ownerPhone: string;
   status: "pending" | "approved" | "rejected";
   createdAt: string;
-  // Add these new properties
+  // Add these new properties using the proper interface
   images?: string[];
-  services?: {
-    name: string;
-    description: string;
-    price: string;
-    duration: string;
-  }[];
+  services?: SalonRequestService[];
 }
+
