@@ -15,6 +15,7 @@ import SalonDetail from "./pages/SalonDetail";
 import BookAppointment from "./pages/BookAppointment";
 import Appointments from "./pages/Appointments";
 import Profile from "./pages/Profile";
+import ProfileSettings from "./pages/ProfileSettings";
 import SalonRequest from "./pages/SalonRequest";
 import AdminDashboard from "./pages/AdminDashboard";
 import SalonOwnerDashboard from "./pages/SalonOwnerDashboard";
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/appointments/book" element={<BookAppointment />} />
               <Route path="/appointments" element={<Appointments />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/profile/settings" element={<ProfileSettings />} />
               <Route path="/salon-request" element={<SalonRequest />} />
               <Route path="/promotions" element={<Promotions />} />
               <Route path="/news" element={<News />} />
