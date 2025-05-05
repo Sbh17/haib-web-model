@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -50,7 +51,7 @@ const Register: React.FC = () => {
       };
       
       await registerUser(userData);
-      navigate('/');
+      navigate('/home');
     } catch (error) {
       // Error is handled in the AuthContext
       console.error('Registration error:', error);
