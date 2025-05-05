@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,18 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Beauty salon theme colors
+				beauty: {
+					primary: '#E56EB3',     // Soft pink
+					secondary: '#9B5DE5',   // Purple
+					accent: '#F2C1D1',      // Light pink
+					dark: '#2E294E',        // Dark purple
+					light: '#F8F7FF',       // Light background
+					success: '#76C893',     // Mint green
+					warning: '#F8961E',     // Orange
+					info: '#577BC1',        // Blue
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +96,21 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+				'fade-in': {
+					from: { opacity: '0' },
+					to: { opacity: '1' }
+				},
+				'slide-up': {
+					from: { transform: 'translateY(10px)', opacity: '0' },
+					to: { transform: 'translateY(0)', opacity: '1' }
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.3s ease-out',
+				'slide-up': 'slide-up 0.3s ease-out',
 			}
 		}
 	},
