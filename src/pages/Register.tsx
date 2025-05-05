@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -42,7 +41,15 @@ const Register: React.FC = () => {
   
   const onSubmit = async (data: RegisterFormValues) => {
     try {
-      await registerUser(data);
+      // Ensure we're sending correctly typed data to registerUser
+      const userData = {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        phone: data.phone
+      };
+      
+      await registerUser(userData);
       navigate('/');
     } catch (error) {
       // Error is handled in the AuthContext

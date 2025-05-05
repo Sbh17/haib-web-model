@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -16,6 +15,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import BottomNavigation from '@/components/BottomNavigation';
 import { LogOutIcon, UserIcon, CalendarIcon, PlusIcon, SettingsIcon } from 'lucide-react';
+import { UserRole } from '@/types';
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
@@ -46,31 +46,31 @@ const Profile: React.FC = () => {
       name: 'My Appointments',
       icon: <CalendarIcon className="h-5 w-5" />,
       href: '/appointments',
-      roles: ['user', 'salon_owner', 'admin'],
+      roles: ['user', 'salon_owner', 'admin'] as UserRole[],
     },
     {
       name: 'Account Settings',
       icon: <SettingsIcon className="h-5 w-5" />,
       href: '/profile/settings',
-      roles: ['user', 'salon_owner', 'admin'],
+      roles: ['user', 'salon_owner', 'admin'] as UserRole[],
     },
     {
       name: 'Request a Salon',
       icon: <PlusIcon className="h-5 w-5" />,
       href: '/salon-request',
-      roles: ['user'],
+      roles: ['user'] as UserRole[],
     },
     {
       name: 'Manage My Salons',
       icon: <SettingsIcon className="h-5 w-5" />,
       href: '/owner/salons',
-      roles: ['salon_owner'],
+      roles: ['salon_owner'] as UserRole[],
     },
     {
       name: 'Admin Dashboard',
       icon: <SettingsIcon className="h-5 w-5" />,
       href: '/admin/dashboard',
-      roles: ['admin'],
+      roles: ['admin'] as UserRole[],
     },
   ];
   

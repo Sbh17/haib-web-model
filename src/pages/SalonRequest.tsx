@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -55,7 +54,18 @@ const SalonRequest: React.FC = () => {
   const onSubmit = async (data: SalonRequestFormValues) => {
     setIsSubmitting(true);
     try {
-      await api.salons.requestNewSalon(data);
+      // Make sure we're sending properly typed data
+      const requestData = {
+        name: data.name,
+        description: data.description,
+        address: data.address,
+        city: data.city,
+        ownerName: data.ownerName,
+        ownerEmail: data.ownerEmail,
+        ownerPhone: data.ownerPhone,
+      };
+      
+      await api.salons.requestNewSalon(requestData);
       
       toast({
         title: "Request Submitted",
