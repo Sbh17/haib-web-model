@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,8 +6,8 @@ import { ArrowRightIcon, StarIcon, CalendarIcon, SearchIcon, MapPinIcon } from '
 const Welcome: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-beauty-primary to-beauty-primary/80 text-white pt-16 pb-24 px-6">
+      {/* Hero Section - Updated with new color */}
+      <section className="bg-gradient-to-br from-beauty-primary to-beauty-secondary/80 text-white pt-16 pb-24 px-6">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
             BeautySpot
