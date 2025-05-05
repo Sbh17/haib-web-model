@@ -18,7 +18,8 @@ const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({
   
   return (
     <div className={`flex justify-center items-center ${className}`}>
-      <div className={`animate-spin rounded-full border-4 border-beauty-primary/20 border-t-beauty-primary ${sizeClasses[size]}`}>
+      <div className={`animate-spin rounded-full border-4 border-beauty-primary/20 border-t-beauty-primary ${sizeClasses[size]} shadow-sm`}>
+        <span className="sr-only">Loading</span>
       </div>
     </div>
   );
