@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -16,9 +17,17 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { ChevronLeftIcon } from 'lucide-react';
+import { ChevronLeftIcon, ImageIcon, PlusIcon } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import ServiceInputCard, { ServiceInput } from '@/components/ServiceInputCard';
+
+const serviceSchema = z.object({
+  name: z.string().min(1, { message: 'Service name is required' }),
+  description: z.string(),
+  price: z.string().min(1, { message: 'Price is required' }),
+  duration: z.string().min(1, { message: 'Duration is required' }),
+});
 
 const salonRequestSchema = z.object({
   name: z.string().min(2, { message: 'Salon name must be at least 2 characters' }),
@@ -28,6 +37,8 @@ const salonRequestSchema = z.object({
   ownerName: z.string().min(2, { message: 'Owner name must be at least 2 characters' }),
   ownerEmail: z.string().email({ message: 'Please enter a valid email address' }),
   ownerPhone: z.string().min(5, { message: 'Phone number is required' }),
+  services: z.array(serviceSchema).optional(),
+  images: z.array(z.string()).optional(),
 });
 
 type SalonRequestFormValues = z.infer<typeof salonRequestSchema>;
@@ -37,6 +48,8 @@ const SalonRequest: React.FC = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
   
   const form = useForm<SalonRequestFormValues>({
     resolver: zodResolver(salonRequestSchema),
@@ -48,12 +61,74 @@ const SalonRequest: React.FC = () => {
       ownerName: user?.name || '',
       ownerEmail: user?.email || '',
       ownerPhone: user?.phone || '',
+      services: [{ name: '', description: '', price: '', duration: '' }],
+      images: [],
     },
   });
+  
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const filesArray = Array.from(e.target.files);
+      
+      // Limit to 5 images
+      if (imageFiles.length + filesArray.length > 5) {
+        toast({
+          title: "Too many images",
+          description: "You can upload a maximum of 5 images",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Create preview URLs for display
+      const newPreviewUrls = filesArray.map(file => URL.createObjectURL(file));
+      
+      setImageFiles(prev => [...prev, ...filesArray]);
+      setImagePreviewUrls(prev => [...prev, ...newPreviewUrls]);
+      
+      // Update form values
+      const currentImages = form.getValues('images') || [];
+      form.setValue('images', [...currentImages, ...newPreviewUrls]);
+    }
+  };
+  
+  const removeImage = (index: number) => {
+    const newFiles = [...imageFiles];
+    const newPreviewUrls = [...imagePreviewUrls];
+    
+    // Revoke the object URL to avoid memory leaks
+    URL.revokeObjectURL(newPreviewUrls[index]);
+    
+    newFiles.splice(index, 1);
+    newPreviewUrls.splice(index, 1);
+    
+    setImageFiles(newFiles);
+    setImagePreviewUrls(newPreviewUrls);
+    
+    // Update form values
+    form.setValue('images', newPreviewUrls);
+  };
+  
+  const addService = () => {
+    const currentServices = form.getValues('services') || [];
+    form.setValue('services', [...currentServices, { name: '', description: '', price: '', duration: '' }]);
+  };
+  
+  const removeService = (index: number) => {
+    const currentServices = form.getValues('services') || [];
+    if (currentServices.length > 1) {
+      const newServices = [...currentServices];
+      newServices.splice(index, 1);
+      form.setValue('services', newServices);
+    }
+  };
   
   const onSubmit = async (data: SalonRequestFormValues) => {
     setIsSubmitting(true);
     try {
+      // In a real application, you would upload images to a storage service
+      // Here we're just sending the image URLs from our preview
+      
       // Make sure we're sending properly typed data
       const requestData = {
         name: data.name,
@@ -63,6 +138,8 @@ const SalonRequest: React.FC = () => {
         ownerName: data.ownerName,
         ownerEmail: data.ownerEmail,
         ownerPhone: data.ownerPhone,
+        services: data.services,
+        images: data.images,
       };
       
       await api.salons.requestNewSalon(requestData);
@@ -171,9 +248,79 @@ const SalonRequest: React.FC = () => {
                   </FormItem>
                 )}
               />
+              
+              {/* Image Upload Section */}
+              <div>
+                <FormLabel className="block mb-2">Salon Images</FormLabel>
+                <div className="mb-2">
+                  <label className="cursor-pointer flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md h-32 bg-gray-50 hover:bg-gray-100 transition-colors">
+                    <div className="text-center">
+                      <ImageIcon className="mx-auto h-8 w-8 text-gray-400" />
+                      <p className="mt-1 text-sm text-gray-500">Upload images (max 5)</p>
+                    </div>
+                    <Input 
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                      multiple
+                    />
+                  </label>
+                </div>
+                {imagePreviewUrls.length > 0 && (
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-2 mt-2">
+                    {imagePreviewUrls.map((url, index) => (
+                      <div key={index} className="relative group">
+                        <img 
+                          src={url} 
+                          alt={`Preview ${index}`} 
+                          className="h-24 w-full object-cover rounded"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="icon"
+                          className="absolute top-1 right-1 h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity"
+                          onClick={() => removeImage(index)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
             
-            <div className="space-y-4 pt-4">
+            {/* Services Section */}
+            <div className="space-y-4 pt-4 border-t">
+              <div className="flex justify-between items-center">
+                <h2 className="text-lg font-medium">Services Offered</h2>
+                <Button 
+                  type="button" 
+                  onClick={addService}
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center"
+                >
+                  <PlusIcon className="h-4 w-4 mr-1" /> Add Service
+                </Button>
+              </div>
+              
+              <div className="space-y-4">
+                {form.watch('services')?.map((service, index) => (
+                  <ServiceInputCard
+                    key={index}
+                    service={service}
+                    index={index}
+                    control={form.control}
+                    onRemove={() => removeService(index)}
+                  />
+                ))}
+              </div>
+            </div>
+            
+            <div className="space-y-4 pt-4 border-t">
               <h2 className="text-lg font-medium">Owner Information</h2>
               
               <FormField

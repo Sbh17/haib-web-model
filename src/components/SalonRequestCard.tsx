@@ -4,7 +4,7 @@ import { SalonRequest } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MapPinIcon, UserIcon, PhoneIcon, MailIcon, CalendarIcon } from 'lucide-react';
+import { MapPinIcon, UserIcon, PhoneIcon, MailIcon, CalendarIcon, ScissorsIcon } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface SalonRequestCardProps {
@@ -36,6 +36,39 @@ const SalonRequestCard: React.FC<SalonRequestCardProps> = ({
         </div>
         
         <p className="text-sm text-gray-600 mt-2">{request.description}</p>
+        
+        {request.images && request.images.length > 0 && (
+          <div className="mt-4">
+            <p className="text-sm font-medium mb-2">Salon Images</p>
+            <div className="grid grid-cols-3 gap-2">
+              {request.images.map((image, index) => (
+                <img 
+                  key={index} 
+                  src={image} 
+                  alt={`Salon ${index + 1}`} 
+                  className="w-full h-24 object-cover rounded"
+                />
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {request.services && request.services.length > 0 && (
+          <div className="mt-4">
+            <p className="text-sm font-medium mb-2">Services Offered</p>
+            <div className="space-y-2">
+              {request.services.map((service, index) => (
+                <div key={index} className="flex justify-between items-center text-sm bg-gray-50 p-2 rounded">
+                  <div className="flex items-center">
+                    <ScissorsIcon className="w-4 h-4 mr-2 text-gray-500" />
+                    <span>{service.name} ({service.duration} min)</span>
+                  </div>
+                  <span className="font-medium">${service.price}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         
         <div className="mt-4 space-y-2">
           <div className="flex items-center text-sm">
