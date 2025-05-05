@@ -18,6 +18,9 @@ import Profile from "./pages/Profile";
 import SalonRequest from "./pages/SalonRequest";
 import AdminDashboard from "./pages/AdminDashboard";
 import SalonOwnerDashboard from "./pages/SalonOwnerDashboard";
+import Promotions from "./pages/Promotions";
+import News from "./pages/News";
+import NewsDetail from "./pages/NewsDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -41,6 +44,9 @@ const App = () => (
               <Route path="/appointments" element={<Appointments />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/salon-request" element={<SalonRequest />} />
+              <Route path="/promotions" element={<Promotions />} />
+              <Route path="/news" element={<News />} />
+              <Route path="/news/:id" element={<NewsDetail />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/owner/salons" element={<SalonOwnerDashboard />} />
               <Route path="*" element={<NotFound />} />

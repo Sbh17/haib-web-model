@@ -4,20 +4,33 @@ import { Link } from 'react-router-dom';
 import { useLocation as useLocationContext } from '@/context/LocationContext';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/services/api';
-import { Salon, Promotion } from '@/types';
+import { Salon, Promotion, NewsItem } from '@/types';
 import { Button } from '@/components/ui/button';
-import { SearchIcon, MapPinIcon, ArrowRightIcon } from 'lucide-react';
+import { SearchIcon, MapPinIcon, ArrowRightIcon, Bell, Newspaper } from 'lucide-react';
 import SalonCard from '@/components/SalonCard';
-import PromotionCard from '@/components/PromotionCard';
+import PromotionsList from '@/components/PromotionsList';
+import NewsList from '@/components/NewsList';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import BottomNavigation from '@/components/BottomNavigation';
+import { useQuery } from '@tanstack/react-query';
 
 const Index: React.FC = () => {
   const { user } = useAuth();
   const { userLocation, requestLocation } = useLocationContext();
   const [nearbySalons, setNearbySalons] = useState<Salon[]>([]);
   const [topRatedSalons, setTopRatedSalons] = useState<Salon[]>([]);
-  const [activePromotions, setActivePromotions] = useState<Promotion[]>([]);
+  
+  // Use React Query to fetch promotions and news
+  const { data: activePromotions = [], isLoading: isPromotionsLoading } = useQuery({
+    queryKey: ['activePromotions'],
+    queryFn: () => api.promotions.getActive(),
+  });
+  
+  const { data: latestNews = [], isLoading: isNewsLoading } = useQuery({
+    queryKey: ['latestNews'],
+    queryFn: () => api.news.getLatest(3),
+  });
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -40,10 +53,6 @@ const Index: React.FC = () => {
           );
           setNearbySalons(nearby.slice(0, 3));
         }
-        
-        // Get active promotions
-        const promotions = await api.promotions.getActive();
-        setActivePromotions(promotions);
       } catch (error) {
         console.error('Error fetching home data:', error);
       } finally {
@@ -141,6 +150,27 @@ const Index: React.FC = () => {
               )}
             </section>
             
+            {/* Promotions Section */}
+            <section className="mb-10">
+              <div className="flex justify-between items-center mb-4">
+                <div className="flex items-center">
+                  <Bell className="h-5 w-5 mr-2 text-beauty-primary" />
+                  <h2 className="text-xl font-semibold">Special Offers</h2>
+                </div>
+                <Link to="/promotions" className="text-beauty-primary text-sm flex items-center">
+                  View all <ArrowRightIcon className="h-3 w-3 ml-1" />
+                </Link>
+              </div>
+              
+              {isPromotionsLoading ? (
+                <div className="flex justify-center py-8">
+                  <LoadingSpinner />
+                </div>
+              ) : (
+                <PromotionsList promotions={activePromotions} />
+              )}
+            </section>
+            
             {/* Top Rated Salons Section */}
             <section className="mb-10">
               <div className="flex justify-between items-center mb-4">
@@ -157,22 +187,26 @@ const Index: React.FC = () => {
               </div>
             </section>
             
-            {/* Promotions Section */}
-            {activePromotions.length > 0 && (
-              <section>
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-semibold">Special Offers</h2>
+            {/* News Section */}
+            <section className="mb-6">
+              <div className="flex justify-between items-center mb-4">
+                <div className="flex items-center">
+                  <Newspaper className="h-5 w-5 mr-2 text-beauty-primary" />
+                  <h2 className="text-xl font-semibold">Latest News</h2>
                 </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {activePromotions.map(promotion => (
-                    <Link key={promotion.id} to={`/salons/${promotion.salonId}`}>
-                      <PromotionCard promotion={promotion} />
-                    </Link>
-                  ))}
+                <Link to="/news" className="text-beauty-primary text-sm flex items-center">
+                  View all <ArrowRightIcon className="h-3 w-3 ml-1" />
+                </Link>
+              </div>
+              
+              {isNewsLoading ? (
+                <div className="flex justify-center py-8">
+                  <LoadingSpinner />
                 </div>
-              </section>
-            )}
+              ) : (
+                <NewsList newsItems={latestNews} />
+              )}
+            </section>
           </>
         )}
       </main>

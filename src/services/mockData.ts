@@ -1,5 +1,4 @@
-
-import { Salon, User, Service, Appointment, Review, Promotion, SalonRequest, ServiceCategory } from "@/types";
+import { Salon, User, Service, Appointment, Review, Promotion, SalonRequest, ServiceCategory, NewsItem } from "@/types";
 
 // Mock Users
 export const users: User[] = [
@@ -120,7 +119,7 @@ export const services: Service[] = [
     description: "Deep cleansing facial",
     price: 85,
     duration: 75,
-    image: "https://images.unsplash.com/photo-1643206782098-276574ebb86d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
+    image: "https://images.unsplash.com/photo-1643206782098-276574ebb874?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
     salonId: "1",
     categoryId: "3"
   },
@@ -228,12 +227,52 @@ export const promotions: Promotion[] = [
     endDate: "2024-06-20T23:59:59Z",
     discount: 100,
     createdAt: "2024-06-01T00:00:00Z"
+  },
+  {
+    id: "3",
+    salonId: "3",
+    title: "Summer Wellness Package",
+    description: "Get a relaxing spa treatment and massage combo at a special price!",
+    image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1024&q=80",
+    startDate: "2024-05-15T00:00:00Z",
+    endDate: "2024-07-15T23:59:59Z",
+    discount: 25,
+    createdAt: "2024-05-10T00:00:00Z"
   }
 ];
 
 // Add promotions to salons
 salons[0].promotions = promotions.filter(promo => promo.salonId === "1");
 salons[1].promotions = promotions.filter(promo => promo.salonId === "2");
+salons[2].promotions = promotions.filter(promo => promo.salonId === "3");
+
+// Mock News
+export const newsItems: NewsItem[] = [
+  {
+    id: "1",
+    title: "New Vegan Beauty Products Available",
+    content: "We're excited to announce that all our salons now offer a range of vegan and cruelty-free beauty products. These products are not only ethical but also provide excellent results for your hair and skin.",
+    image: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1024&q=80",
+    date: "2024-06-01T00:00:00Z",
+    category: "Products"
+  },
+  {
+    id: "2",
+    title: "Beauty Trends for Summer 2024",
+    content: "From bold neon colors to subtle pastel tones, discover what's trending this summer season. Our stylists are ready to help you achieve the perfect summer look.",
+    image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1024&q=80",
+    date: "2024-05-15T00:00:00Z",
+    category: "Trends"
+  },
+  {
+    id: "3",
+    title: "BeautySpot App Launches New Features",
+    content: "We've updated our app with new appointment scheduling features and personalized recommendations. Book your next appointment with just a few taps!",
+    image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1024&q=80", 
+    date: "2024-05-10T00:00:00Z",
+    category: "App Updates"
+  }
+];
 
 // Mock Salon Requests
 export const salonRequests: SalonRequest[] = [

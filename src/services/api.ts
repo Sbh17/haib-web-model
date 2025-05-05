@@ -1,11 +1,11 @@
 
 import { 
   users, salons, services, appointments, reviews, 
-  promotions, salonRequests, serviceCategories 
+  promotions, salonRequests, serviceCategories, newsItems
 } from "./mockData";
 import { 
   User, Salon, Service, Appointment, Review, 
-  Promotion, SalonRequest, ServiceCategory, UserRole 
+  Promotion, SalonRequest, ServiceCategory, UserRole, NewsItem
 } from "@/types";
 
 // Helper to simulate API delay
@@ -495,9 +495,42 @@ export const api = {
       );
     },
     
+    getAll: async (): Promise<Promotion[]> => {
+      await delay(500);
+      return promotions.filter(promo =>
+        salons.some(s => s.id === promo.salonId && s.status === "approved")
+      );
+    },
+    
     getForSalon: async (salonId: string): Promise<Promotion[]> => {
       await delay(400);
       return promotions.filter(promo => promo.salonId === salonId);
+    }
+  },
+  
+  // News
+  news: {
+    getLatest: async (count: number = 3): Promise<NewsItem[]> => {
+      await delay(500);
+      // Sort by date, newest first
+      return [...newsItems]
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .slice(0, count);
+    },
+    
+    getAll: async (): Promise<NewsItem[]> => {
+      await delay(500);
+      return [...newsItems]
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    },
+    
+    getById: async (id: string): Promise<NewsItem> => {
+      await delay(400);
+      const newsItem = newsItems.find(item => item.id === id);
+      if (!newsItem) {
+        throw new ApiError("News item not found", 404);
+      }
+      return newsItem;
     }
   }
 };

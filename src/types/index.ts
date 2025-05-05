@@ -80,6 +80,15 @@ export interface Promotion {
   createdAt: string;
 }
 
+export interface NewsItem {
+  id: string;
+  title: string;
+  content: string;
+  image?: string;
+  date: string;
+  category: string;
+}
+
 export interface SalonRequest {
   id: string;
   name: string;
