@@ -100,4 +100,12 @@ export interface SalonRequest {
   ownerPhone: string;
   status: "pending" | "approved" | "rejected";
   createdAt: string;
+  // Add these new properties
+  images?: string[];
+  services?: {
+    name: string;
+    description: string;
+    price: string;
+    duration: string;
+  }[];
 }

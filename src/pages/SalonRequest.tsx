@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -17,7 +16,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { ChevronLeftIcon, ImageIcon, PlusIcon } from 'lucide-react';
+import { ChevronLeftIcon, ImageIcon, PlusIcon, X } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ServiceInputCard, { ServiceInput } from '@/components/ServiceInputCard';
@@ -111,7 +110,7 @@ const SalonRequest: React.FC = () => {
   
   const addService = () => {
     const currentServices = form.getValues('services') || [];
-    form.setValue('services', [...currentServices, { name: '', description: '', price: '', duration: '' }]);
+    form.setValue('services', [...currentServices, { name: '', description: '', price: '', duration: '' } as ServiceInput]);
   };
   
   const removeService = (index: number) => {
