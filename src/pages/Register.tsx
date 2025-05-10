@@ -144,7 +144,7 @@ const Register: React.FC = () => {
             
             <Button
               type="submit"
-              className="w-full beauty-button mt-2"
+              className="w-full bg-beauty-primary hover:bg-beauty-primary/90 text-white"
               disabled={isLoading}
             >
               {isLoading ? <LoadingSpinner size="sm" /> : 'Create Account'}

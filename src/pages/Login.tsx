@@ -96,7 +96,7 @@ const Login: React.FC = () => {
             
             <Button
               type="submit"
-              className="w-full beauty-button"
+              className="w-full bg-beauty-primary hover:bg-beauty-primary/90 text-white"
               disabled={isLoading}
             >
               {isLoading ? <LoadingSpinner size="sm" /> : 'Sign In'}
