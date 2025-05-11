@@ -49,6 +49,37 @@ const BookAppointment: React.FC = () => {
   
   const { salonId, salonName, service } = bookingState;
   
+  const handleProceedToCheckout = () => {
+    if (!selectedDate || !selectedTime) {
+      toast({
+        title: "Error",
+        description: "Please select both date and time for your appointment",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Format the date for checkout
+    const formattedDate = format(selectedDate, 'MMMM d, yyyy');
+    
+    // Navigate to payment checkout with appointment details
+    navigate('/payment-checkout', {
+      state: {
+        salonName,
+        serviceName: service.name,
+        servicePrice: service.price,
+        date: formattedDate,
+        time: selectedTime,
+        // Store additional data that will be needed for creating the appointment later
+        appointmentData: {
+          salonId,
+          serviceId: service.id,
+          notes: notes.trim() || undefined,
+        }
+      }
+    });
+  };
+  
   const handleBookAppointment = async () => {
     if (!selectedDate || !selectedTime || !user) {
       toast({
@@ -197,9 +228,9 @@ const BookAppointment: React.FC = () => {
         <Button
           className="w-full bg-beauty-primary hover:bg-beauty-primary/90 py-6 text-lg"
           disabled={!selectedDate || !selectedTime || isSubmitting}
-          onClick={handleBookAppointment}
+          onClick={handleProceedToCheckout}
         >
-          {isSubmitting ? <LoadingSpinner size="sm" /> : "Book Appointment"}
+          {isSubmitting ? <LoadingSpinner size="sm" /> : "Proceed to Payment"}
         </Button>
       </div>
     </div>

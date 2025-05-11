@@ -13,15 +13,19 @@ import Register from "./pages/Register";
 import Search from "./pages/Search";
 import SalonDetail from "./pages/SalonDetail";
 import BookAppointment from "./pages/BookAppointment";
+import PaymentCheckout from "./pages/PaymentCheckout";
+import PaymentSuccess from "./pages/PaymentSuccess";
 import Appointments from "./pages/Appointments";
 import Profile from "./pages/Profile";
 import ProfileSettings from "./pages/ProfileSettings";
 import SalonRequest from "./pages/SalonRequest";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminAnalytics from "./pages/AdminAnalytics";
 import SalonOwnerDashboard from "./pages/SalonOwnerDashboard";
 import Promotions from "./pages/Promotions";
 import News from "./pages/News";
 import NewsDetail from "./pages/NewsDetail";
+import Subscriptions from "./pages/Subscriptions";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,14 +46,18 @@ const App = () => (
               <Route path="/search" element={<Search />} />
               <Route path="/salons/:id" element={<SalonDetail />} />
               <Route path="/appointments/book" element={<BookAppointment />} />
+              <Route path="/payment-checkout" element={<PaymentCheckout />} />
+              <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/appointments" element={<Appointments />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/settings" element={<ProfileSettings />} />
               <Route path="/salon-request" element={<SalonRequest />} />
               <Route path="/promotions" element={<Promotions />} />
+              <Route path="/subscriptions" element={<Subscriptions />} />
               <Route path="/news" element={<News />} />
               <Route path="/news/:id" element={<NewsDetail />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/analytics" element={<AdminAnalytics />} />
               <Route path="/owner/salons" element={<SalonOwnerDashboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

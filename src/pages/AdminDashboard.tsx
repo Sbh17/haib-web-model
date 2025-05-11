@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -7,7 +6,8 @@ import { User, SalonRequest } from '@/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ChevronLeftIcon, SearchIcon } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { ChevronLeftIcon, SearchIcon, ChartBarIcon, Users, BarChart2, Calendar } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -214,6 +214,39 @@ const AdminDashboard: React.FC = () => {
           <ChevronLeftIcon className="h-5 w-5" />
         </Button>
         <h1 className="text-xl font-semibold">Admin Dashboard</h1>
+      </div>
+      
+      {/* Analytics Cards */}
+      <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card className="cursor-pointer hover:border-beauty-primary" onClick={() => navigate('/admin/analytics')}>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Analytics</CardTitle>
+            <ChartBarIcon className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">View detailed business analytics and reports</p>
+          </CardContent>
+        </Card>
+        
+        <Card className="cursor-pointer hover:border-beauty-primary" onClick={() => navigate('/appointments')}>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Appointments</CardTitle>
+            <Calendar className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">Manage salon appointments and bookings</p>
+          </CardContent>
+        </Card>
+        
+        <Card className="cursor-pointer hover:border-beauty-primary" onClick={() => navigate('/admin/users')}>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">User Management</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">Manage users and permissions</p>
+          </CardContent>
+        </Card>
       </div>
       
       {isLoading ? (
