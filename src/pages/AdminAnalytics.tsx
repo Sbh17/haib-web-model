@@ -99,6 +99,37 @@ const AdminAnalytics: React.FC = () => {
   // Colors for the pie chart
   const COLORS = ['#0088FE', '#FF8042', '#00C49F', '#FFBB28'];
   
+  // Custom label for pie chart with smaller text and better positioning
+  const renderCustomizedLabel = ({ 
+    cx, 
+    cy, 
+    midAngle, 
+    innerRadius, 
+    outerRadius, 
+    percent, 
+    index,
+    name
+  }: any) => {
+    const RADIAN = Math.PI / 180;
+    // Increase distance from pie
+    const radius = outerRadius * 1.2;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    
+    return (
+      <text 
+        x={x} 
+        y={y} 
+        fill="#333"
+        textAnchor={x > cx ? 'start' : 'end'} 
+        dominantBaseline="central"
+        fontSize={12} // Reduced text size by 4px (assuming default was 16px)
+      >
+        {`${name}: ${(percent * 100).toFixed(0)}%`}
+      </text>
+    );
+  };
+  
   // In a real app, these would be calculated from your data
   const totalRevenue = "$42,500";
   const totalCustomers = "89";
@@ -285,7 +316,7 @@ const AdminAnalytics: React.FC = () => {
                       cx="50%"
                       cy="50%"
                       labelLine={false}
-                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                      label={renderCustomizedLabel}
                       outerRadius={80}
                       fill="#8884d8"
                       dataKey="value"
@@ -294,8 +325,8 @@ const AdminAnalytics: React.FC = () => {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                       ))}
                     </Pie>
-                    <Tooltip />
-                    <Legend />
+                    <Tooltip contentStyle={{ fontSize: '12px' }} />
+                    <Legend wrapperStyle={{ fontSize: '12px' }} />
                   </PieChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -304,20 +335,20 @@ const AdminAnalytics: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Cancellations by Salon</CardTitle>
+                  <CardTitle className="text-lg">Cancellations by Salon</CardTitle>
                   <CardDescription>
                     Number of canceled appointments per salon
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   {loading ? (
-                    <p>Loading data...</p>
+                    <p className="text-sm">Loading data...</p>
                   ) : Object.keys(cancellationsBySalon).length > 0 ? (
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Salon ID</TableHead>
-                          <TableHead className="text-right">Cancellations</TableHead>
+                          <TableHead className="text-xs">Salon ID</TableHead>
+                          <TableHead className="text-right text-xs">Cancellations</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -326,34 +357,34 @@ const AdminAnalytics: React.FC = () => {
                           .slice(0, 5)
                           .map(([salonId, count]) => (
                             <TableRow key={salonId}>
-                              <TableCell>{salonId}</TableCell>
-                              <TableCell className="text-right">{count}</TableCell>
+                              <TableCell className="text-xs">{salonId}</TableCell>
+                              <TableCell className="text-right text-xs">{count}</TableCell>
                             </TableRow>
                           ))}
                       </TableBody>
                     </Table>
                   ) : (
-                    <p className="text-center py-4 text-muted-foreground">No cancellation data available</p>
+                    <p className="text-center py-4 text-muted-foreground text-xs">No cancellation data available</p>
                   )}
                 </CardContent>
               </Card>
               
               <Card>
                 <CardHeader>
-                  <CardTitle>Cancellations by User</CardTitle>
+                  <CardTitle className="text-lg">Cancellations by User</CardTitle>
                   <CardDescription>
                     Users with the most canceled appointments
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   {loading ? (
-                    <p>Loading data...</p>
+                    <p className="text-sm">Loading data...</p>
                   ) : Object.keys(cancellationsByUser).length > 0 ? (
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>User ID</TableHead>
-                          <TableHead className="text-right">Cancellations</TableHead>
+                          <TableHead className="text-xs">User ID</TableHead>
+                          <TableHead className="text-right text-xs">Cancellations</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -362,14 +393,14 @@ const AdminAnalytics: React.FC = () => {
                           .slice(0, 5)
                           .map(([userId, count]) => (
                             <TableRow key={userId}>
-                              <TableCell>{userId}</TableCell>
-                              <TableCell className="text-right">{count}</TableCell>
+                              <TableCell className="text-xs">{userId}</TableCell>
+                              <TableCell className="text-right text-xs">{count}</TableCell>
                             </TableRow>
                           ))}
                       </TableBody>
                     </Table>
                   ) : (
-                    <p className="text-center py-4 text-muted-foreground">No cancellation data available</p>
+                    <p className="text-center py-4 text-muted-foreground text-xs">No cancellation data available</p>
                   )}
                 </CardContent>
               </Card>
