@@ -23,6 +23,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import AdminAnalytics from "./pages/AdminAnalytics";
 import AdminUsers from "./pages/AdminUsers";
 import SalonManagement from "./pages/SalonManagement";
+import SalonEdit from "./pages/SalonEdit";
 import SalonOwnerDashboard from "./pages/SalonOwnerDashboard";
 import Promotions from "./pages/Promotions";
 import News from "./pages/News";
@@ -64,6 +65,7 @@ const App = () => (
               <Route path="/admin/analytics" element={<AdminAnalytics />} />
               <Route path="/admin/users" element={<AdminUsers />} />
               <Route path="/admin/salons" element={<SalonManagement />} />
+              <Route path="/admin/salons/:id" element={<SalonEdit />} />
               <Route path="/owner/salons" element={<SalonOwnerDashboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
