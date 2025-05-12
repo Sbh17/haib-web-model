@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChevronLeftIcon, SearchIcon, ChartBarIcon, Users, BarChart2, Calendar } from 'lucide-react';
+import { ChevronLeftIcon, SearchIcon, ChartBarIcon, Users, BarChart2, Calendar, Building } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -217,7 +217,7 @@ const AdminDashboard: React.FC = () => {
       </div>
       
       {/* Analytics Cards */}
-      <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="p-6 grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="cursor-pointer hover:border-beauty-primary" onClick={() => navigate('/admin/analytics')}>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Analytics</CardTitle>
@@ -245,6 +245,16 @@ const AdminDashboard: React.FC = () => {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">Manage users and permissions</p>
+          </CardContent>
+        </Card>
+        
+        <Card className="cursor-pointer hover:border-beauty-primary" onClick={() => navigate('/admin/salons')}>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Salon Management</CardTitle>
+            <Building className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">Manage salons and their services</p>
           </CardContent>
         </Card>
       </div>

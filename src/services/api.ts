@@ -221,6 +221,31 @@ const api = {
         request.status = 'rejected';
       }
     },
+    getAllSalons: async (): Promise<Salon[]> => {
+      await delay(500);
+      return salons;
+    },
+    getSalonById: async (salonId: string): Promise<Salon | undefined> => {
+      await delay(500);
+      return salons.find(salon => salon.id === salonId);
+    },
+    updateSalon: async (salonId: string, salonData: Partial<Salon>): Promise<Salon> => {
+      await delay(500);
+      const salon = salons.find(s => s.id === salonId);
+      if (!salon) {
+        throw new Error('Salon not found');
+      }
+      
+      Object.assign(salon, salonData);
+      return salon;
+    },
+    deleteSalon: async (salonId: string): Promise<void> => {
+      await delay(500);
+      const index = salons.findIndex(salon => salon.id === salonId);
+      if (index > -1) {
+        salons.splice(index, 1);
+      }
+    }
   },
   salonOwner: {
     getMySalons: async (ownerId?: string): Promise<Salon[]> => {
