@@ -26,7 +26,7 @@ const PaymentCheckout: React.FC = () => {
   const { toast } = useToast();
   
   const [isProcessing, setIsProcessing] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'paypal' | 'cash'>('card');
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'apple' | 'google'>('card');
   
   // Get checkout data from location state
   const checkoutData = location.state as CheckoutState;
@@ -132,19 +132,18 @@ const PaymentCheckout: React.FC = () => {
               </div>
               
               <div className="flex items-center space-x-2 border rounded-md p-3">
-                <RadioGroupItem value="paypal" id="paypal" />
-                <Label htmlFor="paypal" className="flex-1 cursor-pointer">PayPal</Label>
-                <svg className="h-5 w-5 text-[#003087]" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944 3.384a.641.641 0 0 1 .634-.544h6.401c2.063 0 3.58.444 4.502 1.319.866.822 1.227 1.94 1.073 3.331 0 .031-.005.063-.01.094 0 .014-.003.029-.004.043l-.005.065-.001.014-.828 5.14v.003c-.057.38-.154.751-.285 1.108a5.5 5.5 0 0 1-.54 1.069c-.349.52-.78.96-1.286 1.307a6.699 6.699 0 0 1-1.764.827 9.161 9.161 0 0 1-2.195.337H7.076v-.005zm1.863-1.89c.63-.749 1.641-1.916 2.406-1.916 1.845 0 2.918-.592 3.419-2.134.55-1.693.297-2.795-.753-3.316-.552-.273-1.3-.406-2.443-.406h-.204c-.366 0-.398.276-.531 1.227-.133.952-.757 4.924-.879 5.806-.025.177-.051.35-.074.52l-.43.312c.201-.044.403-.083.602-.093z" />
-                  <path d="M20.82 8.534c0 .003 0 .006-.002.009 0 .003 0 .005-.001.008l-.001.01v.004c-.993 5.222-4.395 7.014-8.727 7.014h-.217c-.52 0-.962.38-1.042.9l-.819 5.19a.641.641 0 0 0 .634.737h3.152c.53 0 .981-.384 1.065-.908l.043-.236.831-5.404.054-.286a1.064 1.064 0 0 1 1.065-.909h.67c4.346 0 7.752-1.81 8.744-7.042.412-2.164.198-3.978-1.482-5.246-.498-.38-1.1-.663-1.8-.856a10.88 10.88 0 0 0-1.697-.3c-.087-.01-.176-.018-.266-.026h-4.899c-.52 0-.963.38-1.043.9l-.818 5.189a.642.642 0 0 0 .634.736h3.154c.527 0 .98-.384 1.063-.908l.043-.236.831-5.402.053-.287c.084-.524.539-.907 1.064-.907h.671c4.347 0 7.751 1.81 8.745 7.042.412 2.163.198 3.975-1.483 5.247-.498.38-1.101.663-1.8.855-.56.155-1.123.258-1.697.301-.087.009-.175.018-.266.026" />
+                <RadioGroupItem value="apple" id="apple" />
+                <Label htmlFor="apple" className="flex-1 cursor-pointer">Apple Pay</Label>
+                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.6 12.9c-.1-1.2.5-2.4 1.4-3.1-.5-.7-1.4-1.2-2.3-1.4-1-.1-1.9.5-2.4.5-.5 0-1.2-.5-2-.5-1 .1-2 .6-2.5 1.4-1.1 1.9-.3 4.7.8 6.2.5.7 1.1 1.5 2 1.5.8 0 1.1-.5 2-.5.9 0 1.2.5 2 .5s1.4-.8 1.9-1.5c.3-.5.6-1 .7-1.6-1.1-.4-1.7-1.5-1.6-2.7v-.3zm-1.7-5.5c.7-.8.6-2 .6-2-.7 0-1.4.5-1.8 1.1-.4.6-.7 1.4-.6 2.1.8.1 1.4-.4 1.8-1.2z" />
                 </svg>
               </div>
               
               <div className="flex items-center space-x-2 border rounded-md p-3">
-                <RadioGroupItem value="cash" id="cash" />
-                <Label htmlFor="cash" className="flex-1 cursor-pointer">Pay at Salon</Label>
-                <svg className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                <RadioGroupItem value="google" id="google" />
+                <Label htmlFor="google" className="flex-1 cursor-pointer">Google Pay</Label>
+                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.5-13.5h-3v3h3v-3zm0 4.5h-3v3h3v-3zm4.5-4.5h-3v3h3v-3zm0 4.5h-3v3h3v-3z" />
                 </svg>
               </div>
             </div>
@@ -185,8 +184,6 @@ const PaymentCheckout: React.FC = () => {
         >
           {isProcessing ? (
             <LoadingSpinner size="sm" />
-          ) : paymentMethod === 'cash' ? (
-            'Confirm Appointment'
           ) : (
             'Pay Now'
           )}
