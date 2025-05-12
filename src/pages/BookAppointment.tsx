@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -109,7 +108,8 @@ const BookAppointment: React.FC = () => {
         salonId,
         serviceId: service.id,
         date: appointmentDate.toISOString(),
-        notes: notes.trim() || undefined
+        notes: notes.trim() || undefined,
+        createdAt: new Date().toISOString() // Add the missing createdAt field
       });
       
       toast({

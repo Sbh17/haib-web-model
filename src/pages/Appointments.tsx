@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -44,8 +43,8 @@ const Appointments: React.FC = () => {
       
       setIsLoading(true);
       try {
-        // Get user appointments
-        const userAppointments = await api.appointments.getMyAppointments();
+        // Get user appointments - pass user ID
+        const userAppointments = await api.appointments.getMyAppointments(user.id);
         
         // Get salon and service details for each appointment
         const fullAppointments = await Promise.all(

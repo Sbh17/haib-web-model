@@ -1,3 +1,4 @@
+
 // Mock API service
 // This is a placeholder for a real API service that would connect to a backend
 
@@ -104,9 +105,12 @@ const api = {
       await delay(300); // Simulate network delay
       return appointments;
     },
-    getMyAppointments: async (userId: string): Promise<Appointment[]> => {
+    getMyAppointments: async (userId?: string): Promise<Appointment[]> => {
       await delay(500); // Simulate network delay
-      return appointments.filter(appointment => appointment.userId === userId);
+      if (userId) {
+        return appointments.filter(appointment => appointment.userId === userId);
+      }
+      return appointments; // Return all if no userId provided
     },
     create: async (appointment: Appointment): Promise<Appointment> => {
       await delay(500); // Simulate network delay
@@ -179,7 +183,7 @@ const api = {
     getLatest: async (limit: number = 3): Promise<NewsItem[]> => {
       await delay(300); // Simulate network delay
       return [...newsItems]
-        .sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
         .slice(0, limit);
     }
   },
@@ -220,9 +224,12 @@ const api = {
     },
   },
   salonOwner: {
-    getMySalons: async (ownerId: string): Promise<Salon[]> => {
+    getMySalons: async (ownerId?: string): Promise<Salon[]> => {
       await delay(500); // Simulate network delay
-      return salons.filter(salon => salon.ownerId === ownerId);
+      if (ownerId) {
+        return salons.filter(salon => salon.ownerId === ownerId);
+      }
+      return salons; // Return all if no ownerId provided
     }
   }
 };

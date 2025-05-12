@@ -91,7 +91,8 @@ const SalonOwnerDashboard: React.FC = () => {
       
       setIsLoading(true);
       try {
-        const ownedSalons = await api.salonOwner.getMySalons();
+        // Pass user.id to getMySalons
+        const ownedSalons = await api.salonOwner.getMySalons(user.id);
         setSalons(ownedSalons);
       } catch (error) {
         console.error('Error fetching owned salons:', error);
