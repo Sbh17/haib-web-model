@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { InfoIcon } from 'lucide-react';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -51,8 +53,20 @@ const Login: React.FC = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-beauty-primary">BeautySpot</h1>
-          <p className="text-gray-600 mt-2">Sign in to your account</p>
+          <p className="text-gray-600 mt-2 dark:text-gray-400">Sign in to your account</p>
         </div>
+        
+        <Alert className="mb-6 bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800">
+          <InfoIcon className="h-4 w-4 text-blue-500" />
+          <AlertDescription>
+            <p className="text-sm mb-2 font-semibold">Demo Accounts:</p>
+            <ul className="text-xs space-y-1">
+              <li><span className="font-medium">Admin:</span> admin@beautyspot.com / admin123</li>
+              <li><span className="font-medium">Salon Owner:</span> salon1@example.com / owner123</li>
+              <li><span className="font-medium">User:</span> user@example.com / user123</li>
+            </ul>
+          </AlertDescription>
+        </Alert>
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

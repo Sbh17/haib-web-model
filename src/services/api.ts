@@ -11,20 +11,31 @@ const api = {
     login: async (email: string, password: string): Promise<User> => {
       await delay(500); // Simulate network delay
       
-      // For admin@beautyspot.com, we'll accept any password
-      if (email === 'admin@beautyspot.com') {
+      // For specific mock users, we'll accept specific passwords
+      if (email === 'admin@beautyspot.com' && password === 'admin123') {
         const adminUser = users.find(u => u.email === email);
         if (adminUser) {
           localStorage.setItem('currentUser', JSON.stringify(adminUser));
           return adminUser;
         }
       }
+
+      // For salon owner
+      if (email === 'salon1@example.com' && password === 'owner123') {
+        const ownerUser = users.find(u => u.email === email);
+        if (ownerUser) {
+          localStorage.setItem('currentUser', JSON.stringify(ownerUser));
+          return ownerUser;
+        }
+      }
       
-      // For other demo users
-      const user = users.find(u => u.email === email);
-      if (user) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        return user;
+      // For regular user
+      if (email === 'user@example.com' && password === 'user123') {
+        const regularUser = users.find(u => u.email === email);
+        if (regularUser) {
+          localStorage.setItem('currentUser', JSON.stringify(regularUser));
+          return regularUser;
+        }
       }
       
       throw new Error('Invalid email or password');
