@@ -43,7 +43,8 @@ const SalonEdit: React.FC = () => {
     instagram: '',
     twitter: '',
     linkedin: '',
-    youtube: ''
+    youtube: '',
+    tiktok: ''
   });
   
   useEffect(() => {
@@ -83,7 +84,8 @@ const SalonEdit: React.FC = () => {
           instagram: salonData.socialMedia?.instagram || '',
           twitter: salonData.socialMedia?.twitter || '',
           linkedin: salonData.socialMedia?.linkedin || '',
-          youtube: salonData.socialMedia?.youtube || ''
+          youtube: salonData.socialMedia?.youtube || '',
+          tiktok: salonData.socialMedia?.tiktok || ''
         });
       } catch (error) {
         console.error('Error fetching salon:', error);
@@ -129,7 +131,8 @@ const SalonEdit: React.FC = () => {
           instagram: formData.instagram,
           twitter: formData.twitter,
           linkedin: formData.linkedin,
-          youtube: formData.youtube
+          youtube: formData.youtube,
+          tiktok: formData.tiktok
         }
       };
       
@@ -304,6 +307,19 @@ const SalonEdit: React.FC = () => {
                     </div>
                     
                     <div className="space-y-2">
+                      <Label htmlFor="tiktok">TikTok</Label>
+                      <Input
+                        id="tiktok"
+                        name="tiktok"
+                        value={formData.tiktok}
+                        onChange={handleInputChange}
+                        placeholder="https://tiktok.com/@..."
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 mt-4">
+                    <div className="space-y-2">
                       <Label htmlFor="linkedin">LinkedIn</Label>
                       <Input
                         id="linkedin"
@@ -313,9 +329,7 @@ const SalonEdit: React.FC = () => {
                         placeholder="https://linkedin.com/in/..."
                       />
                     </div>
-                  </div>
-                  
-                  <div className="mt-4">
+                    
                     <div className="space-y-2">
                       <Label htmlFor="youtube">YouTube</Label>
                       <Input

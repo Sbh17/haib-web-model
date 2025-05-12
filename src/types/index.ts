@@ -16,6 +16,7 @@ export interface SocialMedia {
   twitter?: string;
   linkedin?: string;
   youtube?: string;
+  tiktok?: string;
 }
 
 export interface Salon {
