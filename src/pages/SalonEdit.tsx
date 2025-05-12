@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -157,7 +156,16 @@ const SalonEdit: React.FC = () => {
     if (!id) return;
     
     try {
-      await api.admin.updateSalon(id, data);
+      // Process the data to ensure services have salonId
+      const formattedData: Partial<Salon> = {
+        ...data,
+        services: data.services?.map(service => ({
+          ...service,
+          salonId: id, // Explicitly add the salonId to each service
+        })) as Service[],
+      };
+
+      await api.admin.updateSalon(id, formattedData);
       toast({
         title: "Success",
         description: `Salon ${data.name} has been updated`,
