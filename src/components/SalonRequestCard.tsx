@@ -4,7 +4,7 @@ import { SalonRequest } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MapPinIcon, UserIcon, PhoneIcon, MailIcon, CalendarIcon, ScissorsIcon } from 'lucide-react';
+import { MapPinIcon, UserIcon, PhoneIcon, MailIcon, CalendarIcon, ScissorsIcon, Facebook, Instagram, Twitter, Linkedin, Youtube } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface SalonRequestCardProps {
@@ -36,6 +36,40 @@ const SalonRequestCard: React.FC<SalonRequestCardProps> = ({
         </div>
         
         <p className="text-sm text-gray-600 mt-2">{request.description}</p>
+        
+        {/* Social Media Links */}
+        {request.socialMedia && Object.keys(request.socialMedia).length > 0 && (
+          <div className="mt-4">
+            <p className="text-sm font-medium mb-2">Social Media</p>
+            <div className="flex flex-wrap gap-2">
+              {request.socialMedia.facebook && (
+                <a href={request.socialMedia.facebook} target="_blank" rel="noopener noreferrer" className="text-blue-600">
+                  <Facebook className="h-5 w-5" />
+                </a>
+              )}
+              {request.socialMedia.instagram && (
+                <a href={request.socialMedia.instagram} target="_blank" rel="noopener noreferrer" className="text-pink-600">
+                  <Instagram className="h-5 w-5" />
+                </a>
+              )}
+              {request.socialMedia.twitter && (
+                <a href={request.socialMedia.twitter} target="_blank" rel="noopener noreferrer" className="text-blue-400">
+                  <Twitter className="h-5 w-5" />
+                </a>
+              )}
+              {request.socialMedia.linkedin && (
+                <a href={request.socialMedia.linkedin} target="_blank" rel="noopener noreferrer" className="text-blue-800">
+                  <Linkedin className="h-5 w-5" />
+                </a>
+              )}
+              {request.socialMedia.youtube && (
+                <a href={request.socialMedia.youtube} target="_blank" rel="noopener noreferrer" className="text-red-600">
+                  <Youtube className="h-5 w-5" />
+                </a>
+              )}
+            </div>
+          </div>
+        )}
         
         {request.images && request.images.length > 0 && (
           <div className="mt-4">

@@ -1,5 +1,3 @@
-
-
 export type UserRole = "user" | "salon_owner" | "admin";
 
 export interface User {
@@ -10,6 +8,14 @@ export interface User {
   role: UserRole;
   avatar?: string;
   createdAt: string;
+}
+
+export interface SocialMedia {
+  facebook?: string;
+  instagram?: string;
+  twitter?: string;
+  linkedin?: string;
+  youtube?: string;
 }
 
 export interface Salon {
@@ -30,6 +36,7 @@ export interface Salon {
   promotions: Promotion[];
   status: "pending" | "approved" | "rejected";
   createdAt: string;
+  socialMedia?: SocialMedia;
 }
 
 export interface Service {
@@ -112,5 +119,5 @@ export interface SalonRequest {
   // Add these new properties using the proper interface
   images?: string[];
   services?: SalonRequestService[];
+  socialMedia?: SocialMedia;
 }
-

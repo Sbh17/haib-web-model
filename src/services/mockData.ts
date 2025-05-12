@@ -55,7 +55,12 @@ export const salons: Salon[] = [
     services: [],
     promotions: [],
     status: "approved",
-    createdAt: "2023-01-10T00:00:00Z"
+    createdAt: "2023-01-10T00:00:00Z",
+    socialMedia: {
+      facebook: "https://facebook.com/elegantbeauty",
+      instagram: "https://instagram.com/elegantbeauty",
+      twitter: "https://twitter.com/elegantbeauty"
+    }
   },
   {
     id: "2",
@@ -71,7 +76,11 @@ export const salons: Salon[] = [
     services: [],
     promotions: [],
     status: "approved",
-    createdAt: "2023-02-15T00:00:00Z"
+    createdAt: "2023-02-15T00:00:00Z",
+    socialMedia: {
+      instagram: "https://instagram.com/urbancuts",
+      youtube: "https://youtube.com/urbancuts"
+    }
   },
   {
     id: "3",
@@ -87,7 +96,12 @@ export const salons: Salon[] = [
     services: [],
     promotions: [],
     status: "approved",
-    createdAt: "2023-03-20T00:00:00Z"
+    createdAt: "2023-03-20T00:00:00Z",
+    socialMedia: {
+      facebook: "https://facebook.com/serenespa",
+      instagram: "https://instagram.com/serenespa",
+      linkedin: "https://linkedin.com/company/serenespa"
+    }
   },
 ];
 
@@ -286,7 +300,11 @@ export const salonRequests: SalonRequest[] = [
     ownerName: "Emma Smith",
     ownerPhone: "+1987654321",
     status: "pending",
-    createdAt: "2024-05-28T00:00:00Z"
+    createdAt: "2024-05-28T00:00:00Z",
+    socialMedia: {
+      instagram: "https://instagram.com/glamourstudio",
+      facebook: "https://facebook.com/glamourstudio"
+    }
   },
   {
     id: "2",
@@ -298,6 +316,10 @@ export const salonRequests: SalonRequest[] = [
     ownerName: "Michael Johnson",
     ownerPhone: "+1567891234",
     status: "pending",
-    createdAt: "2024-06-01T00:00:00Z"
+    createdAt: "2024-06-01T00:00:00Z",
+    socialMedia: {
+      instagram: "https://instagram.com/naturalbeautyspa",
+      twitter: "https://twitter.com/naturalbeauty"
+    }
   }
 ];

@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from '@/components/ui/button';
 import { 
   StarIcon, MapPinIcon, PhoneIcon, ClockIcon, ChevronLeftIcon, 
-  CalendarIcon, MessageSquareIcon
+  CalendarIcon, MessageSquareIcon, Facebook, Instagram, Twitter, Linkedin, Youtube
 } from 'lucide-react';
 import ServiceCard from '@/components/ServiceCard';
 import ReviewCard from '@/components/ReviewCard';
@@ -150,6 +150,62 @@ const SalonDetail: React.FC = () => {
       {/* Salon Details */}
       <div className="p-6">
         <p className="text-gray-700">{salon.description}</p>
+        
+        {/* Social Media Links */}
+        {salon.socialMedia && Object.keys(salon.socialMedia).length > 0 && (
+          <div className="flex items-center mt-4 space-x-4">
+            {salon.socialMedia.facebook && (
+              <a 
+                href={salon.socialMedia.facebook} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-blue-600 hover:text-blue-700 transition-colors"
+              >
+                <Facebook className="h-5 w-5" />
+              </a>
+            )}
+            {salon.socialMedia.instagram && (
+              <a 
+                href={salon.socialMedia.instagram} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-pink-600 hover:text-pink-700 transition-colors"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
+            )}
+            {salon.socialMedia.twitter && (
+              <a 
+                href={salon.socialMedia.twitter} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-blue-400 hover:text-blue-500 transition-colors"
+              >
+                <Twitter className="h-5 w-5" />
+              </a>
+            )}
+            {salon.socialMedia.linkedin && (
+              <a 
+                href={salon.socialMedia.linkedin} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-blue-800 hover:text-blue-900 transition-colors"
+              >
+                <Linkedin className="h-5 w-5" />
+              </a>
+            )}
+            {salon.socialMedia.youtube && (
+              <a 
+                href={salon.socialMedia.youtube} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="text-red-600 hover:text-red-700 transition-colors"
+              >
+                <Youtube className="h-5 w-5" />
+              </a>
+            )}
+          </div>
+        )}
         
         <div className="flex flex-wrap gap-4 mt-6">
           <Button 

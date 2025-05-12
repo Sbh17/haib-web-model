@@ -16,17 +16,26 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { ChevronLeftIcon, ImageIcon, PlusIcon, X } from 'lucide-react';
+import { ChevronLeftIcon, ImageIcon, PlusIcon, X, Facebook, Instagram, Twitter, Linkedin, Youtube } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ServiceInputCard, { ServiceInput } from '@/components/ServiceInputCard';
-import { SalonRequestService } from '@/types';
+import { SalonRequestService, SocialMedia } from '@/types';
+import { Separator } from '@/components/ui/separator';
 
 const serviceSchema = z.object({
   name: z.string().min(1, { message: 'Service name is required' }),
   description: z.string(),
   price: z.string().min(1, { message: 'Price is required' }),
   duration: z.string().min(1, { message: 'Duration is required' }),
+});
+
+const socialMediaSchema = z.object({
+  facebook: z.string().url({ message: 'Please enter a valid URL' }).optional().or(z.literal('')),
+  instagram: z.string().url({ message: 'Please enter a valid URL' }).optional().or(z.literal('')),
+  twitter: z.string().url({ message: 'Please enter a valid URL' }).optional().or(z.literal('')),
+  linkedin: z.string().url({ message: 'Please enter a valid URL' }).optional().or(z.literal('')),
+  youtube: z.string().url({ message: 'Please enter a valid URL' }).optional().or(z.literal('')),
 });
 
 const salonRequestSchema = z.object({
@@ -39,6 +48,7 @@ const salonRequestSchema = z.object({
   ownerPhone: z.string().min(5, { message: 'Phone number is required' }),
   services: z.array(serviceSchema).optional(),
   images: z.array(z.string()).optional(),
+  socialMedia: socialMediaSchema.optional(),
 });
 
 type SalonRequestFormValues = z.infer<typeof salonRequestSchema>;
@@ -63,6 +73,13 @@ const SalonRequest: React.FC = () => {
       ownerPhone: user?.phone || '',
       services: [{ name: '', description: '', price: '', duration: '' }],
       images: [],
+      socialMedia: {
+        facebook: '',
+        instagram: '',
+        twitter: '',
+        linkedin: '',
+        youtube: '',
+      },
     },
   });
   
@@ -132,8 +149,15 @@ const SalonRequest: React.FC = () => {
   const onSubmit = async (data: SalonRequestFormValues) => {
     setIsSubmitting(true);
     try {
-      // In a real application, you would upload images to a storage service
-      // Here we're just sending the image URLs from our preview
+      // Filter out empty social media fields
+      const socialMedia: SocialMedia = {};
+      if (data.socialMedia) {
+        Object.entries(data.socialMedia).forEach(([key, value]) => {
+          if (value && value.trim() !== '') {
+            socialMedia[key as keyof SocialMedia] = value;
+          }
+        });
+      }
       
       // Make sure all services have required fields, and filter out any incomplete ones
       const validServices = data.services?.filter(service => 
@@ -151,6 +175,7 @@ const SalonRequest: React.FC = () => {
         ownerPhone: data.ownerPhone,
         services: validServices,
         images: data.images,
+        socialMedia: Object.keys(socialMedia).length > 0 ? socialMedia : undefined,
       };
       
       await api.salons.requestNewSalon(requestData);
@@ -260,8 +285,94 @@ const SalonRequest: React.FC = () => {
                 )}
               />
               
+              {/* Social Media Section */}
+              <div className="pt-4 border-t">
+                <h3 className="text-lg font-medium mb-4">Social Media Links</h3>
+                <div className="space-y-3">
+                  <FormField
+                    control={form.control}
+                    name="socialMedia.facebook"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex items-center">
+                          <Facebook className="mr-2 h-4 w-4 text-blue-600" />
+                          <FormControl>
+                            <Input placeholder="Facebook URL" {...field} />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="socialMedia.instagram"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex items-center">
+                          <Instagram className="mr-2 h-4 w-4 text-pink-600" />
+                          <FormControl>
+                            <Input placeholder="Instagram URL" {...field} />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="socialMedia.twitter"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex items-center">
+                          <Twitter className="mr-2 h-4 w-4 text-blue-400" />
+                          <FormControl>
+                            <Input placeholder="Twitter URL" {...field} />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="socialMedia.linkedin"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex items-center">
+                          <Linkedin className="mr-2 h-4 w-4 text-blue-800" />
+                          <FormControl>
+                            <Input placeholder="LinkedIn URL" {...field} />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="socialMedia.youtube"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex items-center">
+                          <Youtube className="mr-2 h-4 w-4 text-red-600" />
+                          <FormControl>
+                            <Input placeholder="YouTube URL" {...field} />
+                          </FormControl>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              
               {/* Image Upload Section */}
-              <div>
+              <div className="pt-4 border-t">
                 <FormLabel className="block mb-2">Salon Images</FormLabel>
                 <div className="mb-2">
                   <label className="cursor-pointer flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md h-32 bg-gray-50 hover:bg-gray-100 transition-colors">
