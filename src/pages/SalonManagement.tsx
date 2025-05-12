@@ -30,6 +30,7 @@ const SalonManagement: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [salonToDelete, setSalonToDelete] = useState<Salon | null>(null);
+  const [salonToEdit, setSalonToEdit] = useState<Salon | null>(null);
   
   useEffect(() => {
     // Redirect if not admin
@@ -139,6 +140,7 @@ const SalonManagement: React.FC = () => {
                 <SalonRow
                   key={salon.id}
                   salon={salon}
+                  onEdit={() => navigate(`/admin/salons/${salon.id}`)}
                   onDelete={() => setSalonToDelete(salon)}
                 />
               ))

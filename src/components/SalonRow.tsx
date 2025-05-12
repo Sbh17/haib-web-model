@@ -5,25 +5,20 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { StarIcon, MapPinIcon } from 'lucide-react';
 import { format } from 'date-fns';
-import { useNavigate } from 'react-router-dom';
 
 interface SalonRowProps {
   salon: Salon;
+  onEdit?: () => void;
   onDelete?: () => void;
 }
 
-const SalonRow: React.FC<SalonRowProps> = ({ salon, onDelete }) => {
-  const navigate = useNavigate();
+const SalonRow: React.FC<SalonRowProps> = ({ salon, onEdit, onDelete }) => {
   const createdDate = new Date(salon.createdAt);
   
   const statusColors = {
     pending: "bg-yellow-100 text-yellow-800",
     approved: "bg-green-100 text-green-800",
     rejected: "bg-red-100 text-red-800"
-  };
-  
-  const handleEdit = () => {
-    navigate(`/admin/salons/${salon.id}`);
   };
   
   return (
@@ -68,7 +63,7 @@ const SalonRow: React.FC<SalonRowProps> = ({ salon, onDelete }) => {
         <Button 
           variant="outline" 
           size="sm"
-          onClick={handleEdit}
+          onClick={onEdit}
           className="text-blue-500 border-blue-500 hover:bg-blue-50"
         >
           Edit

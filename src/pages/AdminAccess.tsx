@@ -13,13 +13,13 @@ const AdminAccess: React.FC = () => {
   
   const handleAdminLogin = async () => {
     try {
-      // Using the hardcoded admin credentials
+      // Since this is a mock system, we're using hardcoded credentials
       await login('admin@beautyspot.com', 'admin123');
       navigate('/admin/dashboard');
     } catch (error) {
       toast({
         title: "Login failed",
-        description: "Could not log in as admin. Please make sure the admin account exists in your Supabase auth.",
+        description: "Could not log in as admin",
         variant: "destructive",
       });
       console.error('Admin login error:', error);
@@ -45,7 +45,7 @@ const AdminAccess: React.FC = () => {
           <Button 
             onClick={handleAdminLogin} 
             className="w-full bg-beauty-primary hover:bg-beauty-primary/90"
-            style={{ backgroundColor: "#B09B83" }}
+            style={{ backgroundColor: "#9b87f5" }}
           >
             Sign In as Admin
           </Button>

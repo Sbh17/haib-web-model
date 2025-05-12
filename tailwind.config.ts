@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -63,13 +62,13 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Beauty salon theme colors - Updated to better match the image
+				// Beauty salon theme colors - Updated from pink to purple/peach palette
 				beauty: {
-					primary: '#B09B83',     // Updated to match the image
-					secondary: '#8A7055',   // Darker coffee brown
-					accent: '#F0E6DB',      // Light coffee brown
-					dark: '#3E322A',        // Dark coffee brown
-					light: '#FBF8F5',       // Light background
+					primary: '#9b87f5',     // Changed from pink to purple
+					secondary: '#7E69AB',   // Darker purple
+					accent: '#E5DEFF',      // Light purple
+					dark: '#2E294E',        // Dark purple (unchanged)
+					light: '#F8F7FF',       // Light background (unchanged)
 					success: '#76C893',     // Mint green (unchanged)
 					warning: '#F8961E',     // Orange (unchanged)
 					info: '#577BC1',        // Blue (unchanged)

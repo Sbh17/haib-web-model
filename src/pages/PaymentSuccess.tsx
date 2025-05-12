@@ -51,7 +51,7 @@ const PaymentSuccess: React.FC = () => {
           <Button 
             onClick={() => navigate('/appointments')}
             className="w-full bg-beauty-primary hover:bg-beauty-primary/90"
-            style={{ backgroundColor: "#B09B83" }}
+            style={{ backgroundColor: "#9b87f5" }}
           >
             View My Appointments
           </Button>
