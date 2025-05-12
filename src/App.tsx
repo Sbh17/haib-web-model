@@ -27,6 +27,7 @@ import News from "./pages/News";
 import NewsDetail from "./pages/NewsDetail";
 import Subscriptions from "./pages/Subscriptions";
 import NotFound from "./pages/NotFound";
+import AdminAccess from "./pages/AdminAccess";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +57,7 @@ const App = () => (
               <Route path="/subscriptions" element={<Subscriptions />} />
               <Route path="/news" element={<News />} />
               <Route path="/news/:id" element={<NewsDetail />} />
+              <Route path="/admin/access" element={<AdminAccess />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/analytics" element={<AdminAnalytics />} />
               <Route path="/owner/salons" element={<SalonOwnerDashboard />} />
