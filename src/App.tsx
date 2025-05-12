@@ -21,6 +21,7 @@ import ProfileSettings from "./pages/ProfileSettings";
 import SalonRequest from "./pages/SalonRequest";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminAnalytics from "./pages/AdminAnalytics";
+import AdminUsers from "./pages/AdminUsers";
 import SalonOwnerDashboard from "./pages/SalonOwnerDashboard";
 import Promotions from "./pages/Promotions";
 import News from "./pages/News";
@@ -60,6 +61,7 @@ const App = () => (
               <Route path="/admin/access" element={<AdminAccess />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/analytics" element={<AdminAnalytics />} />
+              <Route path="/admin/users" element={<AdminUsers />} />
               <Route path="/owner/salons" element={<SalonOwnerDashboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

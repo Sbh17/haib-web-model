@@ -2,7 +2,7 @@
 // This is a placeholder for a real API service that would connect to a backend
 
 import { users, salons, services, appointments, reviews, promotions, salonRequests, serviceCategories, newsItems } from './mockData';
-import { User, Salon, Appointment, Review, SalonRequest, ServiceCategory, Service, NewsItem } from '@/types';
+import { User, Salon, Appointment, Review, SalonRequest, ServiceCategory, Service, NewsItem, Promotion } from '@/types';
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -60,6 +60,30 @@ const api = {
       await delay(300); // Simulate network delay
       return salons.find(salon => salon.id === id);
     },
+    getNearby: async (lat: number, lng: number, radius: number = 5): Promise<Salon[]> => {
+      await delay(500); // Simulate network delay
+      // For mock data, we're just returning all salons since we don't have actual geocoordinates
+      return salons;
+    },
+    search: async (query: string): Promise<Salon[]> => {
+      await delay(500); // Simulate network delay
+      if (!query) return salons;
+      return salons.filter(salon => 
+        salon.name.toLowerCase().includes(query.toLowerCase()) ||
+        salon.description.toLowerCase().includes(query.toLowerCase()) ||
+        salon.address.toLowerCase().includes(query.toLowerCase())
+      );
+    },
+    requestNewSalon: async (request: Omit<SalonRequest, "id" | "status" | "createdAt">): Promise<void> => {
+      await delay(500); // Simulate network delay
+      const newRequest: SalonRequest = {
+        id: String(Date.now()),
+        ...request,
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+      };
+      salonRequests.push(newRequest);
+    }
   },
   services: {
     getBySalonId: async (salonId: string): Promise<Service[]> => {
@@ -70,17 +94,42 @@ const api = {
       await delay(300); // Simulate network delay
       return serviceCategories;
     },
+    getForSalon: async (salonId: string): Promise<Service[]> => {
+      await delay(300); // Simulate network delay
+      return services.filter(service => service.salonId === salonId);
+    }
   },
   appointments: {
     getAll: async (): Promise<Appointment[]> => {
       await delay(300); // Simulate network delay
       return appointments;
     },
+    getMyAppointments: async (userId: string): Promise<Appointment[]> => {
+      await delay(500); // Simulate network delay
+      return appointments.filter(appointment => appointment.userId === userId);
+    },
     create: async (appointment: Appointment): Promise<Appointment> => {
       await delay(500); // Simulate network delay
       appointments.push(appointment);
       return appointment;
     },
+    bookAppointment: async (appointmentData: Omit<Appointment, "id" | "status">): Promise<Appointment> => {
+      await delay(500); // Simulate network delay
+      const newAppointment: Appointment = {
+        id: String(Date.now()),
+        ...appointmentData,
+        status: 'confirmed',
+      };
+      appointments.push(newAppointment);
+      return newAppointment;
+    },
+    cancelAppointment: async (id: string): Promise<void> => {
+      await delay(500); // Simulate network delay
+      const appointment = appointments.find(a => a.id === id);
+      if (appointment) {
+        appointment.status = 'cancelled';
+      }
+    }
   },
   reviews: {
     getBySalonId: async (salonId: string): Promise<Review[]> => {
@@ -92,12 +141,31 @@ const api = {
       reviews.push(review);
       return review;
     },
+    getForSalon: async (salonId: string): Promise<Review[]> => {
+      await delay(300); // Simulate network delay
+      return reviews.filter(review => review.salonId === salonId);
+    }
   },
   promotions: {
     getBySalonId: async (salonId: string): Promise<Promotion[]> => {
       await delay(300); // Simulate network delay
       return promotions.filter(promotion => promotion.salonId === salonId);
     },
+    getForSalon: async (salonId: string): Promise<Promotion[]> => {
+      await delay(300); // Simulate network delay
+      return promotions.filter(promotion => promotion.salonId === salonId);
+    },
+    getAll: async (): Promise<Promotion[]> => {
+      await delay(300); // Simulate network delay
+      return promotions;
+    },
+    getActive: async (): Promise<Promotion[]> => {
+      await delay(300); // Simulate network delay
+      const now = new Date().toISOString();
+      return promotions.filter(
+        promo => promo.startDate <= now && promo.endDate >= now
+      );
+    }
   },
   news: {
     getAll: async (): Promise<NewsItem[]> => {
@@ -108,6 +176,12 @@ const api = {
       await delay(300); // Simulate network delay
       return newsItems.find(newsItem => newsItem.id === id);
     },
+    getLatest: async (limit: number = 3): Promise<NewsItem[]> => {
+      await delay(300); // Simulate network delay
+      return [...newsItems]
+        .sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
+        .slice(0, limit);
+    }
   },
   admin: {
     getAllUsers: async (): Promise<User[]> => {
@@ -145,6 +219,12 @@ const api = {
       }
     },
   },
+  salonOwner: {
+    getMySalons: async (ownerId: string): Promise<Salon[]> => {
+      await delay(500); // Simulate network delay
+      return salons.filter(salon => salon.ownerId === ownerId);
+    }
+  }
 };
 
 export default api;
