@@ -56,8 +56,8 @@ const Login: React.FC = () => {
           <p className="text-gray-600 mt-2 dark:text-gray-400">Sign in to your account</p>
         </div>
         
-        <Alert className="mb-6 bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800">
-          <InfoIcon className="h-4 w-4 text-blue-500" />
+        <Alert className="mb-6 bg-pink-50 dark:bg-pink-900/30 border-pink-200 dark:border-pink-800">
+          <InfoIcon className="h-4 w-4 text-beauty-primary" />
           <AlertDescription>
             <p className="text-sm mb-2 font-semibold">Demo Accounts:</p>
             <ul className="text-xs space-y-1">
@@ -111,7 +111,6 @@ const Login: React.FC = () => {
             <Button
               type="submit"
               className="w-full bg-beauty-primary hover:bg-beauty-primary/90 text-white font-medium shadow-md"
-              style={{ backgroundColor: "#9b87f5" }}
               disabled={isLoading}
             >
               {isLoading ? <LoadingSpinner size="sm" /> : 'Sign In'}
