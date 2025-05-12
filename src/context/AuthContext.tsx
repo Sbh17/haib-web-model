@@ -27,8 +27,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, currentSession) => {
         setSession(currentSession);
+        
+        // If session exists, get user profile data
         if (currentSession?.user) {
-          // Fetch the user profile after session is established
+          // Use setTimeout to prevent potential auth deadlocks
           setTimeout(async () => {
             try {
               const { data: profile } = await supabase
@@ -55,11 +57,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
               console.error('Error fetching user profile:', error);
               setUser(null);
             }
+            setIsLoading(false);
           }, 0);
         } else {
           setUser(null);
+          setIsLoading(false);
         }
-        setIsLoading(false);
       }
     );
 
@@ -119,6 +122,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         description: "Welcome back!",
       });
     } catch (error) {
+      console.error("Login error:", error);
       toast({
         title: "Login failed",
         description: error instanceof Error ? error.message : "An error occurred",
@@ -152,6 +156,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         description: "Welcome! Please verify your email if required.",
       });
     } catch (error) {
+      console.error("Registration error:", error);
       toast({
         title: "Registration failed",
         description: error instanceof Error ? error.message : "An error occurred",
@@ -166,7 +171,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = async () => {
     try {
       setIsLoading(true);
-      await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      
       setUser(null);
       setSession(null);
       toast({
