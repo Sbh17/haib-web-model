@@ -236,9 +236,63 @@ const api = {
         throw new Error('Salon not found');
       }
       
+      // Update salon's basic information
       Object.assign(salon, salonData);
+      
+      // Handle service updates if they exist in the submission
+      if (salonData.services) {
+        // First, get existing services for this salon
+        const existingServices = services.filter(service => service.salonId === salonId);
+        
+        // Process each service in the submission
+        salonData.services.forEach(submittedService => {
+          if (submittedService.id) {
+            // This is an existing service - update it
+            const serviceToUpdate = services.find(s => s.id === submittedService.id);
+            if (serviceToUpdate) {
+              Object.assign(serviceToUpdate, {
+                ...submittedService,
+                salonId: salonId,  // Ensure salonId is set correctly
+              });
+            }
+          } else {
+            // This is a new service - create it
+            const newService: Service = {
+              id: String(Date.now()) + Math.random().toString(36).substring(2, 9),
+              salonId: salonId,
+              name: submittedService.name || "",
+              description: submittedService.description || "",
+              price: submittedService.price || 0,
+              duration: submittedService.duration || 30,
+              categoryId: submittedService.categoryId || serviceCategories[0].id,
+              image: submittedService.image || undefined,
+            };
+            services.push(newService);
+          }
+        });
+        
+        // Check for services that were deleted
+        const submittedServiceIds = salonData.services
+          .filter(s => s.id)
+          .map(s => s.id as string);
+          
+        const existingServiceIds = existingServices.map(s => s.id);
+        const servicesToDelete = existingServiceIds.filter(id => !submittedServiceIds.includes(id));
+        
+        if (servicesToDelete.length > 0) {
+          // Remove deleted services
+          for (const serviceId of servicesToDelete) {
+            const index = services.findIndex(s => s.id === serviceId);
+            if (index !== -1) {
+              services.splice(index, 1);
+            }
+          }
+        }
+      }
+      
       return salon;
     },
+    
     deleteSalon: async (salonId: string): Promise<void> => {
       await delay(500);
       const index = salons.findIndex(salon => salon.id === salonId);

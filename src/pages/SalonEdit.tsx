@@ -3,18 +3,28 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/services/api';
-import { Salon, SocialMedia } from '@/types';
+import { Salon, SocialMedia, Service, ServiceCategory } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
-import { ChevronLeftIcon, Save, X } from 'lucide-react';
+import { ChevronLeftIcon, Save, X, PlusCircle } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import ServiceInputCard from '@/components/ServiceInputCard';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+
+const serviceSchema = z.object({
+  id: z.string().optional(),
+  name: z.string().min(2, { message: "Service name must be at least 2 characters" }),
+  description: z.string().min(5, { message: "Description must be at least 5 characters" }),
+  price: z.coerce.number().positive({ message: "Price must be greater than 0" }),
+  duration: z.coerce.number().int().positive({ message: "Duration must be a positive integer" }),
+  categoryId: z.string().optional(),
+});
 
 const salonSchema = z.object({
   name: z.string().min(2, { message: "Salon name must be at least 2 characters" }),
@@ -30,6 +40,7 @@ const salonSchema = z.object({
     linkedin: z.string().url({ message: "Please enter a valid URL" }).optional().or(z.literal('')),
     youtube: z.string().url({ message: "Please enter a valid URL" }).optional().or(z.literal('')),
   }).optional(),
+  services: z.array(serviceSchema).optional(),
 });
 
 type FormValues = z.infer<typeof salonSchema>;
@@ -41,6 +52,8 @@ const SalonEdit: React.FC = () => {
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [salon, setSalon] = useState<Salon | null>(null);
+  const [services, setServices] = useState<Service[]>([]);
+  const [categories, setCategories] = useState<ServiceCategory[]>([]);
 
   // Set up form with default values
   const form = useForm<FormValues>({
@@ -58,7 +71,8 @@ const SalonEdit: React.FC = () => {
         twitter: '',
         linkedin: '',
         youtube: '',
-      }
+      },
+      services: [],
     },
   });
 
@@ -69,7 +83,7 @@ const SalonEdit: React.FC = () => {
       return;
     }
     
-    const fetchSalon = async () => {
+    const fetchSalonData = async () => {
       if (!id) return;
       
       if (!user) {
@@ -79,10 +93,20 @@ const SalonEdit: React.FC = () => {
       
       setIsLoading(true);
       try {
+        // Fetch salon data
         const salonData = await api.admin.getSalonById(id);
         if (salonData) {
           setSalon(salonData);
-          // Update form with salon data
+          
+          // Fetch services for this salon
+          const servicesData = await api.services.getForSalon(id);
+          setServices(servicesData);
+          
+          // Fetch service categories
+          const categoriesData = await api.services.getServiceCategories();
+          setCategories(categoriesData);
+          
+          // Update form with salon data and services
           form.reset({
             name: salonData.name,
             description: salonData.description,
@@ -96,7 +120,15 @@ const SalonEdit: React.FC = () => {
               twitter: '',
               linkedin: '',
               youtube: '',
-            }
+            },
+            services: servicesData.map(service => ({
+              id: service.id,
+              name: service.name,
+              description: service.description,
+              price: service.price,
+              duration: service.duration,
+              categoryId: service.categoryId,
+            })),
           });
         } else {
           toast({
@@ -118,7 +150,7 @@ const SalonEdit: React.FC = () => {
       }
     };
     
-    fetchSalon();
+    fetchSalonData();
   }, [user, isRole, navigate, toast, id, form]);
   
   const onSubmit = async (data: FormValues) => {
@@ -139,6 +171,25 @@ const SalonEdit: React.FC = () => {
       });
       console.error('Error updating salon:', error);
     }
+  };
+  
+  const addNewService = () => {
+    const currentServices = form.getValues('services') || [];
+    form.setValue('services', [
+      ...currentServices,
+      {
+        name: '',
+        description: '',
+        price: 0,
+        duration: 30,
+        categoryId: categories.length > 0 ? categories[0].id : '',
+      }
+    ]);
+  };
+  
+  const removeService = (index: number) => {
+    const currentServices = form.getValues('services') || [];
+    form.setValue('services', currentServices.filter((_, i) => i !== index));
   };
   
   if (!user || !isRole('admin')) {
@@ -290,6 +341,127 @@ const SalonEdit: React.FC = () => {
                       </FormItem>
                     )}
                   />
+                </CardContent>
+              </Card>
+              
+              {/* Services Section */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Salon Services</CardTitle>
+                  <CardDescription>Manage the salon's services</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {form.watch('services')?.map((service, index) => (
+                      <Card key={index} className="relative mt-4">
+                        <Button 
+                          type="button"
+                          variant="ghost" 
+                          size="icon"
+                          className="absolute right-2 top-2"
+                          onClick={() => removeService(index)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                        <CardContent className="pt-6">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <FormField
+                              control={form.control}
+                              name={`services.${index}.name`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Service Name</FormLabel>
+                                  <FormControl>
+                                    <Input placeholder="Haircut" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            
+                            <div className="grid grid-cols-2 gap-3">
+                              <FormField
+                                control={form.control}
+                                name={`services.${index}.price`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Price ($)</FormLabel>
+                                    <FormControl>
+                                      <Input placeholder="25.00" type="number" step="0.01" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              
+                              <FormField
+                                control={form.control}
+                                name={`services.${index}.duration`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormLabel>Duration (min)</FormLabel>
+                                    <FormControl>
+                                      <Input placeholder="30" type="number" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                            </div>
+                          </div>
+                          
+                          <FormField
+                            control={form.control}
+                            name={`services.${index}.description`}
+                            render={({ field }) => (
+                              <FormItem className="mt-3">
+                                <FormLabel>Description</FormLabel>
+                                <FormControl>
+                                  <Textarea placeholder="Describe this service..." rows={2} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          
+                          {categories.length > 0 && (
+                            <FormField
+                              control={form.control}
+                              name={`services.${index}.categoryId`}
+                              render={({ field }) => (
+                                <FormItem className="mt-3">
+                                  <FormLabel>Category</FormLabel>
+                                  <FormControl>
+                                    <select
+                                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                      {...field}
+                                    >
+                                      {categories.map(category => (
+                                        <option key={category.id} value={category.id}>
+                                          {category.name}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          )}
+                        </CardContent>
+                      </Card>
+                    ))}
+                    
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={addNewService}
+                      className="w-full mt-4"
+                    >
+                      <PlusCircle className="mr-2 h-4 w-4" />
+                      Add New Service
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
               
