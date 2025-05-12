@@ -66,22 +66,22 @@ const SalonEdit: React.FC = () => {
       
       setIsLoading(true);
       try {
-        const salonData = await api.salon.getSalonById(id);
+        const salonData = await api.admin.getSalonById(id);
         setSalon(salonData);
         setFormData({
           name: salonData.name,
           description: salonData.description,
           address: salonData.address,
           city: salonData.city,
-          phone: salonData.phone,
-          email: salonData.email,
+          phone: salonData.phone || '',
+          email: salonData.email || '',
           coverImage: salonData.coverImage,
-          gallery: salonData.gallery,
-          facebook: salonData.socialLinks?.facebook || '',
-          instagram: salonData.socialLinks?.instagram || '',
-          twitter: salonData.socialLinks?.twitter || '',
-          linkedin: salonData.socialLinks?.linkedin || '',
-          youtube: salonData.socialLinks?.youtube || ''
+          gallery: salonData.gallery || [],
+          facebook: salonData.socialMedia?.facebook || '',
+          instagram: salonData.socialMedia?.instagram || '',
+          twitter: salonData.socialMedia?.twitter || '',
+          linkedin: salonData.socialMedia?.linkedin || '',
+          youtube: salonData.socialMedia?.youtube || ''
         });
       } catch (error) {
         console.error('Error fetching salon:', error);
@@ -124,7 +124,7 @@ const SalonEdit: React.FC = () => {
         email: formData.email,
         coverImage: formData.coverImage,
         gallery: formData.gallery,
-        socialLinks: {
+        socialMedia: {
           facebook: formData.facebook,
           instagram: formData.instagram,
           twitter: formData.twitter,
