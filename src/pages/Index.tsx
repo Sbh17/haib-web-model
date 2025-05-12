@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLocation as useLocationContext } from '@/context/LocationContext';
@@ -12,6 +11,7 @@ import PromotionsList from '@/components/PromotionsList';
 import NewsList from '@/components/NewsList';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import BottomNavigation from '@/components/BottomNavigation';
+import ThemeToggle from '@/components/ThemeToggle';
 import { useQuery } from '@tanstack/react-query';
 
 const Index: React.FC = () => {
@@ -76,19 +76,22 @@ const Index: React.FC = () => {
             <h1 className="text-3xl font-bold">BeautySpot</h1>
             <p className="text-sm opacity-90">Find & book your perfect treatment</p>
           </div>
-          {user ? (
-            <Link to="/profile">
-              <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center text-lg font-medium">
-                {user.name.charAt(0)}
-              </div>
-            </Link>
-          ) : (
-            <Link to="/login">
-              <Button size="sm" variant="secondary" className="bg-white text-beauty-primary hover:bg-white/90">
-                Sign In
-              </Button>
-            </Link>
-          )}
+          <div className="flex items-center gap-2">
+            <ThemeToggle className="text-white hover:bg-white/10" />
+            {user ? (
+              <Link to="/profile">
+                <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center text-lg font-medium">
+                  {user.name.charAt(0)}
+                </div>
+              </Link>
+            ) : (
+              <Link to="/login">
+                <Button size="sm" variant="secondary" className="bg-white text-beauty-primary hover:bg-white/90">
+                  Sign In
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
         
         {/* Search Bar */}

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -16,6 +17,8 @@ import {
 import BottomNavigation from '@/components/BottomNavigation';
 import { LogOutIcon, UserIcon, CalendarIcon, PlusIcon, SettingsIcon } from 'lucide-react';
 import { UserRole } from '@/types';
+import { Link } from 'react-router-dom';
+import { Settings } from 'lucide-react';
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
@@ -80,7 +83,14 @@ const Profile: React.FC = () => {
   
   return (
     <div className="pb-20">
-      <div className="bg-white p-6 pt-12 shadow-sm">
+      {/* Profile Header */}
+      <header className="bg-beauty-primary text-white p-6 pb-8">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-2xl font-bold">My Profile</h1>
+          <Link to="/profile/settings" className="hover:opacity-80">
+            <Settings className="h-5 w-5" />
+          </Link>
+        </div>
         <div className="flex items-center">
           <Avatar className="h-16 w-16 mr-4">
             <AvatarImage src={user.avatar} />
@@ -99,7 +109,7 @@ const Profile: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </header>
       
       <div className="p-6">
         <div className="space-y-2">
