@@ -45,7 +45,7 @@ const AdminAccess: React.FC = () => {
           <Button 
             onClick={handleAdminLogin} 
             className="w-full bg-beauty-primary hover:bg-beauty-primary/90"
-            style={{ backgroundColor: "#A68A73" }}
+            style={{ backgroundColor: "#B09B83" }}
           >
             Sign In as Admin
           </Button>

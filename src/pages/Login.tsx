@@ -97,7 +97,7 @@ const Login: React.FC = () => {
             <Button
               type="submit"
               className="w-full bg-beauty-primary hover:bg-beauty-primary/90 text-white font-medium shadow-md"
-              style={{ backgroundColor: "#A68A73" }}
+              style={{ backgroundColor: "#B09B83" }}
               disabled={isLoading}
             >
               {isLoading ? <LoadingSpinner size="sm" /> : 'Sign In'}

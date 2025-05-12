@@ -13,10 +13,10 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em rgba(166, 138, 115, 0.6));
+  filter: drop-shadow(0 0 2em rgba(176, 155, 131, 0.6));
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em rgba(166, 138, 115, 0.6));
+  filter: drop-shadow(0 0 2em rgba(176, 155, 131, 0.6));
 }
 
 @keyframes logo-spin {

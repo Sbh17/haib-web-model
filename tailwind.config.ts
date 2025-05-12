@@ -63,9 +63,9 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Beauty salon theme colors - Updated from purple to coffee brown lite
+				// Beauty salon theme colors - Updated to better match the image
 				beauty: {
-					primary: '#A68A73',     // Changed from purple to coffee brown lite
+					primary: '#B09B83',     // Updated to match the image
 					secondary: '#8A7055',   // Darker coffee brown
 					accent: '#F0E6DB',      // Light coffee brown
 					dark: '#3E322A',        // Dark coffee brown
