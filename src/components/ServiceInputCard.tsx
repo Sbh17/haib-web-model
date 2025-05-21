@@ -4,10 +4,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
+import { X, Lock } from 'lucide-react';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Control } from 'react-hook-form';
 import { SalonRequestService } from '@/types';
+import { useAuth } from '@/context/AuthContext';
 
 // Update to use the interface from our types file
 export type ServiceInput = SalonRequestService;
@@ -25,6 +26,9 @@ const ServiceInputCard: React.FC<ServiceInputCardProps> = ({
   control,
   onRemove
 }) => {
+  const { isRole } = useAuth();
+  const isAdmin = isRole('admin');
+
   return (
     <Card className="relative mt-4">
       <Button 
@@ -58,10 +62,25 @@ const ServiceInputCard: React.FC<ServiceInputCardProps> = ({
               name={`services.${index}.price`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Price ($)</FormLabel>
+                  <FormLabel className="flex items-center">
+                    Price ($)
+                    {!isAdmin && <Lock className="h-3 w-3 ml-1 text-gray-400" />}
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="25.00" type="number" step="0.01" {...field} />
+                    <Input 
+                      placeholder="25.00" 
+                      type="number" 
+                      step="0.01" 
+                      {...field} 
+                      readOnly={!isAdmin}
+                      className={!isAdmin ? "bg-gray-100 cursor-not-allowed" : ""}
+                    />
                   </FormControl>
+                  {!isAdmin && (
+                    <p className="text-xs text-muted-foreground">
+                      Only administrators can set prices
+                    </p>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}

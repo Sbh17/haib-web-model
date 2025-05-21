@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
-import { ChevronLeftIcon, Save, X, PlusCircle } from 'lucide-react';
+import { ChevronLeftIcon, Save, X, PlusCircle, Lock } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ServiceInputCard from '@/components/ServiceInputCard';
@@ -53,6 +53,9 @@ const SalonEdit: React.FC = () => {
   const [salon, setSalon] = useState<Salon | null>(null);
   const [services, setServices] = useState<Service[]>([]);
   const [categories, setCategories] = useState<ServiceCategory[]>([]);
+
+  // Check if the current user is a system admin
+  const isAdmin = isRole('admin');
 
   // Set up form with default values
   const form = useForm<FormValues>({
@@ -393,10 +396,25 @@ const SalonEdit: React.FC = () => {
                                 name={`services.${index}.price`}
                                 render={({ field }) => (
                                   <FormItem>
-                                    <FormLabel>Price ($)</FormLabel>
+                                    <FormLabel className="flex items-center">
+                                      Price ($)
+                                      {!isAdmin && <Lock className="h-3 w-3 ml-1 text-gray-400" />}
+                                    </FormLabel>
                                     <FormControl>
-                                      <Input placeholder="25.00" type="number" step="0.01" {...field} />
+                                      <Input 
+                                        placeholder="25.00" 
+                                        type="number" 
+                                        step="0.01" 
+                                        {...field} 
+                                        readOnly={!isAdmin}
+                                        className={!isAdmin ? "bg-gray-100 cursor-not-allowed" : ""}
+                                      />
                                     </FormControl>
+                                    {!isAdmin && (
+                                      <p className="text-xs text-muted-foreground">
+                                        Only administrators can change prices
+                                      </p>
+                                    )}
                                     <FormMessage />
                                   </FormItem>
                                 )}
