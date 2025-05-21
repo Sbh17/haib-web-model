@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -43,6 +44,7 @@ const salonRequestSchema = z.object({
   description: z.string().min(10, { message: 'Description must be at least 10 characters' }),
   address: z.string().min(5, { message: 'Address must be at least 5 characters' }),
   city: z.string().min(2, { message: 'City is required' }),
+  businessId: z.string().min(5, { message: 'Business ID is required' }).optional(),
   ownerName: z.string().min(2, { message: 'Owner name must be at least 2 characters' }),
   ownerEmail: z.string().email({ message: 'Please enter a valid email address' }),
   ownerPhone: z.string().min(5, { message: 'Phone number is required' }),
@@ -68,6 +70,7 @@ const SalonRequest: React.FC = () => {
       description: '',
       address: '',
       city: '',
+      businessId: '',
       ownerName: user?.name || '',
       ownerEmail: user?.email || '',
       ownerPhone: user?.phone || '',
@@ -170,6 +173,7 @@ const SalonRequest: React.FC = () => {
         description: data.description,
         address: data.address,
         city: data.city,
+        businessId: data.businessId,
         ownerName: data.ownerName,
         ownerEmail: data.ownerEmail,
         ownerPhone: data.ownerPhone,
@@ -279,6 +283,21 @@ const SalonRequest: React.FC = () => {
                     <FormLabel>City</FormLabel>
                     <FormControl>
                       <Input placeholder="New York" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              {/* New Business ID Field */}
+              <FormField
+                control={form.control}
+                name="businessId"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Business ID</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g. BUS123456" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

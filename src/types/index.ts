@@ -1,3 +1,4 @@
+
 export type UserRole = "user" | "salon_owner" | "admin";
 
 export interface User {
@@ -37,6 +38,7 @@ export interface Salon {
   status: "pending" | "approved" | "rejected";
   createdAt: string;
   socialMedia?: SocialMedia;
+  businessId?: string;
 }
 
 export interface Service {
@@ -111,6 +113,7 @@ export interface SalonRequest {
   description: string;
   address: string;
   city: string;
+  businessId?: string;
   ownerEmail: string;
   ownerName: string;
   ownerPhone: string;
