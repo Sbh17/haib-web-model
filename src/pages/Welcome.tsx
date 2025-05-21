@@ -11,7 +11,7 @@ const Welcome: React.FC = () => {
       <section className="bg-gradient-to-br from-beauty-primary to-beauty-secondary/80 text-white pt-16 pb-24 px-6">
         <div className="max-w-5xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
-            Beauty Spot
+            HAIB
           </h1>
           <p className="text-xl md:text-2xl opacity-90 mb-8 max-w-2xl mx-auto">
             Discover and book beauty services at the best salons near you
@@ -68,7 +68,7 @@ const Welcome: React.FC = () => {
       {/* Explore Section */}
       <section className="py-16 px-6 bg-gray-50">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold mb-8">Explore BeautySpot</h2>
+          <h2 className="text-3xl font-bold mb-8">Explore HAIB</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
@@ -109,7 +109,7 @@ const Welcome: React.FC = () => {
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to get started?</h2>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Join Beauty Spot today and discover the best beauty services in your area.
+            Join HAIB today and discover the best beauty services in your area.
           </p>
           
           <Link to="/register">
@@ -123,7 +123,7 @@ const Welcome: React.FC = () => {
       {/* Footer */}
       <footer className="bg-gray-100 py-8 px-6 mt-auto">
         <div className="max-w-5xl mx-auto text-center">
-          <p className="text-gray-600">© 2023 Beauty Spot. All rights reserved.</p>
+          <p className="text-gray-600">© 2023 HAIB. All rights reserved.</p>
           <div className="flex justify-center gap-4 mt-4">
             <Link to="/" className="text-gray-600 hover:text-beauty-primary">Home</Link>
             <Link to="/search" className="text-gray-600 hover:text-beauty-primary">Search</Link>
