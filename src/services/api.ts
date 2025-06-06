@@ -1,14 +1,9 @@
+
 // Mock API service
 // This is a placeholder for a real API service that would connect to a backend
 
 import { users, salons, services, appointments, reviews, promotions, salonRequests, serviceCategories, newsItems } from './mockData';
 import { User, Salon, Appointment, Review, SalonRequest, ServiceCategory, Service, NewsItem, Promotion, SalonWorker, AppointmentAnalytics } from '@/types';
-import { dbConfig } from '@/config/database';
-
-// Log the project configuration (safe to include)
-console.log(`Using Supabase project: ${dbConfig.projectId}`);
-console.log(`API URL: ${dbConfig.apiUrl}`);
-console.log(`Environment: ${dbConfig.isDevelopment ? 'Development' : 'Production'}`);
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
