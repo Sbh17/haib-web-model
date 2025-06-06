@@ -1,5 +1,10 @@
 
-import { supabase } from '@/integrations/supabase/client';
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseUrl = 'https://jxqdslpzqcavzchpsrrp.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cWRzbHB6cWNhdnpjaHBzcnJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcwNDMyNDksImV4cCI6MjA2MjYxOTI0OX0.39qm9lMU8SROxAD2zQbGTZP11WDBtXjuIqkOMC1zTeE';
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export interface UploadResult {
   url: string;

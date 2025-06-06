@@ -103,11 +103,15 @@ const SalonWorkersManagement: React.FC<SalonWorkersManagementProps> = ({
           description: "Worker information has been updated successfully.",
         });
       } else {
-        // Add new worker
+        // Add new worker - ensure name is properly set from the form data
         const newWorker: SalonWorker = {
           id: `worker-${Date.now()}`,
           salonId,
-          ...data,
+          name: data.name, // Explicitly set the name from form data
+          specialty: data.specialty,
+          bio: data.bio,
+          phone: data.phone,
+          email: data.email,
           isActive: true,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
