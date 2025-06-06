@@ -63,13 +63,13 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Beauty salon theme colors - Updated to baby pink palette
+				// Beauty salon theme colors - Updated to black and white palette
 				beauty: {
-					primary: '#FFB6C1',     // Baby pink primary
-					secondary: '#FFC0CB',   // Pink
-					accent: '#FFDEE2',      // Light pink
-					dark: '#D8A1B1',        // Dark pink
-					light: '#FFF5F7',       // Very light pink background
+					primary: '#000000',     // Black primary
+					secondary: '#404040',   // Dark gray
+					accent: '#F5F5F5',      // Light gray
+					dark: '#1A1A1A',        // Very dark gray
+					light: '#FFFFFF',       // White background
 					success: '#76C893',     // Mint green (unchanged)
 					warning: '#F8961E',     // Orange (unchanged)
 					info: '#577BC1',        // Blue (unchanged)
