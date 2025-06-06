@@ -9,6 +9,13 @@ export interface User {
   role: UserRole;
   avatar?: string;
   createdAt: string;
+  bio?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  address?: string;
+  city?: string;
+  preferences?: Record<string, any>;
+  updatedAt?: string;
 }
 
 export interface SocialMedia {
@@ -17,6 +24,20 @@ export interface SocialMedia {
   twitter?: string;
   linkedin?: string;
   youtube?: string;
+}
+
+export interface SalonWorker {
+  id: string;
+  salonId: string;
+  name: string;
+  specialty?: string;
+  bio?: string;
+  avatar?: string;
+  phone?: string;
+  email?: string;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Salon {
@@ -35,6 +56,7 @@ export interface Salon {
   ownerId: string;
   services: Service[];
   promotions: Promotion[];
+  workers?: SalonWorker[];
   status: "pending" | "approved" | "rejected";
   createdAt: string;
   socialMedia?: SocialMedia;
@@ -62,6 +84,7 @@ export interface Appointment {
   userId: string;
   salonId: string;
   serviceId: string;
+  workerId?: string;
   date: string;
   status: "pending" | "confirmed" | "cancelled" | "completed";
   notes?: string;
@@ -123,4 +146,23 @@ export interface SalonRequest {
   images?: string[];
   services?: SalonRequestService[];
   socialMedia?: SocialMedia;
+}
+
+export interface AppointmentAnalytics {
+  totalAppointments: number;
+  completedAppointments: number;
+  cancelledAppointments: number;
+  pendingAppointments: number;
+  revenue: number;
+  averageRating: number;
+  topSalons: Array<{
+    salonName: string;
+    appointmentCount: number;
+    revenue: number;
+  }>;
+  monthlyData: Array<{
+    month: string;
+    appointments: number;
+    revenue: number;
+  }>;
 }

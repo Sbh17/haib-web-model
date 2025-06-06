@@ -19,6 +19,7 @@ export type Database = {
           service_id: string
           status: string
           user_id: string
+          worker_id: string | null
         }
         Insert: {
           created_at?: string | null
@@ -29,6 +30,7 @@ export type Database = {
           service_id: string
           status: string
           user_id: string
+          worker_id?: string | null
         }
         Update: {
           created_at?: string | null
@@ -39,6 +41,7 @@ export type Database = {
           service_id?: string
           status?: string
           user_id?: string
+          worker_id?: string | null
         }
         Relationships: [
           {
@@ -60,6 +63,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_worker_id_fkey"
+            columns: ["worker_id"]
+            isOneToOne: false
+            referencedRelation: "salon_workers"
             referencedColumns: ["id"]
           },
         ]
@@ -93,31 +103,52 @@ export type Database = {
       }
       profiles: {
         Row: {
+          address: string | null
           avatar: string | null
+          bio: string | null
+          city: string | null
           created_at: string | null
+          date_of_birth: string | null
           email: string
+          gender: string | null
           id: string
           name: string
           phone: string | null
+          preferences: Json | null
           role: string
+          updated_at: string | null
         }
         Insert: {
+          address?: string | null
           avatar?: string | null
+          bio?: string | null
+          city?: string | null
           created_at?: string | null
+          date_of_birth?: string | null
           email: string
+          gender?: string | null
           id: string
           name: string
           phone?: string | null
+          preferences?: Json | null
           role: string
+          updated_at?: string | null
         }
         Update: {
+          address?: string | null
           avatar?: string | null
+          bio?: string | null
+          city?: string | null
           created_at?: string | null
+          date_of_birth?: string | null
           email?: string
+          gender?: string | null
           id?: string
           name?: string
           phone?: string | null
+          preferences?: Json | null
           role?: string
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -388,6 +419,56 @@ export type Database = {
             foreignKeyName: "salon_social_media_salon_id_fkey"
             columns: ["salon_id"]
             isOneToOne: true
+            referencedRelation: "salons"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      salon_workers: {
+        Row: {
+          avatar: string | null
+          bio: string | null
+          created_at: string
+          email: string | null
+          id: string
+          is_active: boolean
+          name: string
+          phone: string | null
+          salon_id: string
+          specialty: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar?: string | null
+          bio?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          phone?: string | null
+          salon_id: string
+          specialty?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar?: string | null
+          bio?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          phone?: string | null
+          salon_id?: string
+          specialty?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_salon_workers_salon_id"
+            columns: ["salon_id"]
+            isOneToOne: false
             referencedRelation: "salons"
             referencedColumns: ["id"]
           },

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/services/api';
-import { Service } from '@/types';
+import { Service, SalonWorker } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,6 +14,7 @@ import { format, addDays, startOfToday, setHours, setMinutes } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import WorkerSelection from '@/components/WorkerSelection';
 
 interface BookingState {
   salonId: string;
@@ -37,8 +39,11 @@ const BookAppointment: React.FC = () => {
   
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [selectedWorkerId, setSelectedWorkerId] = useState<string | undefined>(undefined);
   const [notes, setNotes] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [workers, setWorkers] = useState<SalonWorker[]>([]);
+  const [isLoadingWorkers, setIsLoadingWorkers] = useState<boolean>(true);
   
   // Guard against direct navigation to this page
   if (!bookingState || !bookingState.service) {
@@ -47,6 +52,21 @@ const BookAppointment: React.FC = () => {
   }
   
   const { salonId, salonName, service } = bookingState;
+
+  useEffect(() => {
+    const fetchWorkers = async () => {
+      try {
+        const salonWorkers = await api.salons.getWorkers(salonId);
+        setWorkers(salonWorkers);
+      } catch (error) {
+        console.error('Error fetching workers:', error);
+      } finally {
+        setIsLoadingWorkers(false);
+      }
+    };
+
+    fetchWorkers();
+  }, [salonId]);
   
   const handleProceedToCheckout = () => {
     if (!selectedDate || !selectedTime) {
@@ -73,6 +93,7 @@ const BookAppointment: React.FC = () => {
         appointmentData: {
           salonId,
           serviceId: service.id,
+          workerId: selectedWorkerId,
           notes: notes.trim() || undefined,
         }
       }
@@ -107,9 +128,10 @@ const BookAppointment: React.FC = () => {
         userId: user.id,
         salonId,
         serviceId: service.id,
+        workerId: selectedWorkerId,
         date: appointmentDate.toISOString(),
         notes: notes.trim() || undefined,
-        createdAt: new Date().toISOString() // Add the missing createdAt field
+        createdAt: new Date().toISOString()
       });
       
       toast({
@@ -156,6 +178,17 @@ const BookAppointment: React.FC = () => {
             <span className="font-medium">${service.price}</span>
           </div>
         </div>
+
+        {/* Worker Selection */}
+        {!isLoadingWorkers && (
+          <div className="mb-6">
+            <WorkerSelection
+              workers={workers}
+              selectedWorkerId={selectedWorkerId}
+              onWorkerSelect={setSelectedWorkerId}
+            />
+          </div>
+        )}
         
         {/* Date Selection */}
         <div className="mb-6">

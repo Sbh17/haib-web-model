@@ -1,9 +1,8 @@
-
 // Mock API service
 // This is a placeholder for a real API service that would connect to a backend
 
 import { users, salons, services, appointments, reviews, promotions, salonRequests, serviceCategories, newsItems } from './mockData';
-import { User, Salon, Appointment, Review, SalonRequest, ServiceCategory, Service, NewsItem, Promotion } from '@/types';
+import { User, Salon, Appointment, Review, SalonRequest, ServiceCategory, Service, NewsItem, Promotion, SalonWorker, AppointmentAnalytics } from '@/types';
 import { dbConfig } from '@/config/database';
 
 // Log the project configuration (safe to include)
@@ -101,6 +100,64 @@ const api = {
         createdAt: new Date().toISOString(),
       };
       salonRequests.push(newRequest);
+    },
+    getWorkers: async (salonId: string): Promise<SalonWorker[]> => {
+      await delay(300);
+      // Mock data - in real app, would fetch from database
+      return [
+        {
+          id: 'worker-1',
+          salonId,
+          name: 'Sarah Johnson',
+          specialty: 'Hair Stylist',
+          bio: 'Experienced stylist specializing in modern cuts and color',
+          avatar: '',
+          phone: '555-0101',
+          email: 'sarah@salon.com',
+          isActive: true,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        },
+        {
+          id: 'worker-2',
+          salonId,
+          name: 'Maria Garcia',
+          specialty: 'Nail Technician',
+          bio: 'Expert in nail art and manicures',
+          avatar: '',
+          phone: '555-0102',
+          email: 'maria@salon.com',
+          isActive: true,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
+      ];
+    },
+    
+    addWorker: async (worker: Omit<SalonWorker, 'id' | 'createdAt' | 'updatedAt'>): Promise<SalonWorker> => {
+      await delay(500);
+      const newWorker: SalonWorker = {
+        id: String(Date.now()),
+        ...worker,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      return newWorker;
+    },
+    
+    updateWorker: async (workerId: string, workerData: Partial<SalonWorker>): Promise<SalonWorker> => {
+      await delay(500);
+      // Mock update - in real app would update in database
+      return {
+        id: workerId,
+        ...workerData,
+        updatedAt: new Date().toISOString()
+      } as SalonWorker;
+    },
+    
+    deleteWorker: async (workerId: string): Promise<void> => {
+      await delay(500);
+      // Mock delete - in real app would delete from database
     }
   },
   services: {
@@ -326,6 +383,56 @@ const api = {
         return salons.filter(salon => salon.ownerId === ownerId);
       }
       return salons; // Return all if no ownerId provided
+    }
+  },
+  profiles: {
+    updateProfile: async (userId: string, profileData: Partial<User>): Promise<User> => {
+      await delay(500);
+      // Mock update - in real app would update in database
+      const updatedUser = {
+        ...profileData,
+        id: userId,
+        updatedAt: new Date().toISOString()
+      } as User;
+      
+      // Update localStorage for demo
+      localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+      return updatedUser;
+    },
+    
+    uploadAvatar: async (userId: string, file: File): Promise<string> => {
+      await delay(1000);
+      // Mock upload - in real app would upload to storage
+      return `https://via.placeholder.com/150?text=${userId.slice(0, 2)}`;
+    }
+  },
+  analytics: {
+    getAppointmentAnalytics: async (timeRange: string = 'month'): Promise<AppointmentAnalytics> => {
+      await delay(500);
+      // Mock analytics - in real app would calculate from database
+      return {
+        totalAppointments: 1250,
+        completedAppointments: 987,
+        cancelledAppointments: 125,
+        pendingAppointments: 138,
+        revenue: 45670,
+        averageRating: 4.6,
+        topSalons: [
+          { salonName: "Glamour Studio", appointmentCount: 245, revenue: 12300 },
+          { salonName: "Style Haven", appointmentCount: 198, revenue: 9870 },
+          { salonName: "Beauty Palace", appointmentCount: 167, revenue: 8450 },
+          { salonName: "Trendy Cuts", appointmentCount: 143, revenue: 7200 },
+          { salonName: "Elegance Spa", appointmentCount: 112, revenue: 5600 }
+        ],
+        monthlyData: [
+          { month: 'Jan', appointments: 156, revenue: 7800 },
+          { month: 'Feb', appointments: 189, revenue: 9450 },
+          { month: 'Mar', appointments: 234, revenue: 11700 },
+          { month: 'Apr', appointments: 198, revenue: 9900 },
+          { month: 'May', appointments: 267, revenue: 13350 },
+          { month: 'Jun', appointments: 245, revenue: 12250 }
+        ]
+      };
     }
   }
 };
