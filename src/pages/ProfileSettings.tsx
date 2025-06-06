@@ -21,9 +21,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/components/ui/use-toast';
-import { uploadImage, deleteImage } from '@/utils/imageUpload';
 import BottomNavigation from '@/components/BottomNavigation';
-import { UserIcon, KeyIcon, UserCogIcon, CameraIcon } from 'lucide-react';
+import { UserIcon, KeyIcon, UserCogIcon } from 'lucide-react';
 
 const profileSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -50,10 +49,7 @@ const ProfileSettings: React.FC = () => {
   const { user, isLoading } = useAuth();
   const { toast } = useToast();
   const [isUpdating, setIsUpdating] = useState(false);
-  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
-  const [avatar, setAvatar] = useState(user?.avatar || '');
-  const fileInputRef = useRef<HTMLInputElement>(null);
   
   const profileForm = useForm<z.infer<typeof profileSchema>>({
     resolver: zodResolver(profileSchema),
@@ -89,53 +85,12 @@ const ProfileSettings: React.FC = () => {
       .join('')
       .toUpperCase();
   };
-
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file || !user) return;
-
-    setIsUploadingImage(true);
-    try {
-      // Upload new image
-      const result = await uploadImage(
-        file,
-        'profile-images',
-        user.id,
-        `avatar-${Date.now()}`
-      );
-
-      // Delete old image if exists
-      if (user.avatar) {
-        try {
-          const oldPath = user.avatar.split('/').slice(-2).join('/');
-          await deleteImage('profile-images', oldPath);
-        } catch (error) {
-          console.log('Failed to delete old image:', error);
-        }
-      }
-
-      setAvatar(result.url);
-      
-      toast({
-        title: "Profile image updated",
-        description: "Your profile image has been updated successfully.",
-      });
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Upload failed",
-        description: "There was an error uploading your image. Please try again.",
-      });
-    } finally {
-      setIsUploadingImage(false);
-    }
-  };
   
   const onProfileSubmit = async (data: z.infer<typeof profileSchema>) => {
     try {
       setIsUpdating(true);
       // In a real app, you would update the user profile via an API call
-      // await api.profiles.updateProfile(user.id, {...data, avatar});
+      // await api.profiles.updateProfile(user.id, data);
       
       toast({
         title: "Profile updated",
@@ -190,30 +145,12 @@ const ProfileSettings: React.FC = () => {
           <Card className="w-full sm:w-64">
             <CardHeader>
               <div className="flex flex-col items-center">
-                <div className="relative">
-                  <Avatar className="h-20 w-20 mb-4">
-                    <AvatarImage src={avatar} />
-                    <AvatarFallback className="bg-beauty-primary text-white text-xl">
-                      {getInitials(user.name)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <Button
-                    size="sm"
-                    className="absolute bottom-4 right-0 rounded-full p-2"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={isUploadingImage}
-                  >
-                    <CameraIcon className="h-4 w-4" />
-                  </Button>
-                </div>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="hidden"
-                />
-                {isUploadingImage && <p className="text-sm text-muted-foreground">Uploading...</p>}
+                <Avatar className="h-20 w-20 mb-4">
+                  <AvatarImage src={user.avatar} />
+                  <AvatarFallback className="bg-beauty-primary text-white text-xl">
+                    {getInitials(user.name)}
+                  </AvatarFallback>
+                </Avatar>
                 <CardTitle className="text-center">{user.name}</CardTitle>
                 <CardDescription className="text-center">{user.email}</CardDescription>
               </div>
