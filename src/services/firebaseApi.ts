@@ -1,40 +1,39 @@
 
-import {
-  collection,
-  doc,
-  getDocs,
-  getDoc,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  query,
-  where,
-  orderBy,
-  limit,
-  serverTimestamp,
-  Timestamp
-} from 'firebase/firestore';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
   signOut,
-  onAuthStateChanged,
+  updateProfile,
   User as FirebaseUser
 } from 'firebase/auth';
+import { 
+  collection, 
+  doc, 
+  getDoc, 
+  getDocs, 
+  setDoc, 
+  query, 
+  where, 
+  orderBy, 
+  limit,
+  Timestamp
+} from 'firebase/firestore';
 import { auth, db } from '@/config/firebase';
-import { User, Salon, Appointment, Review, NewsItem, Promotion } from '@/types';
+import { User, Salon, NewsItem, Promotion } from '@/types';
+import mockApi from './mockApi';
 
-// Helper function to convert Firestore timestamps to ISO strings
-const convertTimestamp = (timestamp: any): string => {
-  if (timestamp instanceof Timestamp) {
+// Helper function to convert Firestore timestamp to ISO string
+const timestampToISOString = (timestamp: any): string => {
+  if (timestamp?.toDate) {
     return timestamp.toDate().toISOString();
   }
-  if (timestamp && timestamp.seconds) {
+  if (timestamp?.seconds) {
     return new Date(timestamp.seconds * 1000).toISOString();
   }
-  return timestamp || new Date().toISOString();
+  return new Date().toISOString();
 };
 
+// Firebase API implementation
 const firebaseApi = {
   auth: {
     login: async (email: string, password: string): Promise<User> => {
@@ -44,277 +43,329 @@ const firebaseApi = {
         
         // Get user profile from Firestore
         const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+        
         if (userDoc.exists()) {
           const userData = userDoc.data();
           return {
             id: firebaseUser.uid,
-            email: firebaseUser.email!,
             name: userData.name || firebaseUser.displayName || '',
+            email: firebaseUser.email || '',
             phone: userData.phone || '',
-            role: userData.role || 'user',
-            createdAt: convertTimestamp(userData.createdAt),
-            avatar: userData.avatar || firebaseUser.photoURL || undefined
-          } as User;
+            role: userData.role || 'customer',
+            avatar: userData.avatar || firebaseUser.photoURL || '',
+            createdAt: timestampToISOString(userData.createdAt),
+            updatedAt: timestampToISOString(userData.updatedAt)
+          };
         } else {
-          throw new Error('User profile not found');
+          // Create user profile if it doesn't exist
+          const newUser: User = {
+            id: firebaseUser.uid,
+            name: firebaseUser.displayName || '',
+            email: firebaseUser.email || '',
+            phone: '',
+            role: 'customer',
+            avatar: firebaseUser.photoURL || '',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          };
+          
+          await setDoc(doc(db, 'users', firebaseUser.uid), {
+            ...newUser,
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now()
+          });
+          
+          return newUser;
         }
-      } catch (error: any) {
-        throw new Error(error.message || 'Login failed');
+      } catch (error) {
+        console.error('Firebase login error:', error);
+        throw error;
       }
     },
-
+    
     register: async (data: { name: string; email: string; password: string; phone?: string }): Promise<User> => {
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
         const firebaseUser = userCredential.user;
         
+        // Update Firebase Auth profile
+        await updateProfile(firebaseUser, {
+          displayName: data.name
+        });
+        
         // Create user profile in Firestore
-        const userProfile = {
+        const newUser: User = {
+          id: firebaseUser.uid,
           name: data.name,
           email: data.email,
           phone: data.phone || '',
-          role: 'user' as const,
-          createdAt: serverTimestamp(),
-          avatar: firebaseUser.photoURL || undefined
+          role: 'customer',
+          avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.email}`,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
         };
         
-        await addDoc(collection(db, 'users'), {
-          ...userProfile,
-          uid: firebaseUser.uid
+        await setDoc(doc(db, 'users', firebaseUser.uid), {
+          ...newUser,
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now()
         });
         
-        return {
-          id: firebaseUser.uid,
-          ...userProfile,
-          createdAt: new Date().toISOString()
-        } as User;
-      } catch (error: any) {
-        throw new Error(error.message || 'Registration failed');
+        return newUser;
+      } catch (error) {
+        console.error('Firebase registration error:', error);
+        throw error;
       }
     },
-
-    getCurrentUser: async (): Promise<User | null> => {
-      return new Promise((resolve) => {
-        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-          unsubscribe();
-          
-          if (!firebaseUser) {
-            resolve(null);
-            return;
-          }
-          
-          try {
-            const userQuery = query(
-              collection(db, 'users'),
-              where('uid', '==', firebaseUser.uid)
-            );
-            const userSnapshot = await getDocs(userQuery);
-            
-            if (!userSnapshot.empty) {
-              const userData = userSnapshot.docs[0].data();
-              resolve({
-                id: firebaseUser.uid,
-                email: firebaseUser.email!,
-                name: userData.name || firebaseUser.displayName || '',
-                phone: userData.phone || '',
-                role: userData.role || 'user',
-                createdAt: convertTimestamp(userData.createdAt),
-                avatar: userData.avatar || firebaseUser.photoURL || undefined
-              } as User);
-            } else {
-              resolve(null);
-            }
-          } catch (error) {
-            console.error('Error fetching user profile:', error);
-            resolve(null);
-          }
-        });
-      });
-    },
-
+    
     logout: async (): Promise<void> => {
-      await signOut(auth);
+      try {
+        await signOut(auth);
+      } catch (error) {
+        console.error('Firebase logout error:', error);
+        throw error;
+      }
+    },
+    
+    getCurrentUser: async (): Promise<User | null> => {
+      try {
+        const firebaseUser = auth.currentUser;
+        if (!firebaseUser) return null;
+        
+        const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+        
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          return {
+            id: firebaseUser.uid,
+            name: userData.name || firebaseUser.displayName || '',
+            email: firebaseUser.email || '',
+            phone: userData.phone || '',
+            role: userData.role || 'customer',
+            avatar: userData.avatar || firebaseUser.photoURL || '',
+            createdAt: timestampToISOString(userData.createdAt),
+            updatedAt: timestampToISOString(userData.updatedAt)
+          };
+        }
+        
+        return null;
+      } catch (error) {
+        console.error('Firebase getCurrentUser error:', error);
+        return null;
+      }
     }
   },
-
+  
   salons: {
     getAll: async (): Promise<Salon[]> => {
       try {
-        const salonsSnapshot = await getDocs(collection(db, 'salons'));
-        return salonsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: convertTimestamp(doc.data().createdAt),
-          updatedAt: convertTimestamp(doc.data().updatedAt)
-        })) as Salon[];
+        const salonsCollection = collection(db, 'salons');
+        const salonsSnapshot = await getDocs(salonsCollection);
+        
+        const salons: Salon[] = [];
+        salonsSnapshot.forEach(doc => {
+          const data = doc.data();
+          salons.push({
+            id: doc.id,
+            name: data.name || '',
+            description: data.description || '',
+            address: data.address || '',
+            city: data.city || '',
+            state: data.state || '',
+            zipCode: data.zipCode || '',
+            phone: data.phone || '',
+            email: data.email || '',
+            website: data.website || '',
+            images: data.images || [],
+            rating: data.rating || 0,
+            reviewCount: data.reviewCount || 0,
+            priceRange: data.priceRange || '$',
+            latitude: data.latitude || 0,
+            longitude: data.longitude || 0,
+            isOpen: data.isOpen || false,
+            openingHours: data.openingHours || {},
+            amenities: data.amenities || [],
+            services: data.services || [],
+            createdAt: timestampToISOString(data.createdAt),
+            updatedAt: timestampToISOString(data.updatedAt)
+          });
+        });
+        
+        return salons;
       } catch (error) {
-        console.error('Error fetching salons:', error);
-        return [];
+        console.error('Firebase salons.getAll error:', error);
+        // Fallback to mock data on error
+        return mockApi.salons.getAll();
       }
     },
-
-    getById: async (id: string): Promise<Salon | undefined> => {
+    
+    getById: async (id: string): Promise<Salon | null> => {
       try {
         const salonDoc = await getDoc(doc(db, 'salons', id));
+        
         if (salonDoc.exists()) {
+          const data = salonDoc.data();
           return {
             id: salonDoc.id,
-            ...salonDoc.data(),
-            createdAt: convertTimestamp(salonDoc.data().createdAt),
-            updatedAt: convertTimestamp(salonDoc.data().updatedAt)
-          } as Salon;
+            name: data.name || '',
+            description: data.description || '',
+            address: data.address || '',
+            city: data.city || '',
+            state: data.state || '',
+            zipCode: data.zipCode || '',
+            phone: data.phone || '',
+            email: data.email || '',
+            website: data.website || '',
+            images: data.images || [],
+            rating: data.rating || 0,
+            reviewCount: data.reviewCount || 0,
+            priceRange: data.priceRange || '$',
+            latitude: data.latitude || 0,
+            longitude: data.longitude || 0,
+            isOpen: data.isOpen || false,
+            openingHours: data.openingHours || {},
+            amenities: data.amenities || [],
+            services: data.services || [],
+            createdAt: timestampToISOString(data.createdAt),
+            updatedAt: timestampToISOString(data.updatedAt)
+          };
         }
-        return undefined;
+        
+        return null;
       } catch (error) {
-        console.error('Error fetching salon:', error);
-        return undefined;
+        console.error('Firebase salons.getById error:', error);
+        return mockApi.salons.getById(id);
       }
     },
-
-    getNearby: async (lat: number, lng: number, radius: number = 5): Promise<Salon[]> => {
-      // For now, return all salons since Firestore doesn't have built-in geo queries
-      // In production, you'd use a geo library like GeoFire
-      return this.getAll();
-    },
-
-    search: async (query: string): Promise<Salon[]> => {
+    
+    getNearby: async (lat: number, lng: number, radius: number = 10): Promise<Salon[]> => {
       try {
-        const salonsSnapshot = await getDocs(collection(db, 'salons'));
-        const allSalons = salonsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          createdAt: convertTimestamp(doc.data().createdAt),
-          updatedAt: convertTimestamp(doc.data().updatedAt)
-        })) as Salon[];
-        
-        if (!query) return allSalons;
-        
-        return allSalons.filter(salon => 
-          salon.name.toLowerCase().includes(query.toLowerCase()) ||
-          salon.description.toLowerCase().includes(query.toLowerCase()) ||
-          salon.address.toLowerCase().includes(query.toLowerCase())
+        // For now, return all salons (geolocation queries require special setup in Firestore)
+        return this.getAll();
+      } catch (error) {
+        console.error('Firebase salons.getNearby error:', error);
+        return mockApi.salons.getNearby(lat, lng, radius);
+      }
+    },
+    
+    search: async (searchQuery: string): Promise<Salon[]> => {
+      try {
+        const salons = await this.getAll();
+        return salons.filter(salon => 
+          salon.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          salon.description.toLowerCase().includes(searchQuery.toLowerCase())
         );
       } catch (error) {
-        console.error('Error searching salons:', error);
-        return [];
+        console.error('Firebase salons.search error:', error);
+        return mockApi.salons.search(searchQuery);
       }
     }
   },
-
+  
   news: {
     getAll: async (): Promise<NewsItem[]> => {
       try {
-        const newsQuery = query(
-          collection(db, 'news'),
-          orderBy('date', 'desc')
-        );
+        const newsCollection = collection(db, 'news');
+        const newsQuery = query(newsCollection, orderBy('date', 'desc'));
         const newsSnapshot = await getDocs(newsQuery);
-        return newsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          date: convertTimestamp(doc.data().date),
-          createdAt: convertTimestamp(doc.data().createdAt)
-        })) as NewsItem[];
+        
+        const news: NewsItem[] = [];
+        newsSnapshot.forEach(doc => {
+          const data = doc.data();
+          news.push({
+            id: doc.id,
+            title: data.title || '',
+            content: data.content || '',
+            category: data.category || '',
+            date: timestampToISOString(data.date),
+            image: data.image || ''
+          });
+        });
+        
+        return news;
       } catch (error) {
-        console.error('Error fetching news:', error);
-        return [];
+        console.error('Firebase news.getAll error:', error);
+        return mockApi.news.getAll();
       }
     },
-
-    getById: async (id: string): Promise<NewsItem | undefined> => {
+    
+    getById: async (id: string): Promise<NewsItem | null> => {
       try {
         const newsDoc = await getDoc(doc(db, 'news', id));
+        
         if (newsDoc.exists()) {
+          const data = newsDoc.data();
           return {
             id: newsDoc.id,
-            ...newsDoc.data(),
-            date: convertTimestamp(newsDoc.data().date),
-            createdAt: convertTimestamp(newsDoc.data().createdAt)
-          } as NewsItem;
+            title: data.title || '',
+            content: data.content || '',
+            category: data.category || '',
+            date: timestampToISOString(data.date),
+            image: data.image || ''
+          };
         }
-        return undefined;
+        
+        return null;
       } catch (error) {
-        console.error('Error fetching news item:', error);
-        return undefined;
-      }
-    },
-
-    getLatest: async (limitCount: number = 3): Promise<NewsItem[]> => {
-      try {
-        const newsQuery = query(
-          collection(db, 'news'),
-          orderBy('date', 'desc'),
-          limit(limitCount)
-        );
-        const newsSnapshot = await getDocs(newsQuery);
-        return newsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          date: convertTimestamp(doc.data().date),
-          createdAt: convertTimestamp(doc.data().createdAt)
-        })) as NewsItem[];
-      } catch (error) {
-        console.error('Error fetching latest news:', error);
-        return [];
+        console.error('Firebase news.getById error:', error);
+        return mockApi.news.getById(id);
       }
     }
   },
-
+  
   promotions: {
     getAll: async (): Promise<Promotion[]> => {
       try {
-        const promotionsSnapshot = await getDocs(collection(db, 'promotions'));
-        return promotionsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          startDate: convertTimestamp(doc.data().startDate),
-          endDate: convertTimestamp(doc.data().endDate),
-          createdAt: convertTimestamp(doc.data().createdAt)
-        })) as Promotion[];
+        const promotionsCollection = collection(db, 'promotions');
+        const promotionsSnapshot = await getDocs(promotionsCollection);
+        
+        const promotions: Promotion[] = [];
+        promotionsSnapshot.forEach(doc => {
+          const data = doc.data();
+          promotions.push({
+            id: doc.id,
+            title: data.title || '',
+            description: data.description || '',
+            discount: data.discount || 0,
+            validUntil: timestampToISOString(data.validUntil),
+            salonId: data.salonId || '',
+            image: data.image || '',
+            isActive: data.isActive || false
+          });
+        });
+        
+        return promotions;
       } catch (error) {
-        console.error('Error fetching promotions:', error);
-        return [];
+        console.error('Firebase promotions.getAll error:', error);
+        return mockApi.promotions.getAll();
       }
     },
-
+    
     getActive: async (): Promise<Promotion[]> => {
       try {
-        const now = new Date();
-        const promotionsSnapshot = await getDocs(collection(db, 'promotions'));
-        const allPromotions = promotionsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          startDate: convertTimestamp(doc.data().startDate),
-          endDate: convertTimestamp(doc.data().endDate),
-          createdAt: convertTimestamp(doc.data().createdAt)
-        })) as Promotion[];
+        const promotionsCollection = collection(db, 'promotions');
+        const activeQuery = query(promotionsCollection, where('isActive', '==', true));
+        const promotionsSnapshot = await getDocs(activeQuery);
         
-        return allPromotions.filter(
-          promo => new Date(promo.startDate) <= now && new Date(promo.endDate) >= now
-        );
+        const promotions: Promotion[] = [];
+        promotionsSnapshot.forEach(doc => {
+          const data = doc.data();
+          promotions.push({
+            id: doc.id,
+            title: data.title || '',
+            description: data.description || '',
+            discount: data.discount || 0,
+            validUntil: timestampToISOString(data.validUntil),
+            salonId: data.salonId || '',
+            image: data.image || '',
+            isActive: data.isActive || false
+          });
+        });
+        
+        return promotions;
       } catch (error) {
-        console.error('Error fetching active promotions:', error);
-        return [];
-      }
-    },
-
-    getBySalonId: async (salonId: string): Promise<Promotion[]> => {
-      try {
-        const promotionsQuery = query(
-          collection(db, 'promotions'),
-          where('salonId', '==', salonId)
-        );
-        const promotionsSnapshot = await getDocs(promotionsQuery);
-        return promotionsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-          startDate: convertTimestamp(doc.data().startDate),
-          endDate: convertTimestamp(doc.data().endDate),
-          createdAt: convertTimestamp(doc.data().createdAt)
-        })) as Promotion[];
-      } catch (error) {
-        console.error('Error fetching salon promotions:', error);
-        return [];
+        console.error('Firebase promotions.getActive error:', error);
+        return mockApi.promotions.getActive();
       }
     }
   }

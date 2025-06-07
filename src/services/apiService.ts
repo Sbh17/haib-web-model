@@ -1,6 +1,6 @@
 
 import { config } from '@/config/environment';
-import mockApi from './api';
+import mockApi from './mockApi';
 import firebaseApi from './firebaseApi';
 
 // Create a unified API service that can switch between mock and Firebase
@@ -8,7 +8,7 @@ const createApiService = () => {
   if (config.useFirebase) {
     console.log('Using Firebase API');
     return {
-      ...mockApi, // Keep mock API for features not yet migrated
+      ...mockApi, // Keep mock API as fallback for features not yet migrated
       // Override with Firebase implementations
       auth: firebaseApi.auth,
       salons: firebaseApi.salons,

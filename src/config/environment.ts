@@ -72,7 +72,7 @@ const environmentConfigs: Record<string, Partial<EnvironmentConfig>> = {
   },
   
   staging: {
-    apiUrl: process.env.VITE_STAGING_API_URL || 'https://staging-api.beautyspot.com/api',
+    apiUrl: import.meta.env.VITE_STAGING_API_URL || 'https://staging-api.beautyspot.com/api',
     environment: 'staging',
     useFirebase: true,
     features: {
@@ -84,7 +84,7 @@ const environmentConfigs: Record<string, Partial<EnvironmentConfig>> = {
   },
   
   production: {
-    apiUrl: process.env.VITE_API_URL || 'https://api.beautyspot.com/api',
+    apiUrl: import.meta.env.VITE_API_URL || 'https://api.beautyspot.com/api',
     environment: 'production',
     useFirebase: true,
     features: {
@@ -98,25 +98,25 @@ const environmentConfigs: Record<string, Partial<EnvironmentConfig>> = {
 
 // Get current environment configuration
 export const getEnvironmentConfig = (): EnvironmentConfig => {
-  const env = process.env.NODE_ENV || 'development';
+  const env = import.meta.env.MODE || 'development';
   const envConfig = environmentConfigs[env] || {};
   
   return {
     ...defaultConfig,
     ...envConfig,
     // Override with environment variables if available
-    apiUrl: process.env.VITE_API_URL || envConfig.apiUrl || defaultConfig.apiUrl,
+    apiUrl: import.meta.env.VITE_API_URL || envConfig.apiUrl || defaultConfig.apiUrl,
     integrations: {
       ...defaultConfig.integrations,
       ...envConfig.integrations,
-      supabase: process.env.VITE_SUPABASE_URL ? {
-        url: process.env.VITE_SUPABASE_URL,
-        anonKey: process.env.VITE_SUPABASE_ANON_KEY || ''
+      supabase: import.meta.env.VITE_SUPABASE_URL ? {
+        url: import.meta.env.VITE_SUPABASE_URL,
+        anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || ''
       } : envConfig.integrations?.supabase,
       firebase: envConfig.integrations?.firebase || defaultConfig.integrations?.firebase,
-      gcp: process.env.VITE_GCP_PROJECT_ID ? {
-        projectId: process.env.VITE_GCP_PROJECT_ID,
-        region: process.env.VITE_GCP_REGION || 'us-central1'
+      gcp: import.meta.env.VITE_GCP_PROJECT_ID ? {
+        projectId: import.meta.env.VITE_GCP_PROJECT_ID,
+        region: import.meta.env.VITE_GCP_REGION || 'us-central1'
       } : envConfig.integrations?.gcp
     }
   };
