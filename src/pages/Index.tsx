@@ -13,6 +13,8 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import BottomNavigation from '@/components/BottomNavigation';
 import ThemeToggle from '@/components/ThemeToggle';
 import { useQuery } from '@tanstack/react-query';
+import AppointmentReminder from '@/components/AppointmentReminder';
+import QuickBooking from '@/components/QuickBooking';
 
 const Index: React.FC = () => {
   const { user } = useAuth();
@@ -122,6 +124,14 @@ const Index: React.FC = () => {
           </div>
         ) : (
           <>
+            {/* User-specific sections for logged-in users */}
+            {user && (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+                <AppointmentReminder />
+                <QuickBooking />
+              </div>
+            )}
+            
             {/* Nearby Salons Section */}
             <section className="mb-10">
               <div className="flex justify-between items-center mb-4">
