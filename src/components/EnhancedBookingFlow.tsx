@@ -169,7 +169,16 @@ const EnhancedBookingFlow: React.FC<EnhancedBookingFlowProps> = ({
     }
   };
 
-  const selectedServiceData = salon.services.find(s => s.id === bookingData.serviceId) || selectedService;
+  // Safely get service data - ensure it's a Service object
+  const getServiceData = (serviceId?: string): Service | undefined => {
+    if (!serviceId) return selectedService;
+    
+    // Filter salon services to get Service objects only
+    const salonServices = salon.services.filter((s): s is Service => typeof s === 'object' && 'id' in s);
+    return salonServices.find(s => s.id === serviceId) || selectedService;
+  };
+
+  const selectedServiceData = getServiceData(bookingData.serviceId);
   const selectedWorker = mockWorkers.find(w => w.id === bookingData.workerId);
 
   return (
@@ -223,7 +232,7 @@ const EnhancedBookingFlow: React.FC<EnhancedBookingFlowProps> = ({
             <div>
               <h3 className="font-medium mb-3">Choose a Service</h3>
               <div className="grid gap-3">
-                {salon.services.map((service) => (
+                {salon.services.filter((s): s is Service => typeof s === 'object' && 'id' in s).map((service) => (
                   <div
                     key={service.id}
                     className={cn(

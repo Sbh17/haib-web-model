@@ -115,7 +115,9 @@ export const services: Service[] = [
     duration: 60,
     image: "https://images.unsplash.com/photo-1589710751893-a6dd7f485ae0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
     salonId: "1",
-    categoryId: "1"
+    categoryId: "1",
+    createdAt: "2023-01-10T00:00:00Z",
+    updatedAt: "2023-01-10T00:00:00Z"
   },
   {
     id: "2",
@@ -125,7 +127,9 @@ export const services: Service[] = [
     duration: 45,
     image: "https://images.unsplash.com/photo-1610992235683-e39abbf36d75?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
     salonId: "1",
-    categoryId: "2"
+    categoryId: "2",
+    createdAt: "2023-01-10T00:00:00Z",
+    updatedAt: "2023-01-10T00:00:00Z"
   },
   {
     id: "3",
@@ -135,7 +139,9 @@ export const services: Service[] = [
     duration: 75,
     image: "https://images.unsplash.com/photo-1643206782098-276574ebb874?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
     salonId: "1",
-    categoryId: "3"
+    categoryId: "3",
+    createdAt: "2023-01-10T00:00:00Z",
+    updatedAt: "2023-01-10T00:00:00Z"
   },
   {
     id: "4",
@@ -145,7 +151,9 @@ export const services: Service[] = [
     duration: 45,
     image: "https://images.unsplash.com/photo-1599351431608-5b35943bd7bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
     salonId: "2",
-    categoryId: "1"
+    categoryId: "1",
+    createdAt: "2023-02-15T00:00:00Z",
+    updatedAt: "2023-02-15T00:00:00Z"
   },
   {
     id: "5",
@@ -155,7 +163,9 @@ export const services: Service[] = [
     duration: 60,
     image: "https://images.unsplash.com/photo-1519014816548-bf5fe059798b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
     salonId: "2",
-    categoryId: "2"
+    categoryId: "2",
+    createdAt: "2023-02-15T00:00:00Z",
+    updatedAt: "2023-02-15T00:00:00Z"
   },
   {
     id: "6",
@@ -165,7 +175,9 @@ export const services: Service[] = [
     duration: 90,
     image: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80",
     salonId: "3",
-    categoryId: "4"
+    categoryId: "4",
+    createdAt: "2023-03-20T00:00:00Z",
+    updatedAt: "2023-03-20T00:00:00Z"
   },
 ];
 

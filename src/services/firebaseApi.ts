@@ -250,7 +250,7 @@ const firebaseApi = {
     getNearby: async (lat: number, lng: number, radius: number = 10): Promise<Salon[]> => {
       try {
         // For now, return all salons (geolocation queries require special setup in Firestore)
-        return this.getAll();
+        return firebaseApi.salons.getAll();
       } catch (error) {
         console.error('Firebase salons.getNearby error:', error);
         return mockApi.salons.getNearby(lat, lng, radius);
@@ -259,7 +259,7 @@ const firebaseApi = {
     
     search: async (searchQuery: string): Promise<Salon[]> => {
       try {
-        const salons = await this.getAll();
+        const salons = await firebaseApi.salons.getAll();
         return salons.filter(salon => 
           salon.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           salon.description.toLowerCase().includes(searchQuery.toLowerCase())

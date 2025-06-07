@@ -1,4 +1,3 @@
-
 import { User, Salon, Service, Appointment, Review, NewsItem, Promotion, SalonWorker, SalonRequest, ServiceCategory } from '@/types';
 
 // Mock data and API implementation
@@ -45,7 +44,7 @@ const mockSalons: Salon[] = [
       sunday: '10:00 AM - 5:00 PM'
     },
     amenities: ['WiFi', 'Parking', 'Wheelchair Accessible'],
-    services: ['1', '2'],
+    services: [],
     ownerId: '1',
     status: 'approved',
     createdAt: new Date().toISOString(),
@@ -157,6 +156,9 @@ const mockPromotions: Promotion[] = [
     createdAt: new Date().toISOString()
   }
 ];
+
+// Set up salon services
+mockSalons[0].services = mockServices;
 
 // Simulate API delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
