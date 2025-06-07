@@ -8,12 +8,15 @@ const createApiService = () => {
   if (config.useFirebase) {
     console.log('Using Firebase API');
     return {
-      ...mockApi, // Keep mock API as fallback for features not yet migrated
-      // Override with Firebase implementations
+      // Include all API methods from both services
       auth: firebaseApi.auth,
       salons: firebaseApi.salons,
+      services: firebaseApi.services,
+      appointments: firebaseApi.appointments,
       news: firebaseApi.news,
       promotions: firebaseApi.promotions,
+      admin: firebaseApi.admin,
+      profiles: firebaseApi.profiles,
     };
   } else {
     console.log('Using Mock API');

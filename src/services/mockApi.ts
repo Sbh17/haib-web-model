@@ -1,5 +1,5 @@
 
-import { User, Salon, Service, Appointment, Review, NewsItem, Promotion } from '@/types';
+import { User, Salon, Service, Appointment, Review, NewsItem, Promotion, SalonWorker, SalonRequest } from '@/types';
 
 // Mock data and API implementation
 const mockUsers: User[] = [
@@ -61,6 +61,51 @@ const mockServices: Service[] = [
     category: 'Hair',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
+  }
+];
+
+const mockAppointments: Appointment[] = [
+  {
+    id: '1',
+    userId: '1',
+    salonId: '1',
+    serviceId: '1',
+    workerId: '1',
+    date: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // Tomorrow
+    status: 'confirmed',
+    notes: 'Looking forward to the appointment',
+    createdAt: new Date().toISOString()
+  }
+];
+
+const mockWorkers: SalonWorker[] = [
+  {
+    id: '1',
+    salonId: '1',
+    name: 'Sarah Johnson',
+    specialty: 'Hair Styling',
+    bio: 'Expert hair stylist with 10+ years experience',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=sarah',
+    phone: '+1234567891',
+    email: 'sarah@glamourstudio.com',
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  }
+];
+
+const mockSalonRequests: SalonRequest[] = [
+  {
+    id: '1',
+    name: 'New Beauty Salon',
+    description: 'A modern beauty salon',
+    address: '456 Style Avenue',
+    city: 'Los Angeles',
+    ownerName: 'Jane Smith',
+    ownerEmail: 'jane@newbeauty.com',
+    ownerPhone: '+1987654321',
+    status: 'pending',
+    createdAt: new Date().toISOString()
   }
 ];
 
@@ -149,6 +194,58 @@ const mockApi = {
         salon.name.toLowerCase().includes(query.toLowerCase()) ||
         salon.description.toLowerCase().includes(query.toLowerCase())
       );
+    },
+
+    getWorkers: async (salonId: string): Promise<SalonWorker[]> => {
+      await delay(600);
+      return mockWorkers.filter(worker => worker.salonId === salonId);
+    }
+  },
+  
+  services: {
+    getAll: async (): Promise<Service[]> => {
+      await delay(600);
+      return mockServices;
+    },
+
+    getForSalon: async (salonId: string): Promise<Service[]> => {
+      await delay(600);
+      return mockServices.filter(service => service.salonId === salonId);
+    },
+
+    getServiceCategories: async (): Promise<string[]> => {
+      await delay(400);
+      return ['Hair', 'Nails', 'Spa', 'Makeup'];
+    }
+  },
+
+  appointments: {
+    getAll: async (): Promise<Appointment[]> => {
+      await delay(700);
+      return mockAppointments;
+    },
+
+    getMyAppointments: async (userId: string): Promise<Appointment[]> => {
+      await delay(700);
+      return mockAppointments.filter(apt => apt.userId === userId);
+    },
+
+    bookAppointment: async (appointmentData: Omit<Appointment, 'id'>): Promise<Appointment> => {
+      await delay(1000);
+      const newAppointment: Appointment = {
+        id: Date.now().toString(),
+        ...appointmentData
+      };
+      mockAppointments.push(newAppointment);
+      return newAppointment;
+    },
+
+    cancelAppointment: async (appointmentId: string): Promise<void> => {
+      await delay(500);
+      const appointmentIndex = mockAppointments.findIndex(apt => apt.id === appointmentId);
+      if (appointmentIndex !== -1) {
+        mockAppointments[appointmentIndex].status = 'cancelled';
+      }
     }
   },
   
@@ -161,6 +258,11 @@ const mockApi = {
     getById: async (id: string): Promise<NewsItem | null> => {
       await delay(400);
       return mockNews.find(item => item.id === id) || null;
+    },
+
+    getLatest: async (limit: number = 5): Promise<NewsItem[]> => {
+      await delay(500);
+      return mockNews.slice(0, limit);
     }
   },
   
@@ -173,6 +275,65 @@ const mockApi = {
     getActive: async (): Promise<Promotion[]> => {
       await delay(700);
       return mockPromotions.filter(promo => promo.isActive);
+    }
+  },
+
+  admin: {
+    getAllUsers: async (): Promise<User[]> => {
+      await delay(800);
+      return mockUsers;
+    },
+
+    deleteUser: async (userId: string): Promise<void> => {
+      await delay(500);
+      const userIndex = mockUsers.findIndex(user => user.id === userId);
+      if (userIndex !== -1) {
+        mockUsers.splice(userIndex, 1);
+      }
+    },
+
+    resetUserPassword: async (userId: string): Promise<void> => {
+      await delay(500);
+      // In a real implementation, this would send a password reset email
+      console.log(`Password reset initiated for user ${userId}`);
+    },
+
+    getSalonRequests: async (): Promise<SalonRequest[]> => {
+      await delay(600);
+      return mockSalonRequests;
+    },
+
+    approveSalonRequest: async (requestId: string): Promise<void> => {
+      await delay(500);
+      const requestIndex = mockSalonRequests.findIndex(req => req.id === requestId);
+      if (requestIndex !== -1) {
+        mockSalonRequests[requestIndex].status = 'approved';
+      }
+    },
+
+    rejectSalonRequest: async (requestId: string): Promise<void> => {
+      await delay(500);
+      const requestIndex = mockSalonRequests.findIndex(req => req.id === requestId);
+      if (requestIndex !== -1) {
+        mockSalonRequests[requestIndex].status = 'rejected';
+      }
+    }
+  },
+
+  profiles: {
+    updateProfile: async (userId: string, profileData: Partial<User>): Promise<User> => {
+      await delay(500);
+      const userIndex = mockUsers.findIndex(user => user.id === userId);
+      if (userIndex !== -1) {
+        mockUsers[userIndex] = { ...mockUsers[userIndex], ...profileData, updatedAt: new Date().toISOString() };
+        return mockUsers[userIndex];
+      }
+      throw new Error('User not found');
+    },
+
+    getProfile: async (userId: string): Promise<User | null> => {
+      await delay(400);
+      return mockUsers.find(user => user.id === userId) || null;
     }
   }
 };

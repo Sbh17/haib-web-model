@@ -16,10 +16,13 @@ import {
   where, 
   orderBy, 
   limit,
-  Timestamp
+  Timestamp,
+  addDoc,
+  updateDoc,
+  deleteDoc
 } from 'firebase/firestore';
 import { auth, db } from '@/config/firebase';
-import { User, Salon, NewsItem, Promotion } from '@/types';
+import { User, Salon, NewsItem, Promotion, Service, Appointment, SalonWorker, SalonRequest } from '@/types';
 import mockApi from './mockApi';
 
 // Helper function to convert Firestore timestamp to ISO string
@@ -259,6 +262,197 @@ const firebaseApi = {
         console.error('Firebase salons.search error:', error);
         return mockApi.salons.search(searchQuery);
       }
+    },
+
+    getWorkers: async (salonId: string): Promise<SalonWorker[]> => {
+      try {
+        const workersCollection = collection(db, 'salon_workers');
+        const workersQuery = query(workersCollection, where('salonId', '==', salonId));
+        const workersSnapshot = await getDocs(workersQuery);
+        
+        const workers: SalonWorker[] = [];
+        workersSnapshot.forEach(doc => {
+          const data = doc.data();
+          workers.push({
+            id: doc.id,
+            salonId: data.salonId,
+            name: data.name || '',
+            specialty: data.specialty || '',
+            bio: data.bio || '',
+            avatar: data.avatar || '',
+            phone: data.phone || '',
+            email: data.email || '',
+            isActive: data.isActive || true,
+            createdAt: timestampToISOString(data.createdAt),
+            updatedAt: timestampToISOString(data.updatedAt)
+          });
+        });
+        
+        return workers;
+      } catch (error) {
+        console.error('Firebase salons.getWorkers error:', error);
+        return mockApi.salons.getWorkers(salonId);
+      }
+    }
+  },
+
+  services: {
+    getAll: async (): Promise<Service[]> => {
+      try {
+        const servicesCollection = collection(db, 'services');
+        const servicesSnapshot = await getDocs(servicesCollection);
+        
+        const services: Service[] = [];
+        servicesSnapshot.forEach(doc => {
+          const data = doc.data();
+          services.push({
+            id: doc.id,
+            salonId: data.salonId || '',
+            name: data.name || '',
+            description: data.description || '',
+            price: data.price || 0,
+            duration: data.duration || 0,
+            category: data.category || '',
+            createdAt: timestampToISOString(data.createdAt),
+            updatedAt: timestampToISOString(data.updatedAt)
+          });
+        });
+        
+        return services;
+      } catch (error) {
+        console.error('Firebase services.getAll error:', error);
+        return mockApi.services.getAll();
+      }
+    },
+
+    getForSalon: async (salonId: string): Promise<Service[]> => {
+      try {
+        const servicesCollection = collection(db, 'services');
+        const servicesQuery = query(servicesCollection, where('salonId', '==', salonId));
+        const servicesSnapshot = await getDocs(servicesQuery);
+        
+        const services: Service[] = [];
+        servicesSnapshot.forEach(doc => {
+          const data = doc.data();
+          services.push({
+            id: doc.id,
+            salonId: data.salonId || '',
+            name: data.name || '',
+            description: data.description || '',
+            price: data.price || 0,
+            duration: data.duration || 0,
+            category: data.category || '',
+            createdAt: timestampToISOString(data.createdAt),
+            updatedAt: timestampToISOString(data.updatedAt)
+          });
+        });
+        
+        return services;
+      } catch (error) {
+        console.error('Firebase services.getForSalon error:', error);
+        return mockApi.services.getForSalon(salonId);
+      }
+    },
+
+    getServiceCategories: async (): Promise<string[]> => {
+      try {
+        // For now, return static categories (in real app, might fetch from DB)
+        return ['Hair', 'Nails', 'Spa', 'Makeup'];
+      } catch (error) {
+        console.error('Firebase services.getServiceCategories error:', error);
+        return mockApi.services.getServiceCategories();
+      }
+    }
+  },
+
+  appointments: {
+    getAll: async (): Promise<Appointment[]> => {
+      try {
+        const appointmentsCollection = collection(db, 'appointments');
+        const appointmentsSnapshot = await getDocs(appointmentsCollection);
+        
+        const appointments: Appointment[] = [];
+        appointmentsSnapshot.forEach(doc => {
+          const data = doc.data();
+          appointments.push({
+            id: doc.id,
+            userId: data.userId || '',
+            salonId: data.salonId || '',
+            serviceId: data.serviceId || '',
+            workerId: data.workerId || '',
+            date: timestampToISOString(data.date),
+            status: data.status || 'pending',
+            notes: data.notes || '',
+            createdAt: timestampToISOString(data.createdAt)
+          });
+        });
+        
+        return appointments;
+      } catch (error) {
+        console.error('Firebase appointments.getAll error:', error);
+        return mockApi.appointments.getAll();
+      }
+    },
+
+    getMyAppointments: async (userId: string): Promise<Appointment[]> => {
+      try {
+        const appointmentsCollection = collection(db, 'appointments');
+        const appointmentsQuery = query(appointmentsCollection, where('userId', '==', userId));
+        const appointmentsSnapshot = await getDocs(appointmentsQuery);
+        
+        const appointments: Appointment[] = [];
+        appointmentsSnapshot.forEach(doc => {
+          const data = doc.data();
+          appointments.push({
+            id: doc.id,
+            userId: data.userId || '',
+            salonId: data.salonId || '',
+            serviceId: data.serviceId || '',
+            workerId: data.workerId || '',
+            date: timestampToISOString(data.date),
+            status: data.status || 'pending',
+            notes: data.notes || '',
+            createdAt: timestampToISOString(data.createdAt)
+          });
+        });
+        
+        return appointments;
+      } catch (error) {
+        console.error('Firebase appointments.getMyAppointments error:', error);
+        return mockApi.appointments.getMyAppointments(userId);
+      }
+    },
+
+    bookAppointment: async (appointmentData: Omit<Appointment, 'id'>): Promise<Appointment> => {
+      try {
+        const appointmentRef = await addDoc(collection(db, 'appointments'), {
+          ...appointmentData,
+          date: Timestamp.fromDate(new Date(appointmentData.date)),
+          createdAt: Timestamp.now()
+        });
+        
+        const newAppointment: Appointment = {
+          id: appointmentRef.id,
+          ...appointmentData
+        };
+        
+        return newAppointment;
+      } catch (error) {
+        console.error('Firebase appointments.bookAppointment error:', error);
+        return mockApi.appointments.bookAppointment(appointmentData);
+      }
+    },
+
+    cancelAppointment: async (appointmentId: string): Promise<void> => {
+      try {
+        await updateDoc(doc(db, 'appointments', appointmentId), {
+          status: 'cancelled',
+          updatedAt: Timestamp.now()
+        });
+      } catch (error) {
+        console.error('Firebase appointments.cancelAppointment error:', error);
+        return mockApi.appointments.cancelAppointment(appointmentId);
+      }
     }
   },
   
@@ -309,6 +503,32 @@ const firebaseApi = {
       } catch (error) {
         console.error('Firebase news.getById error:', error);
         return mockApi.news.getById(id);
+      }
+    },
+
+    getLatest: async (limitCount: number = 5): Promise<NewsItem[]> => {
+      try {
+        const newsCollection = collection(db, 'news');
+        const newsQuery = query(newsCollection, orderBy('date', 'desc'), limit(limitCount));
+        const newsSnapshot = await getDocs(newsQuery);
+        
+        const news: NewsItem[] = [];
+        newsSnapshot.forEach(doc => {
+          const data = doc.data();
+          news.push({
+            id: doc.id,
+            title: data.title || '',
+            content: data.content || '',
+            category: data.category || '',
+            date: timestampToISOString(data.date),
+            image: data.image || ''
+          });
+        });
+        
+        return news;
+      } catch (error) {
+        console.error('Firebase news.getLatest error:', error);
+        return mockApi.news.getLatest(limitCount);
       }
     }
   },
@@ -366,6 +586,164 @@ const firebaseApi = {
       } catch (error) {
         console.error('Firebase promotions.getActive error:', error);
         return mockApi.promotions.getActive();
+      }
+    }
+  },
+
+  admin: {
+    getAllUsers: async (): Promise<User[]> => {
+      try {
+        const usersCollection = collection(db, 'users');
+        const usersSnapshot = await getDocs(usersCollection);
+        
+        const users: User[] = [];
+        usersSnapshot.forEach(doc => {
+          const data = doc.data();
+          users.push({
+            id: doc.id,
+            name: data.name || '',
+            email: data.email || '',
+            phone: data.phone || '',
+            role: data.role || 'customer',
+            avatar: data.avatar || '',
+            createdAt: timestampToISOString(data.createdAt),
+            updatedAt: timestampToISOString(data.updatedAt)
+          });
+        });
+        
+        return users;
+      } catch (error) {
+        console.error('Firebase admin.getAllUsers error:', error);
+        return mockApi.admin.getAllUsers();
+      }
+    },
+
+    deleteUser: async (userId: string): Promise<void> => {
+      try {
+        await deleteDoc(doc(db, 'users', userId));
+      } catch (error) {
+        console.error('Firebase admin.deleteUser error:', error);
+        return mockApi.admin.deleteUser(userId);
+      }
+    },
+
+    resetUserPassword: async (userId: string): Promise<void> => {
+      try {
+        // In Firebase, password reset is typically done via email
+        // This would require Firebase Admin SDK or functions
+        console.log(`Password reset initiated for user ${userId}`);
+      } catch (error) {
+        console.error('Firebase admin.resetUserPassword error:', error);
+        return mockApi.admin.resetUserPassword(userId);
+      }
+    },
+
+    getSalonRequests: async (): Promise<SalonRequest[]> => {
+      try {
+        const requestsCollection = collection(db, 'salon_requests');
+        const requestsSnapshot = await getDocs(requestsCollection);
+        
+        const requests: SalonRequest[] = [];
+        requestsSnapshot.forEach(doc => {
+          const data = doc.data();
+          requests.push({
+            id: doc.id,
+            name: data.name || '',
+            description: data.description || '',
+            address: data.address || '',
+            city: data.city || '',
+            ownerName: data.ownerName || '',
+            ownerEmail: data.ownerEmail || '',
+            ownerPhone: data.ownerPhone || '',
+            status: data.status || 'pending',
+            createdAt: timestampToISOString(data.createdAt)
+          });
+        });
+        
+        return requests;
+      } catch (error) {
+        console.error('Firebase admin.getSalonRequests error:', error);
+        return mockApi.admin.getSalonRequests();
+      }
+    },
+
+    approveSalonRequest: async (requestId: string): Promise<void> => {
+      try {
+        await updateDoc(doc(db, 'salon_requests', requestId), {
+          status: 'approved',
+          updatedAt: Timestamp.now()
+        });
+      } catch (error) {
+        console.error('Firebase admin.approveSalonRequest error:', error);
+        return mockApi.admin.approveSalonRequest(requestId);
+      }
+    },
+
+    rejectSalonRequest: async (requestId: string): Promise<void> => {
+      try {
+        await updateDoc(doc(db, 'salon_requests', requestId), {
+          status: 'rejected',
+          updatedAt: Timestamp.now()
+        });
+      } catch (error) {
+        console.error('Firebase admin.rejectSalonRequest error:', error);
+        return mockApi.admin.rejectSalonRequest(requestId);
+      }
+    }
+  },
+
+  profiles: {
+    updateProfile: async (userId: string, profileData: Partial<User>): Promise<User> => {
+      try {
+        await updateDoc(doc(db, 'users', userId), {
+          ...profileData,
+          updatedAt: Timestamp.now()
+        });
+        
+        const updatedDoc = await getDoc(doc(db, 'users', userId));
+        if (updatedDoc.exists()) {
+          const data = updatedDoc.data();
+          return {
+            id: updatedDoc.id,
+            name: data.name || '',
+            email: data.email || '',
+            phone: data.phone || '',
+            role: data.role || 'customer',
+            avatar: data.avatar || '',
+            createdAt: timestampToISOString(data.createdAt),
+            updatedAt: timestampToISOString(data.updatedAt)
+          };
+        }
+        
+        throw new Error('User not found after update');
+      } catch (error) {
+        console.error('Firebase profiles.updateProfile error:', error);
+        return mockApi.profiles.updateProfile(userId, profileData);
+      }
+    },
+
+    getProfile: async (userId: string): Promise<User | null> => {
+      try {
+        const userDoc = await getDoc(doc(db, 'users', userId));
+        
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          return {
+            id: userDoc.id,
+            name: data.name || '',
+            email: data.email || '',
+            phone: data.phone || '',
+            role: data.role || 'customer',
+            avatar: data.avatar || '',
+            createdAt: timestampToISOString(data.createdAt),
+            updatedAt: timestampToISOString(data.updatedAt)
+          };
+        }
+        
+        return null;
+      } catch (error) {
+        console.error('Firebase profiles.getProfile error:', error);
+        return mockApi.profiles.getProfile(userId);
       }
     }
   }
