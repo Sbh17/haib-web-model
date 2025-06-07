@@ -1,941 +1,1101 @@
+import { createClient } from '@supabase/supabase-js';
+import { config } from '@/config/environment';
+import { User, Salon, Service, Appointment, Review, NewsItem, Promotion, SalonWorker, SalonRequest, ServiceCategory } from '@/types';
 
-import { 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut,
-  updateProfile,
-  User as FirebaseUser
-} from 'firebase/auth';
-import { 
-  collection, 
-  doc, 
-  getDoc, 
-  getDocs, 
-  setDoc, 
-  query, 
-  where, 
-  orderBy, 
-  limit,
-  Timestamp,
-  addDoc,
-  updateDoc,
-  deleteDoc
-} from 'firebase/firestore';
-import { auth, db } from '@/config/firebase';
-import { User, Salon, NewsItem, Promotion, Service, Appointment, SalonWorker, SalonRequest, Review, ServiceCategory } from '@/types';
-import mockApi from './mockApi';
+// Initialize Supabase client
+const supabaseUrl = config.supabaseUrl;
+const supabaseKey = config.supabaseKey;
 
-// Helper function to convert Firestore timestamp to ISO string
-const timestampToISOString = (timestamp: any): string => {
-  if (timestamp?.toDate) {
-    return timestamp.toDate().toISOString();
-  }
-  if (timestamp?.seconds) {
-    return new Date(timestamp.seconds * 1000).toISOString();
-  }
-  return new Date().toISOString();
-};
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Firebase API implementation
 const firebaseApi = {
   auth: {
     login: async (email: string, password: string): Promise<User> => {
       try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-        const firebaseUser = userCredential.user;
-        
-        // Get user profile from Firestore
-        const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
-        
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          return {
-            id: firebaseUser.uid,
-            name: userData.name || firebaseUser.displayName || '',
-            email: firebaseUser.email || '',
-            phone: userData.phone || '',
-            role: userData.role || 'customer',
-            avatar: userData.avatar || firebaseUser.photoURL || '',
-            createdAt: timestampToISOString(userData.createdAt),
-            updatedAt: timestampToISOString(userData.updatedAt)
-          };
-        } else {
-          // Create user profile if it doesn't exist
-          const newUser: User = {
-            id: firebaseUser.uid,
-            name: firebaseUser.displayName || '',
-            email: firebaseUser.email || '',
-            phone: '',
-            role: 'customer',
-            avatar: firebaseUser.photoURL || '',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-          };
-          
-          await setDoc(doc(db, 'users', firebaseUser.uid), {
-            ...newUser,
-            createdAt: Timestamp.now(),
-            updatedAt: Timestamp.now()
-          });
-          
-          return newUser;
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email: email,
+          password: password,
+        });
+
+        if (error) {
+          throw error;
         }
+
+        // Fetch user details from the public users table
+        const { data: userDetails, error: userDetailsError } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', data.user.id)
+          .single();
+
+        if (userDetailsError) {
+          throw userDetailsError;
+        }
+
+        const user: User = {
+          id: data.user.id,
+          email: data.user.email,
+          name: userDetails?.name || 'Unnamed User',
+          role: userDetails?.role || 'customer',
+          avatar: userDetails?.avatar || '',
+          createdAt: data.user.created_at,
+          updatedAt: data.user.updated_at,
+        };
+
+        return user;
       } catch (error) {
-        console.error('Firebase login error:', error);
+        console.error('Login failed:', error);
         throw error;
       }
     },
-    
+
     register: async (data: { name: string; email: string; password: string; phone?: string }): Promise<User> => {
       try {
-        const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
-        const firebaseUser = userCredential.user;
-        
-        // Update Firebase Auth profile
-        await updateProfile(firebaseUser, {
-          displayName: data.name
-        });
-        
-        // Create user profile in Firestore
-        const newUser: User = {
-          id: firebaseUser.uid,
-          name: data.name,
+        const { data: authData, error: authError } = await supabase.auth.signUp({
           email: data.email,
-          phone: data.phone || '',
-          role: 'customer',
-          avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.email}`,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        };
-        
-        await setDoc(doc(db, 'users', firebaseUser.uid), {
-          ...newUser,
-          createdAt: Timestamp.now(),
-          updatedAt: Timestamp.now()
+          password: data.password,
+          options: {
+            data: {
+              name: data.name,
+              phone: data.phone,
+              role: 'customer',
+            },
+          },
         });
-        
-        return newUser;
+
+        if (authError) {
+          throw authError;
+        }
+
+        // Insert user details into the public users table
+        const { data: userDetails, error: userDetailsError } = await supabase
+          .from('users')
+          .insert([
+            {
+              id: authData.user.id,
+              email: data.email,
+              name: data.name,
+              phone: data.phone,
+              role: 'customer',
+              avatar: '', // You might want to set a default avatar URL
+              created_at: authData.user.created_at,
+              updated_at: authData.user.updated_at,
+            },
+          ])
+          .select('*')
+          .single();
+
+        if (userDetailsError) {
+          throw userDetailsError;
+        }
+
+        const user: User = {
+          id: authData.user.id,
+          email: authData.user.email,
+          name: userDetails.name,
+          role: userDetails.role,
+          avatar: userDetails.avatar,
+          createdAt: authData.user.created_at,
+          updatedAt: authData.user.updated_at,
+        };
+
+        return user;
       } catch (error) {
-        console.error('Firebase registration error:', error);
+        console.error('Registration failed:', error);
         throw error;
       }
     },
-    
+
     logout: async (): Promise<void> => {
       try {
-        await signOut(auth);
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+          throw error;
+        }
       } catch (error) {
-        console.error('Firebase logout error:', error);
+        console.error('Logout failed:', error);
         throw error;
       }
     },
-    
+
     getCurrentUser: async (): Promise<User | null> => {
       try {
-        const firebaseUser = auth.currentUser;
-        if (!firebaseUser) return null;
-        
-        const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
-        
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          return {
-            id: firebaseUser.uid,
-            name: userData.name || firebaseUser.displayName || '',
-            email: firebaseUser.email || '',
-            phone: userData.phone || '',
-            role: userData.role || 'customer',
-            avatar: userData.avatar || firebaseUser.photoURL || '',
-            createdAt: timestampToISOString(userData.createdAt),
-            updatedAt: timestampToISOString(userData.updatedAt)
-          };
+        const { data: { user }, error } = await supabase.auth.getUser();
+
+        if (error) {
+          throw error;
         }
-        
-        return null;
+
+        if (!user) {
+          return null;
+        }
+
+        // Fetch user details from the public users table
+        const { data: userDetails, error: userDetailsError } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (userDetailsError) {
+          throw userDetailsError;
+        }
+
+        if (!userDetails) {
+          return null;
+        }
+
+        const currentUser: User = {
+          id: user.id,
+          email: user.email,
+          name: userDetails.name,
+          role: userDetails.role,
+          avatar: userDetails.avatar,
+          createdAt: user.created_at,
+          updatedAt: userDetails.updated_at,
+        };
+
+        return currentUser;
       } catch (error) {
-        console.error('Firebase getCurrentUser error:', error);
+        console.error('Failed to get current user:', error);
         return null;
       }
-    }
+    },
   },
-  
+
   salons: {
     getAll: async (): Promise<Salon[]> => {
       try {
-        const salonsCollection = collection(db, 'salons');
-        const salonsSnapshot = await getDocs(salonsCollection);
-        
-        const salons: Salon[] = [];
-        salonsSnapshot.forEach(doc => {
-          const data = doc.data();
-          salons.push({
-            id: doc.id,
-            name: data.name || '',
-            description: data.description || '',
-            address: data.address || '',
-            city: data.city || '',
-            state: data.state || '',
-            zipCode: data.zipCode || '',
-            phone: data.phone || '',
-            email: data.email || '',
-            website: data.website || '',
-            images: data.images || [],
-            coverImage: data.coverImage || data.images?.[0] || '',
-            rating: data.rating || 0,
-            reviewCount: data.reviewCount || 0,
-            priceRange: data.priceRange || '$',
-            latitude: data.latitude || 0,
-            longitude: data.longitude || 0,
-            isOpen: data.isOpen || false,
-            openingHours: data.openingHours || {},
-            amenities: data.amenities || [],
-            services: data.services || [],
-            ownerId: data.ownerId || '',
-            status: data.status || 'pending',
-            createdAt: timestampToISOString(data.createdAt),
-            updatedAt: timestampToISOString(data.updatedAt)
-          });
-        });
-        
-        return salons;
+        const { data, error } = await supabase
+          .from('salons')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching salons:', error);
+          return [];
+        }
+
+        return data.map(salon => ({
+          id: salon.id,
+          name: salon.name,
+          description: salon.description,
+          address: salon.address,
+          city: salon.city,
+          coverImage: salon.cover_image,
+          rating: salon.rating,
+          reviewCount: salon.review_count,
+          ownerId: salon.owner_id,
+          services: [],
+          status: salon.status,
+          createdAt: salon.created_at,
+          socialMedia: salon.social_media,
+        }));
       } catch (error) {
-        console.error('Firebase salons.getAll error:', error);
-        // Fallback to mock data on error
-        return mockApi.salons.getAll();
+        console.error('Error fetching salons:', error);
+        return [];
       }
     },
-    
+
     getById: async (id: string): Promise<Salon | null> => {
       try {
-        const salonDoc = await getDoc(doc(db, 'salons', id));
-        
-        if (salonDoc.exists()) {
-          const data = salonDoc.data();
-          return {
-            id: salonDoc.id,
-            name: data.name || '',
-            description: data.description || '',
-            address: data.address || '',
-            city: data.city || '',
-            state: data.state || '',
-            zipCode: data.zipCode || '',
-            phone: data.phone || '',
-            email: data.email || '',
-            website: data.website || '',
-            images: data.images || [],
-            coverImage: data.coverImage || data.images?.[0] || '',
-            rating: data.rating || 0,
-            reviewCount: data.reviewCount || 0,
-            priceRange: data.priceRange || '$',
-            latitude: data.latitude || 0,
-            longitude: data.longitude || 0,
-            isOpen: data.isOpen || false,
-            openingHours: data.openingHours || {},
-            amenities: data.amenities || [],
-            services: data.services || [],
-            ownerId: data.ownerId || '',
-            status: data.status || 'pending',
-            createdAt: timestampToISOString(data.createdAt),
-            updatedAt: timestampToISOString(data.updatedAt)
-          };
+        const { data, error } = await supabase
+          .from('salons')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (error) {
+          console.error('Error fetching salon:', error);
+          return null;
         }
-        
+
+        return {
+          id: data.id,
+          name: data.name,
+          description: data.description,
+          address: data.address,
+          city: data.city,
+          coverImage: data.cover_image,
+          rating: data.rating,
+          reviewCount: data.review_count,
+          ownerId: data.owner_id,
+          services: [],
+          status: data.status,
+          createdAt: data.created_at,
+          socialMedia: data.social_media,
+        };
+      } catch (error) {
+        console.error('Error fetching salon:', error);
         return null;
-      } catch (error) {
-        console.error('Firebase salons.getById error:', error);
-        return mockApi.salons.getById(id);
       }
     },
-    
+
     getNearby: async (lat: number, lng: number, radius: number = 10): Promise<Salon[]> => {
-      try {
-        // For now, return all salons (geolocation queries require special setup in Firestore)
-        return firebaseApi.salons.getAll();
-      } catch (error) {
-        console.error('Firebase salons.getNearby error:', error);
-        return mockApi.salons.getNearby(lat, lng, radius);
-      }
+      // This is a mock implementation.  You'll need to implement the actual
+      // geospatial query using PostGIS or a similar extension in Supabase.
+      console.log('Fetching nearby salons (mock):', lat, lng, radius);
+      return firebaseApi.salons.getAll();
     },
-    
-    search: async (searchQuery: string): Promise<Salon[]> => {
+
+    search: async (query: string): Promise<Salon[]> => {
       try {
-        const salons = await firebaseApi.salons.getAll();
-        return salons.filter(salon => 
-          salon.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          salon.description.toLowerCase().includes(searchQuery.toLowerCase())
-        );
+        const { data, error } = await supabase
+          .from('salons')
+          .select('*')
+          .ilike('name', `%${query}%`)
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error searching salons:', error);
+          return [];
+        }
+
+        return data.map(salon => ({
+          id: salon.id,
+          name: salon.name,
+          description: salon.description,
+          address: salon.address,
+          city: salon.city,
+          coverImage: salon.cover_image,
+          rating: salon.rating,
+          reviewCount: salon.review_count,
+          ownerId: salon.owner_id,
+          services: [],
+          status: salon.status,
+          createdAt: salon.created_at,
+          socialMedia: salon.social_media,
+        }));
       } catch (error) {
-        console.error('Firebase salons.search error:', error);
-        return mockApi.salons.search(searchQuery);
+        console.error('Error searching salons:', error);
+        return [];
       }
     },
 
     getWorkers: async (salonId: string): Promise<SalonWorker[]> => {
       try {
-        const workersCollection = collection(db, 'salon_workers');
-        const workersQuery = query(workersCollection, where('salonId', '==', salonId));
-        const workersSnapshot = await getDocs(workersQuery);
-        
-        const workers: SalonWorker[] = [];
-        workersSnapshot.forEach(doc => {
-          const data = doc.data();
-          workers.push({
-            id: doc.id,
-            salonId: data.salonId,
-            name: data.name || '',
-            specialty: data.specialty || '',
-            bio: data.bio || '',
-            avatar: data.avatar || '',
-            phone: data.phone || '',
-            email: data.email || '',
-            isActive: data.isActive || true,
-            createdAt: timestampToISOString(data.createdAt),
-            updatedAt: timestampToISOString(data.updatedAt)
-          });
-        });
-        
-        return workers;
+        const { data, error } = await supabase
+          .from('salon_workers')
+          .select('*')
+          .eq('salon_id', salonId)
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching salon workers:', error);
+          return [];
+        }
+
+        return data.map(worker => ({
+          id: worker.id,
+          salonId: worker.salon_id,
+          name: worker.name,
+          specialty: worker.specialty,
+          bio: worker.bio,
+          avatar: worker.avatar,
+          phone: worker.phone,
+          email: worker.email,
+          isActive: worker.is_active,
+          createdAt: worker.created_at,
+          updatedAt: worker.updated_at,
+        }));
       } catch (error) {
-        console.error('Firebase salons.getWorkers error:', error);
-        return mockApi.salons.getWorkers(salonId);
+        console.error('Error fetching salon workers:', error);
+        return [];
       }
     },
 
     requestNewSalon: async (salonData: Omit<SalonRequest, 'id' | 'createdAt' | 'status'>): Promise<SalonRequest> => {
       try {
-        const requestRef = await addDoc(collection(db, 'salon_requests'), {
-          ...salonData,
-          status: 'pending',
-          createdAt: Timestamp.now()
-        });
-        
-        const newRequest: SalonRequest = {
-          id: requestRef.id,
-          ...salonData,
-          status: 'pending',
-          createdAt: new Date().toISOString()
+        const { data, error } = await supabase
+          .from('salon_requests')
+          .insert([
+            {
+              name: salonData.name,
+              description: salonData.description,
+              address: salonData.address,
+              city: salonData.city,
+              owner_email: salonData.ownerEmail,
+              owner_name: salonData.ownerName,
+              owner_phone: salonData.ownerPhone,
+              social_media: salonData.socialMedia,
+            },
+          ])
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Error requesting new salon:', error);
+          throw error;
+        }
+
+        return {
+          id: data.id,
+          name: data.name,
+          description: data.description,
+          address: data.address,
+          city: data.city,
+          ownerEmail: data.owner_email,
+          ownerName: data.owner_name,
+          ownerPhone: data.owner_phone,
+          status: data.status,
+          createdAt: data.created_at,
+          socialMedia: data.social_media,
         };
-        
-        return newRequest;
       } catch (error) {
-        console.error('Firebase salons.requestNewSalon error:', error);
-        return mockApi.salons.requestNewSalon(salonData);
+        console.error('Error requesting new salon:', error);
+        throw error;
       }
-    }
+    },
   },
 
   services: {
     getAll: async (): Promise<Service[]> => {
       try {
-        const servicesCollection = collection(db, 'services');
-        const servicesSnapshot = await getDocs(servicesCollection);
-        
-        const services: Service[] = [];
-        servicesSnapshot.forEach(doc => {
-          const data = doc.data();
-          services.push({
-            id: doc.id,
-            salonId: data.salonId || '',
-            name: data.name || '',
-            description: data.description || '',
-            price: data.price || 0,
-            duration: data.duration || 0,
-            categoryId: data.categoryId || '',
-            category: data.category || '',
-            createdAt: timestampToISOString(data.createdAt),
-            updatedAt: timestampToISOString(data.updatedAt)
-          });
-        });
-        
-        return services;
+        const { data, error } = await supabase
+          .from('services')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching services:', error);
+          return [];
+        }
+
+        return data.map(service => ({
+          id: service.id,
+          salonId: service.salon_id,
+          name: service.name,
+          description: service.description,
+          price: service.price,
+          duration: service.duration,
+          categoryId: service.category_id,
+          createdAt: service.created_at,
+          updatedAt: service.updated_at,
+        }));
       } catch (error) {
-        console.error('Firebase services.getAll error:', error);
-        return mockApi.services.getAll();
+        console.error('Error fetching services:', error);
+        return [];
       }
     },
 
     getForSalon: async (salonId: string): Promise<Service[]> => {
       try {
-        const servicesCollection = collection(db, 'services');
-        const servicesQuery = query(servicesCollection, where('salonId', '==', salonId));
-        const servicesSnapshot = await getDocs(servicesQuery);
-        
-        const services: Service[] = [];
-        servicesSnapshot.forEach(doc => {
-          const data = doc.data();
-          services.push({
-            id: doc.id,
-            salonId: data.salonId || '',
-            name: data.name || '',
-            description: data.description || '',
-            price: data.price || 0,
-            duration: data.duration || 0,
-            categoryId: data.categoryId || '',
-            category: data.category || '',
-            createdAt: timestampToISOString(data.createdAt),
-            updatedAt: timestampToISOString(data.updatedAt)
-          });
-        });
-        
-        return services;
+        const { data, error } = await supabase
+          .from('services')
+          .select('*')
+          .eq('salon_id', salonId)
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching salon services:', error);
+          return [];
+        }
+
+        return data.map(service => ({
+          id: service.id,
+          salonId: service.salon_id,
+          name: service.name,
+          description: service.description,
+          price: service.price,
+          duration: service.duration,
+          categoryId: service.category_id,
+          createdAt: service.created_at,
+          updatedAt: service.updated_at,
+        }));
       } catch (error) {
-        console.error('Firebase services.getForSalon error:', error);
-        return mockApi.services.getForSalon(salonId);
+        console.error('Error fetching salon services:', error);
+        return [];
       }
     },
 
     getServiceCategories: async (): Promise<ServiceCategory[]> => {
       try {
-        // For now, return static categories (in real app, might fetch from DB)
-        return [
-          { id: '1', name: 'Hair' },
-          { id: '2', name: 'Nails' },
-          { id: '3', name: 'Spa' },
-          { id: '4', name: 'Makeup' }
-        ];
+        const { data, error } = await supabase
+          .from('service_categories')
+          .select('*')
+          .order('name', { ascending: true });
+
+        if (error) {
+          console.error('Error fetching service categories:', error);
+          return [];
+        }
+
+        return data.map(category => ({
+          id: category.id,
+          name: category.name,
+        }));
       } catch (error) {
-        console.error('Firebase services.getServiceCategories error:', error);
-        return mockApi.services.getServiceCategories();
+        console.error('Error fetching service categories:', error);
+        return [];
       }
-    }
+    },
   },
 
   appointments: {
     getAll: async (): Promise<Appointment[]> => {
       try {
-        const appointmentsCollection = collection(db, 'appointments');
-        const appointmentsSnapshot = await getDocs(appointmentsCollection);
-        
-        const appointments: Appointment[] = [];
-        appointmentsSnapshot.forEach(doc => {
-          const data = doc.data();
-          appointments.push({
-            id: doc.id,
-            userId: data.userId || '',
-            salonId: data.salonId || '',
-            serviceId: data.serviceId || '',
-            workerId: data.workerId || '',
-            date: timestampToISOString(data.date),
-            status: data.status || 'pending',
-            notes: data.notes || '',
-            createdAt: timestampToISOString(data.createdAt)
-          });
-        });
-        
-        return appointments;
+        const { data, error } = await supabase
+          .from('appointments')
+          .select('*')
+          .order('date', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching appointments:', error);
+          return [];
+        }
+
+        return data.map(appointment => ({
+          id: appointment.id,
+          userId: appointment.user_id,
+          salonId: appointment.salon_id,
+          serviceId: appointment.service_id,
+          date: appointment.date,
+          status: appointment.status,
+          notes: appointment.notes,
+          createdAt: appointment.created_at,
+        }));
       } catch (error) {
-        console.error('Firebase appointments.getAll error:', error);
-        return mockApi.appointments.getAll();
+        console.error('Error fetching appointments:', error);
+        return [];
       }
     },
 
     getMyAppointments: async (userId: string): Promise<Appointment[]> => {
       try {
-        const appointmentsCollection = collection(db, 'appointments');
-        const appointmentsQuery = query(appointmentsCollection, where('userId', '==', userId));
-        const appointmentsSnapshot = await getDocs(appointmentsQuery);
-        
-        const appointments: Appointment[] = [];
-        appointmentsSnapshot.forEach(doc => {
-          const data = doc.data();
-          appointments.push({
-            id: doc.id,
-            userId: data.userId || '',
-            salonId: data.salonId || '',
-            serviceId: data.serviceId || '',
-            workerId: data.workerId || '',
-            date: timestampToISOString(data.date),
-            status: data.status || 'pending',
-            notes: data.notes || '',
-            createdAt: timestampToISOString(data.createdAt)
-          });
-        });
-        
-        return appointments;
+        const { data, error } = await supabase
+          .from('appointments')
+          .select('*')
+          .eq('user_id', userId)
+          .order('date', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching user appointments:', error);
+          return [];
+        }
+
+        return data.map(appointment => ({
+          id: appointment.id,
+          userId: appointment.user_id,
+          salonId: appointment.salon_id,
+          serviceId: appointment.service_id,
+          date: appointment.date,
+          status: appointment.status,
+          notes: appointment.notes,
+          createdAt: appointment.created_at,
+        }));
       } catch (error) {
-        console.error('Firebase appointments.getMyAppointments error:', error);
-        return mockApi.appointments.getMyAppointments(userId);
+        console.error('Error fetching user appointments:', error);
+        return [];
       }
     },
 
     bookAppointment: async (appointmentData: Omit<Appointment, 'id'>): Promise<Appointment> => {
       try {
-        const appointmentRef = await addDoc(collection(db, 'appointments'), {
-          ...appointmentData,
-          date: Timestamp.fromDate(new Date(appointmentData.date)),
-          createdAt: Timestamp.now()
-        });
-        
-        const newAppointment: Appointment = {
-          id: appointmentRef.id,
-          ...appointmentData
+        const { data, error } = await supabase
+          .from('appointments')
+          .insert([
+            {
+              user_id: appointmentData.userId,
+              salon_id: appointmentData.salonId,
+              service_id: appointmentData.serviceId,
+              date: appointmentData.date,
+              status: appointmentData.status,
+              notes: appointmentData.notes,
+            },
+          ])
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Error booking appointment:', error);
+          throw error;
+        }
+
+        return {
+          id: data.id,
+          userId: data.user_id,
+          salonId: data.salon_id,
+          serviceId: data.service_id,
+          date: data.date,
+          status: data.status,
+          notes: data.notes,
+          createdAt: data.created_at,
         };
-        
-        return newAppointment;
       } catch (error) {
-        console.error('Firebase appointments.bookAppointment error:', error);
-        return mockApi.appointments.bookAppointment(appointmentData);
+        console.error('Error booking appointment:', error);
+        throw error;
       }
     },
 
     cancelAppointment: async (appointmentId: string): Promise<void> => {
       try {
-        await updateDoc(doc(db, 'appointments', appointmentId), {
-          status: 'cancelled',
-          updatedAt: Timestamp.now()
-        });
+        const { error } = await supabase
+          .from('appointments')
+          .update({ status: 'cancelled' })
+          .eq('id', appointmentId);
+
+        if (error) {
+          console.error('Error cancelling appointment:', error);
+          throw error;
+        }
       } catch (error) {
-        console.error('Firebase appointments.cancelAppointment error:', error);
-        return mockApi.appointments.cancelAppointment(appointmentId);
+        console.error('Error cancelling appointment:', error);
+        throw error;
       }
-    }
+    },
   },
 
   reviews: {
     getAll: async (): Promise<Review[]> => {
       try {
-        const reviewsCollection = collection(db, 'reviews');
-        const reviewsSnapshot = await getDocs(reviewsCollection);
-        
-        const reviews: Review[] = [];
-        reviewsSnapshot.forEach(doc => {
-          const data = doc.data();
-          reviews.push({
-            id: doc.id,
-            userId: data.userId || '',
-            salonId: data.salonId || '',
-            appointmentId: data.appointmentId || '',
-            rating: data.rating || 0,
-            comment: data.comment || '',
-            createdAt: timestampToISOString(data.createdAt)
-          });
-        });
-        
-        return reviews;
+        const { data, error } = await supabase
+          .from('reviews')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        return data || [];
       } catch (error) {
-        console.error('Firebase reviews.getAll error:', error);
-        return mockApi.reviews.getAll();
+        console.error('Error fetching reviews:', error);
+        return [];
       }
     },
 
     getForSalon: async (salonId: string): Promise<Review[]> => {
       try {
-        const reviewsCollection = collection(db, 'reviews');
-        const reviewsQuery = query(reviewsCollection, where('salonId', '==', salonId));
-        const reviewsSnapshot = await getDocs(reviewsQuery);
-        
-        const reviews: Review[] = [];
-        reviewsSnapshot.forEach(doc => {
-          const data = doc.data();
-          reviews.push({
-            id: doc.id,
-            userId: data.userId || '',
-            salonId: data.salonId || '',
-            appointmentId: data.appointmentId || '',
-            rating: data.rating || 0,
-            comment: data.comment || '',
-            createdAt: timestampToISOString(data.createdAt)
-          });
-        });
-        
-        return reviews;
+        const { data, error } = await supabase
+          .from('reviews')
+          .select('*')
+          .eq('salon_id', salonId)
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        return data || [];
       } catch (error) {
-        console.error('Firebase reviews.getForSalon error:', error);
-        return mockApi.reviews.getForSalon(salonId);
+        console.error('Error fetching salon reviews:', error);
+        return [];
       }
     },
 
     create: async (reviewData: Omit<Review, 'id' | 'createdAt'>): Promise<Review> => {
       try {
-        const reviewRef = await addDoc(collection(db, 'reviews'), {
-          ...reviewData,
-          createdAt: Timestamp.now()
-        });
-        
-        const newReview: Review = {
-          id: reviewRef.id,
-          ...reviewData,
-          createdAt: new Date().toISOString()
+        const { data, error } = await supabase
+          .from('reviews')
+          .insert([{
+            user_id: reviewData.userId,
+            salon_id: reviewData.salonId,
+            appointment_id: reviewData.appointmentId,
+            rating: reviewData.rating,
+            comment: reviewData.comment
+          }])
+          .select()
+          .single();
+
+        if (error) throw error;
+        return {
+          id: data.id,
+          userId: data.user_id,
+          salonId: data.salon_id,
+          appointmentId: data.appointment_id,
+          rating: data.rating,
+          comment: data.comment,
+          createdAt: data.created_at
         };
-        
-        return newReview;
       } catch (error) {
-        console.error('Firebase reviews.create error:', error);
-        return mockApi.reviews.create(reviewData);
+        console.error('Error creating review:', error);
+        throw error;
       }
     }
   },
-  
+
   news: {
     getAll: async (): Promise<NewsItem[]> => {
       try {
-        const newsCollection = collection(db, 'news');
-        const newsQuery = query(newsCollection, orderBy('date', 'desc'));
-        const newsSnapshot = await getDocs(newsQuery);
-        
-        const news: NewsItem[] = [];
-        newsSnapshot.forEach(doc => {
-          const data = doc.data();
-          news.push({
-            id: doc.id,
-            title: data.title || '',
-            content: data.content || '',
-            category: data.category || '',
-            date: timestampToISOString(data.date),
-            image: data.image || ''
-          });
-        });
-        
-        return news;
-      } catch (error) {
-        console.error('Firebase news.getAll error:', error);
-        return mockApi.news.getAll();
-      }
-    },
-    
-    getById: async (id: string): Promise<NewsItem | null> => {
-      try {
-        const newsDoc = await getDoc(doc(db, 'news', id));
-        
-        if (newsDoc.exists()) {
-          const data = newsDoc.data();
-          return {
-            id: newsDoc.id,
-            title: data.title || '',
-            content: data.content || '',
-            category: data.category || '',
-            date: timestampToISOString(data.date),
-            image: data.image || ''
-          };
+        const { data, error } = await supabase
+          .from('news')
+          .select('*')
+          .order('date', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching news:', error);
+          return [];
         }
-        
-        return null;
+
+        return data.map(newsItem => ({
+          id: newsItem.id,
+          title: newsItem.title,
+          content: newsItem.content,
+          image: newsItem.image,
+          date: newsItem.date,
+          category: newsItem.category,
+        }));
       } catch (error) {
-        console.error('Firebase news.getById error:', error);
-        return mockApi.news.getById(id);
+        console.error('Error fetching news:', error);
+        return [];
       }
     },
 
-    getLatest: async (limitCount: number = 5): Promise<NewsItem[]> => {
+    getById: async (id: string): Promise<NewsItem | null> => {
       try {
-        const newsCollection = collection(db, 'news');
-        const newsQuery = query(newsCollection, orderBy('date', 'desc'), limit(limitCount));
-        const newsSnapshot = await getDocs(newsQuery);
-        
-        const news: NewsItem[] = [];
-        newsSnapshot.forEach(doc => {
-          const data = doc.data();
-          news.push({
-            id: doc.id,
-            title: data.title || '',
-            content: data.content || '',
-            category: data.category || '',
-            date: timestampToISOString(data.date),
-            image: data.image || ''
-          });
-        });
-        
-        return news;
+        const { data, error } = await supabase
+          .from('news')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (error) {
+          console.error('Error fetching news item:', error);
+          return null;
+        }
+
+        return {
+          id: data.id,
+          title: data.title,
+          content: data.content,
+          image: data.image,
+          date: data.date,
+          category: data.category,
+        };
       } catch (error) {
-        console.error('Firebase news.getLatest error:', error);
-        return mockApi.news.getLatest(limitCount);
+        console.error('Error fetching news item:', error);
+        return null;
       }
-    }
+    },
+
+    getLatest: async (limit: number = 5): Promise<NewsItem[]> => {
+      try {
+        const { data, error } = await supabase
+          .from('news')
+          .select('*')
+          .order('date', { ascending: false })
+          .limit(limit);
+
+        if (error) {
+          console.error('Error fetching latest news:', error);
+          return [];
+        }
+
+        return data.map(newsItem => ({
+          id: newsItem.id,
+          title: newsItem.title,
+          content: newsItem.content,
+          image: newsItem.image,
+          date: newsItem.date,
+          category: newsItem.category,
+        }));
+      } catch (error) {
+        console.error('Error fetching latest news:', error);
+        return [];
+      }
+    },
   },
-  
+
   promotions: {
     getAll: async (): Promise<Promotion[]> => {
       try {
-        const promotionsCollection = collection(db, 'promotions');
-        const promotionsSnapshot = await getDocs(promotionsCollection);
-        
-        const promotions: Promotion[] = [];
-        promotionsSnapshot.forEach(doc => {
-          const data = doc.data();
-          promotions.push({
-            id: doc.id,
-            title: data.title || '',
-            description: data.description || '',
-            discount: data.discount || 0,
-            endDate: timestampToISOString(data.endDate),
-            startDate: timestampToISOString(data.startDate),
-            salonId: data.salonId || '',
-            image: data.image || '',
-            isActive: data.isActive || false,
-            createdAt: timestampToISOString(data.createdAt)
-          });
-        });
-        
-        return promotions;
+        const { data, error } = await supabase
+          .from('promotions')
+          .select('*')
+          .order('end_date', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching promotions:', error);
+          return [];
+        }
+
+        return data.map(promotion => ({
+          id: promotion.id,
+          salonId: promotion.salon_id,
+          title: promotion.title,
+          description: promotion.description,
+          image: promotion.image,
+          startDate: promotion.start_date,
+          endDate: promotion.end_date,
+          discount: promotion.discount,
+          isActive: promotion.is_active,
+          createdAt: promotion.created_at,
+        }));
       } catch (error) {
-        console.error('Firebase promotions.getAll error:', error);
-        return mockApi.promotions.getAll();
+        console.error('Error fetching promotions:', error);
+        return [];
       }
     },
-    
+
     getActive: async (): Promise<Promotion[]> => {
       try {
-        const promotionsCollection = collection(db, 'promotions');
-        const activeQuery = query(promotionsCollection, where('isActive', '==', true));
-        const promotionsSnapshot = await getDocs(activeQuery);
-        
-        const promotions: Promotion[] = [];
-        promotionsSnapshot.forEach(doc => {
-          const data = doc.data();
-          promotions.push({
-            id: doc.id,
-            title: data.title || '',
-            description: data.description || '',
-            discount: data.discount || 0,
-            endDate: timestampToISOString(data.endDate),
-            startDate: timestampToISOString(data.startDate),
-            salonId: data.salonId || '',
-            image: data.image || '',
-            isActive: data.isActive || false,
-            createdAt: timestampToISOString(data.createdAt)
-          });
-        });
-        
-        return promotions;
+        const { data, error } = await supabase
+          .from('promotions')
+          .select('*')
+          .eq('is_active', true)
+          .order('end_date', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching active promotions:', error);
+          return [];
+        }
+
+        return data.map(promotion => ({
+          id: promotion.id,
+          salonId: promotion.salon_id,
+          title: promotion.title,
+          description: promotion.description,
+          image: promotion.image,
+          startDate: promotion.start_date,
+          endDate: promotion.end_date,
+          discount: promotion.discount,
+          isActive: promotion.is_active,
+          createdAt: promotion.created_at,
+        }));
       } catch (error) {
-        console.error('Firebase promotions.getActive error:', error);
-        return mockApi.promotions.getActive();
+        console.error('Error fetching active promotions:', error);
+        return [];
       }
     },
 
     getForSalon: async (salonId: string): Promise<Promotion[]> => {
       try {
-        const promotionsCollection = collection(db, 'promotions');
-        const promotionsQuery = query(promotionsCollection, where('salonId', '==', salonId));
-        const promotionsSnapshot = await getDocs(promotionsQuery);
-        
-        const promotions: Promotion[] = [];
-        promotionsSnapshot.forEach(doc => {
-          const data = doc.data();
-          promotions.push({
-            id: doc.id,
-            title: data.title || '',
-            description: data.description || '',
-            discount: data.discount || 0,
-            endDate: timestampToISOString(data.endDate),
-            startDate: timestampToISOString(data.startDate),
-            salonId: data.salonId || '',
-            image: data.image || '',
-            isActive: data.isActive || false,
-            createdAt: timestampToISOString(data.createdAt)
-          });
-        });
-        
-        return promotions;
+        const { data, error } = await supabase
+          .from('promotions')
+          .select('*')
+          .eq('salon_id', salonId)
+          .order('end_date', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching salon promotions:', error);
+          return [];
+        }
+
+        return data.map(promotion => ({
+          id: promotion.id,
+          salonId: promotion.salon_id,
+          title: promotion.title,
+          description: promotion.description,
+          image: promotion.image,
+          startDate: promotion.start_date,
+          endDate: promotion.end_date,
+          discount: promotion.discount,
+          isActive: promotion.is_active,
+          createdAt: promotion.created_at,
+        }));
       } catch (error) {
-        console.error('Firebase promotions.getForSalon error:', error);
-        return mockApi.promotions.getForSalon(salonId);
+        console.error('Error fetching salon promotions:', error);
+        return [];
       }
-    }
+    },
   },
 
   admin: {
     getAllUsers: async (): Promise<User[]> => {
       try {
-        const usersCollection = collection(db, 'users');
-        const usersSnapshot = await getDocs(usersCollection);
-        
-        const users: User[] = [];
-        usersSnapshot.forEach(doc => {
-          const data = doc.data();
-          users.push({
-            id: doc.id,
-            name: data.name || '',
-            email: data.email || '',
-            phone: data.phone || '',
-            role: data.role || 'customer',
-            avatar: data.avatar || '',
-            createdAt: timestampToISOString(data.createdAt),
-            updatedAt: timestampToISOString(data.updatedAt)
-          });
-        });
-        
-        return users;
+        const { data, error } = await supabase
+          .from('users')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching users:', error);
+          return [];
+        }
+
+        return data.map(user => ({
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          avatar: user.avatar,
+          createdAt: user.created_at,
+          updatedAt: user.updated_at,
+        }));
       } catch (error) {
-        console.error('Firebase admin.getAllUsers error:', error);
-        return mockApi.admin.getAllUsers();
+        console.error('Error fetching users:', error);
+        return [];
       }
     },
 
     deleteUser: async (userId: string): Promise<void> => {
       try {
-        await deleteDoc(doc(db, 'users', userId));
+        const { error } = await supabase
+          .from('users')
+          .delete()
+          .eq('id', userId);
+
+        if (error) {
+          console.error('Error deleting user:', error);
+          throw error;
+        }
       } catch (error) {
-        console.error('Firebase admin.deleteUser error:', error);
-        return mockApi.admin.deleteUser(userId);
+        console.error('Error deleting user:', error);
+        throw error;
       }
     },
 
     resetUserPassword: async (userId: string): Promise<void> => {
-      try {
-        // In Firebase, password reset is typically done via email
-        // This would require Firebase Admin SDK or functions
-        console.log(`Password reset initiated for user ${userId}`);
-      } catch (error) {
-        console.error('Firebase admin.resetUserPassword error:', error);
-        return mockApi.admin.resetUserPassword(userId);
-      }
+      // In a real implementation, you would trigger a password reset flow
+      // For Supabase, you might use the `supabase.auth.resetPasswordForEmail` method
+      console.log(`Password reset initiated for user ${userId}`);
     },
 
     getAllSalons: async (): Promise<Salon[]> => {
       try {
-        return firebaseApi.salons.getAll();
+        const { data, error } = await supabase
+          .from('salons')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching salons:', error);
+          return [];
+        }
+
+        return data.map(salon => ({
+          id: salon.id,
+          name: salon.name,
+          description: salon.description,
+          address: salon.address,
+          city: salon.city,
+          coverImage: salon.cover_image,
+          rating: salon.rating,
+          reviewCount: salon.review_count,
+          ownerId: salon.owner_id,
+          services: [],
+          status: salon.status,
+          createdAt: salon.created_at,
+          socialMedia: salon.social_media,
+        }));
       } catch (error) {
-        console.error('Firebase admin.getAllSalons error:', error);
-        return mockApi.admin.getAllSalons();
+        console.error('Error fetching salons:', error);
+        return [];
       }
     },
 
     getSalonById: async (salonId: string): Promise<Salon | null> => {
       try {
-        return firebaseApi.salons.getById(salonId);
+        const { data, error } = await supabase
+          .from('salons')
+          .select('*')
+          .eq('id', salonId)
+          .single();
+
+        if (error) {
+          console.error('Error fetching salon:', error);
+          return null;
+        }
+
+        return {
+          id: data.id,
+          name: data.name,
+          description: data.description,
+          address: data.address,
+          city: data.city,
+          coverImage: data.cover_image,
+          rating: data.rating,
+          reviewCount: data.review_count,
+          ownerId: data.owner_id,
+          services: [],
+          status: data.status,
+          createdAt: data.created_at,
+          socialMedia: data.social_media,
+        };
       } catch (error) {
-        console.error('Firebase admin.getSalonById error:', error);
-        return mockApi.admin.getSalonById(salonId);
+        console.error('Error fetching salon:', error);
+        return null;
       }
     },
 
     updateSalon: async (salonId: string, salonData: Partial<Salon>): Promise<Salon> => {
       try {
-        await updateDoc(doc(db, 'salons', salonId), {
-          ...salonData,
-          updatedAt: Timestamp.now()
-        });
-        
-        const updatedSalon = await firebaseApi.salons.getById(salonId);
-        if (!updatedSalon) {
-          throw new Error('Salon not found after update');
+        const { data, error } = await supabase
+          .from('salons')
+          .update({
+            name: salonData.name,
+            description: salonData.description,
+            address: salonData.address,
+            city: salonData.city,
+            cover_image: salonData.coverImage,
+            rating: salonData.rating,
+            review_count: salonData.reviewCount,
+            owner_id: salonData.ownerId,
+            status: salonData.status,
+            social_media: salonData.socialMedia,
+          })
+          .eq('id', salonId)
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Error updating salon:', error);
+          throw error;
         }
-        
-        return updatedSalon;
+
+        return {
+          id: data.id,
+          name: data.name,
+          description: data.description,
+          address: data.address,
+          city: data.city,
+          coverImage: data.cover_image,
+          rating: data.rating,
+          reviewCount: data.review_count,
+          ownerId: data.owner_id,
+          services: [],
+          status: data.status,
+          createdAt: data.created_at,
+          socialMedia: data.social_media,
+        };
       } catch (error) {
-        console.error('Firebase admin.updateSalon error:', error);
-        return mockApi.admin.updateSalon(salonId, salonData);
+        console.error('Error updating salon:', error);
+        throw error;
       }
     },
 
     deleteSalon: async (salonId: string): Promise<void> => {
       try {
-        await deleteDoc(doc(db, 'salons', salonId));
+        const { error } = await supabase
+          .from('salons')
+          .delete()
+          .eq('id', salonId);
+
+        if (error) {
+          console.error('Error deleting salon:', error);
+          throw error;
+        }
       } catch (error) {
-        console.error('Firebase admin.deleteSalon error:', error);
-        return mockApi.admin.deleteSalon(salonId);
+        console.error('Error deleting salon:', error);
+        throw error;
       }
     },
 
     getSalonRequests: async (): Promise<SalonRequest[]> => {
       try {
-        const requestsCollection = collection(db, 'salon_requests');
-        const requestsSnapshot = await getDocs(requestsCollection);
-        
-        const requests: SalonRequest[] = [];
-        requestsSnapshot.forEach(doc => {
-          const data = doc.data();
-          requests.push({
-            id: doc.id,
-            name: data.name || '',
-            description: data.description || '',
-            address: data.address || '',
-            city: data.city || '',
-            ownerName: data.ownerName || '',
-            ownerEmail: data.ownerEmail || '',
-            ownerPhone: data.ownerPhone || '',
-            status: data.status || 'pending',
-            createdAt: timestampToISOString(data.createdAt)
-          });
-        });
-        
-        return requests;
+        const { data, error } = await supabase
+          .from('salon_requests')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching salon requests:', error);
+          return [];
+        }
+
+        return data.map(request => ({
+          id: request.id,
+          name: request.name,
+          description: request.description,
+          address: request.address,
+          city: request.city,
+          ownerEmail: request.owner_email,
+          ownerName: request.owner_name,
+          ownerPhone: request.owner_phone,
+          status: request.status,
+          createdAt: request.created_at,
+          socialMedia: request.social_media,
+        }));
       } catch (error) {
-        console.error('Firebase admin.getSalonRequests error:', error);
-        return mockApi.admin.getSalonRequests();
+        console.error('Error fetching salon requests:', error);
+        return [];
       }
     },
 
     approveSalonRequest: async (requestId: string): Promise<void> => {
       try {
-        await updateDoc(doc(db, 'salon_requests', requestId), {
-          status: 'approved',
-          updatedAt: Timestamp.now()
-        });
+        const { error } = await supabase
+          .from('salon_requests')
+          .update({ status: 'approved' })
+          .eq('id', requestId);
+
+        if (error) {
+          console.error('Error approving salon request:', error);
+          throw error;
+        }
       } catch (error) {
-        console.error('Firebase admin.approveSalonRequest error:', error);
-        return mockApi.admin.approveSalonRequest(requestId);
+        console.error('Error approving salon request:', error);
+        throw error;
       }
     },
 
     rejectSalonRequest: async (requestId: string): Promise<void> => {
       try {
-        await updateDoc(doc(db, 'salon_requests', requestId), {
-          status: 'rejected',
-          updatedAt: Timestamp.now()
-        });
+        const { error } = await supabase
+          .from('salon_requests')
+          .update({ status: 'rejected' })
+          .eq('id', requestId);
+
+        if (error) {
+          console.error('Error rejecting salon request:', error);
+          throw error;
+        }
       } catch (error) {
-        console.error('Firebase admin.rejectSalonRequest error:', error);
-        return mockApi.admin.rejectSalonRequest(requestId);
+        console.error('Error rejecting salon request:', error);
+        throw error;
       }
-    }
+    },
   },
 
   profiles: {
     updateProfile: async (userId: string, profileData: Partial<User>): Promise<User> => {
       try {
-        await updateDoc(doc(db, 'users', userId), {
-          ...profileData,
-          updatedAt: Timestamp.now()
-        });
-        
-        const updatedDoc = await getDoc(doc(db, 'users', userId));
-        if (updatedDoc.exists()) {
-          const data = updatedDoc.data();
-          return {
-            id: updatedDoc.id,
-            name: data.name || '',
-            email: data.email || '',
-            phone: data.phone || '',
-            role: data.role || 'customer',
-            avatar: data.avatar || '',
-            createdAt: timestampToISOString(data.createdAt),
-            updatedAt: timestampToISOString(data.updatedAt)
-          };
+        const { data, error } = await supabase
+          .from('users')
+          .update({
+            name: profileData.name,
+            phone: profileData.phone,
+            avatar: profileData.avatar,
+          })
+          .eq('id', userId)
+          .select()
+          .single();
+
+        if (error) {
+          console.error('Error updating profile:', error);
+          throw error;
         }
-        
-        throw new Error('User not found after update');
+
+        return {
+          id: data.id,
+          email: data.email,
+          name: data.name,
+          role: data.role,
+          avatar: data.avatar,
+          createdAt: data.created_at,
+          updatedAt: data.updated_at,
+        };
       } catch (error) {
-        console.error('Firebase profiles.updateProfile error:', error);
-        return mockApi.profiles.updateProfile(userId, profileData);
+        console.error('Error updating profile:', error);
+        throw error;
       }
     },
 
     getProfile: async (userId: string): Promise<User | null> => {
       try {
-        const userDoc = await getDoc(doc(db, 'users', userId));
-        
-        if (userDoc.exists()) {
-          const data = userDoc.data();
-          return {
-            id: userDoc.id,
-            name: data.name || '',
-            email: data.email || '',
-            phone: data.phone || '',
-            role: data.role || 'customer',
-            avatar: data.avatar || '',
-            createdAt: timestampToISOString(data.createdAt),
-            updatedAt: timestampToISOString(data.updatedAt)
-          };
+        const { data, error } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', userId)
+          .single();
+
+        if (error) {
+          console.error('Error fetching profile:', error);
+          return null;
         }
-        
-        return null;
+
+        if (!data) {
+          return null;
+        }
+
+        return {
+          id: data.id,
+          email: data.email,
+          name: data.name,
+          role: data.role,
+          avatar: data.avatar,
+          createdAt: data.created_at,
+          updatedAt: data.updated_at,
+        };
       } catch (error) {
-        console.error('Firebase profiles.getProfile error:', error);
-        return mockApi.profiles.getProfile(userId);
+        console.error('Error fetching profile:', error);
+        return null;
       }
-    }
+    },
   }
 };
 

@@ -67,7 +67,7 @@ const SalonDetail: React.FC = () => {
     setIsDialogOpen(true);
   };
   
-  // Group services by category
+  // Group services by category using the services state instead of salon.services
   const servicesByCategory = services.reduce((acc, service) => {
     const categoryId = service.categoryId;
     if (!acc[categoryId]) {
@@ -237,7 +237,8 @@ const SalonDetail: React.FC = () => {
         {/* Services Tab */}
         <TabsContent value="services" className="p-6 pt-4">
           {Object.entries(servicesByCategory).map(([categoryId, categoryServices]) => {
-            const categoryName = salon.services.find(s => s.categoryId === categoryId)?.categoryId || 'Other';
+            // Find category name from the first service in the category
+            const categoryName = categoryServices[0]?.category || 'Other Services';
             return (
               <div key={categoryId} className="mb-8">
                 <h3 className="font-semibold text-lg mb-3">{categoryName}</h3>

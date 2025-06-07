@@ -13,6 +13,7 @@ const createApiService = () => {
       salons: firebaseApi.salons,
       services: firebaseApi.services,
       appointments: firebaseApi.appointments,
+      reviews: firebaseApi.reviews,
       news: firebaseApi.news,
       promotions: firebaseApi.promotions,
       admin: firebaseApi.admin,
