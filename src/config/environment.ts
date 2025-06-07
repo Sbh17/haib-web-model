@@ -6,6 +6,8 @@ export interface EnvironmentConfig {
   apiUrl: string;
   environment: 'development' | 'staging' | 'production';
   useFirebase: boolean;
+  supabaseUrl: string;
+  supabaseKey: string;
   features: {
     enableAnalytics: boolean;
     enablePushNotifications: boolean;
@@ -38,6 +40,8 @@ const defaultConfig: EnvironmentConfig = {
   apiUrl: 'http://localhost:3000/api',
   environment: 'development',
   useFirebase: true, // Enable Firebase by default
+  supabaseUrl: 'https://jxqdslpzqcavzchpsrrp.supabase.co',
+  supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cWRzbHB6cWNhdnpjaHBzcnJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcwNDMyNDksImV4cCI6MjA2MjYxOTI0OX0.39qm9lMU8SROxAD2zQbGTZP11WDBtXjuIqkOMC1zTeE',
   features: {
     enableAnalytics: false,
     enablePushNotifications: false,
@@ -45,6 +49,10 @@ const defaultConfig: EnvironmentConfig = {
     enablePayments: false,
   },
   integrations: {
+    supabase: {
+      url: 'https://jxqdslpzqcavzchpsrrp.supabase.co',
+      anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cWRzbHB6cWNhdnpjaHBzcnJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcwNDMyNDksImV4cCI6MjA2MjYxOTI0OX0.39qm9lMU8SROxAD2zQbGTZP11WDBtXjuIqkOMC1zTeE'
+    },
     firebase: {
       apiKey: "AIzaSyB0SwQnaMwmqX-Gwg1HdlGpMv7LmpOjajc",
       authDomain: "haib-command-center.firebaseapp.com",
@@ -112,7 +120,7 @@ export const getEnvironmentConfig = (): EnvironmentConfig => {
       supabase: import.meta.env.VITE_SUPABASE_URL ? {
         url: import.meta.env.VITE_SUPABASE_URL,
         anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || ''
-      } : envConfig.integrations?.supabase,
+      } : envConfig.integrations?.supabase || defaultConfig.integrations?.supabase,
       firebase: envConfig.integrations?.firebase || defaultConfig.integrations?.firebase,
       gcp: import.meta.env.VITE_GCP_PROJECT_ID ? {
         projectId: import.meta.env.VITE_GCP_PROJECT_ID,

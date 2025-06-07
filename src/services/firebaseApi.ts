@@ -21,9 +21,9 @@ const firebaseApi = {
           throw error;
         }
 
-        // Fetch user details from the public users table
+        // Fetch user details from the public profiles table
         const { data: userDetails, error: userDetailsError } = await supabase
-          .from('users')
+          .from('profiles')
           .select('*')
           .eq('id', data.user.id)
           .single();
@@ -67,9 +67,9 @@ const firebaseApi = {
           throw authError;
         }
 
-        // Insert user details into the public users table
+        // Insert user details into the public profiles table
         const { data: userDetails, error: userDetailsError } = await supabase
-          .from('users')
+          .from('profiles')
           .insert([
             {
               id: authData.user.id,
@@ -130,9 +130,9 @@ const firebaseApi = {
           return null;
         }
 
-        // Fetch user details from the public users table
+        // Fetch user details from the public profiles table
         const { data: userDetails, error: userDetailsError } = await supabase
-          .from('users')
+          .from('profiles')
           .select('*')
           .eq('id', user.id)
           .single();
@@ -612,7 +612,7 @@ const firebaseApi = {
     getAll: async (): Promise<NewsItem[]> => {
       try {
         const { data, error } = await supabase
-          .from('news')
+          .from('news_items')
           .select('*')
           .order('date', { ascending: false });
 
@@ -638,7 +638,7 @@ const firebaseApi = {
     getById: async (id: string): Promise<NewsItem | null> => {
       try {
         const { data, error } = await supabase
-          .from('news')
+          .from('news_items')
           .select('*')
           .eq('id', id)
           .single();
@@ -665,7 +665,7 @@ const firebaseApi = {
     getLatest: async (limit: number = 5): Promise<NewsItem[]> => {
       try {
         const { data, error } = await supabase
-          .from('news')
+          .from('news_items')
           .select('*')
           .order('date', { ascending: false })
           .limit(limit);
@@ -788,7 +788,7 @@ const firebaseApi = {
     getAllUsers: async (): Promise<User[]> => {
       try {
         const { data, error } = await supabase
-          .from('users')
+          .from('profiles')
           .select('*')
           .order('created_at', { ascending: false });
 
@@ -815,7 +815,7 @@ const firebaseApi = {
     deleteUser: async (userId: string): Promise<void> => {
       try {
         const { error } = await supabase
-          .from('users')
+          .from('profiles')
           .delete()
           .eq('id', userId);
 
@@ -1035,7 +1035,7 @@ const firebaseApi = {
     updateProfile: async (userId: string, profileData: Partial<User>): Promise<User> => {
       try {
         const { data, error } = await supabase
-          .from('users')
+          .from('profiles')
           .update({
             name: profileData.name,
             phone: profileData.phone,
@@ -1068,7 +1068,7 @@ const firebaseApi = {
     getProfile: async (userId: string): Promise<User | null> => {
       try {
         const { data, error } = await supabase
-          .from('users')
+          .from('profiles')
           .select('*')
           .eq('id', userId)
           .single();
