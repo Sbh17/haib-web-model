@@ -1,5 +1,5 @@
 
-export type UserRole = "user" | "salon_owner" | "admin";
+export type UserRole = "user" | "salon_owner" | "admin" | "customer";
 
 export interface User {
   id: string;
@@ -46,19 +46,32 @@ export interface Salon {
   description: string;
   address: string;
   city: string;
+  state?: string;
+  zipCode?: string;
+  phone?: string;
+  email?: string;
+  website?: string;
   location?: {
     latitude: number;
     longitude: number;
   };
+  latitude?: number;
+  longitude?: number;
   coverImage: string;
+  images?: string[];
   rating: number;
   reviewCount: number;
+  priceRange?: string;
+  isOpen?: boolean;
+  openingHours?: Record<string, string>;
+  amenities?: string[];
   ownerId: string;
-  services: Service[];
-  promotions: Promotion[];
+  services: string[] | Service[];
+  promotions?: Promotion[];
   workers?: SalonWorker[];
   status: "pending" | "approved" | "rejected";
   createdAt: string;
+  updatedAt?: string;
   socialMedia?: SocialMedia;
   businessId?: string;
 }
@@ -72,6 +85,9 @@ export interface Service {
   image?: string;
   salonId: string;
   categoryId: string;
+  category?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ServiceCategory {
@@ -109,7 +125,9 @@ export interface Promotion {
   image?: string;
   startDate: string;
   endDate: string;
+  validUntil?: string;
   discount: number;
+  isActive?: boolean;
   createdAt: string;
 }
 

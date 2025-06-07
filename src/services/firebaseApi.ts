@@ -22,7 +22,7 @@ import {
   deleteDoc
 } from 'firebase/firestore';
 import { auth, db } from '@/config/firebase';
-import { User, Salon, NewsItem, Promotion, Service, Appointment, SalonWorker, SalonRequest } from '@/types';
+import { User, Salon, NewsItem, Promotion, Service, Appointment, SalonWorker, SalonRequest, Review, ServiceCategory } from '@/types';
 import mockApi from './mockApi';
 
 // Helper function to convert Firestore timestamp to ISO string
@@ -180,6 +180,7 @@ const firebaseApi = {
             email: data.email || '',
             website: data.website || '',
             images: data.images || [],
+            coverImage: data.coverImage || data.images?.[0] || '',
             rating: data.rating || 0,
             reviewCount: data.reviewCount || 0,
             priceRange: data.priceRange || '$',
@@ -189,6 +190,8 @@ const firebaseApi = {
             openingHours: data.openingHours || {},
             amenities: data.amenities || [],
             services: data.services || [],
+            ownerId: data.ownerId || '',
+            status: data.status || 'pending',
             createdAt: timestampToISOString(data.createdAt),
             updatedAt: timestampToISOString(data.updatedAt)
           });
@@ -220,6 +223,7 @@ const firebaseApi = {
             email: data.email || '',
             website: data.website || '',
             images: data.images || [],
+            coverImage: data.coverImage || data.images?.[0] || '',
             rating: data.rating || 0,
             reviewCount: data.reviewCount || 0,
             priceRange: data.priceRange || '$',
@@ -229,6 +233,8 @@ const firebaseApi = {
             openingHours: data.openingHours || {},
             amenities: data.amenities || [],
             services: data.services || [],
+            ownerId: data.ownerId || '',
+            status: data.status || 'pending',
             createdAt: timestampToISOString(data.createdAt),
             updatedAt: timestampToISOString(data.updatedAt)
           };
@@ -293,6 +299,28 @@ const firebaseApi = {
         console.error('Firebase salons.getWorkers error:', error);
         return mockApi.salons.getWorkers(salonId);
       }
+    },
+
+    requestNewSalon: async (salonData: Omit<SalonRequest, 'id' | 'createdAt' | 'status'>): Promise<SalonRequest> => {
+      try {
+        const requestRef = await addDoc(collection(db, 'salon_requests'), {
+          ...salonData,
+          status: 'pending',
+          createdAt: Timestamp.now()
+        });
+        
+        const newRequest: SalonRequest = {
+          id: requestRef.id,
+          ...salonData,
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        };
+        
+        return newRequest;
+      } catch (error) {
+        console.error('Firebase salons.requestNewSalon error:', error);
+        return mockApi.salons.requestNewSalon(salonData);
+      }
     }
   },
 
@@ -312,6 +340,7 @@ const firebaseApi = {
             description: data.description || '',
             price: data.price || 0,
             duration: data.duration || 0,
+            categoryId: data.categoryId || '',
             category: data.category || '',
             createdAt: timestampToISOString(data.createdAt),
             updatedAt: timestampToISOString(data.updatedAt)
@@ -341,6 +370,7 @@ const firebaseApi = {
             description: data.description || '',
             price: data.price || 0,
             duration: data.duration || 0,
+            categoryId: data.categoryId || '',
             category: data.category || '',
             createdAt: timestampToISOString(data.createdAt),
             updatedAt: timestampToISOString(data.updatedAt)
@@ -354,10 +384,15 @@ const firebaseApi = {
       }
     },
 
-    getServiceCategories: async (): Promise<string[]> => {
+    getServiceCategories: async (): Promise<ServiceCategory[]> => {
       try {
         // For now, return static categories (in real app, might fetch from DB)
-        return ['Hair', 'Nails', 'Spa', 'Makeup'];
+        return [
+          { id: '1', name: 'Hair' },
+          { id: '2', name: 'Nails' },
+          { id: '3', name: 'Spa' },
+          { id: '4', name: 'Makeup' }
+        ];
       } catch (error) {
         console.error('Firebase services.getServiceCategories error:', error);
         return mockApi.services.getServiceCategories();
@@ -455,6 +490,81 @@ const firebaseApi = {
       }
     }
   },
+
+  reviews: {
+    getAll: async (): Promise<Review[]> => {
+      try {
+        const reviewsCollection = collection(db, 'reviews');
+        const reviewsSnapshot = await getDocs(reviewsCollection);
+        
+        const reviews: Review[] = [];
+        reviewsSnapshot.forEach(doc => {
+          const data = doc.data();
+          reviews.push({
+            id: doc.id,
+            userId: data.userId || '',
+            salonId: data.salonId || '',
+            appointmentId: data.appointmentId || '',
+            rating: data.rating || 0,
+            comment: data.comment || '',
+            createdAt: timestampToISOString(data.createdAt)
+          });
+        });
+        
+        return reviews;
+      } catch (error) {
+        console.error('Firebase reviews.getAll error:', error);
+        return mockApi.reviews.getAll();
+      }
+    },
+
+    getForSalon: async (salonId: string): Promise<Review[]> => {
+      try {
+        const reviewsCollection = collection(db, 'reviews');
+        const reviewsQuery = query(reviewsCollection, where('salonId', '==', salonId));
+        const reviewsSnapshot = await getDocs(reviewsQuery);
+        
+        const reviews: Review[] = [];
+        reviewsSnapshot.forEach(doc => {
+          const data = doc.data();
+          reviews.push({
+            id: doc.id,
+            userId: data.userId || '',
+            salonId: data.salonId || '',
+            appointmentId: data.appointmentId || '',
+            rating: data.rating || 0,
+            comment: data.comment || '',
+            createdAt: timestampToISOString(data.createdAt)
+          });
+        });
+        
+        return reviews;
+      } catch (error) {
+        console.error('Firebase reviews.getForSalon error:', error);
+        return mockApi.reviews.getForSalon(salonId);
+      }
+    },
+
+    create: async (reviewData: Omit<Review, 'id' | 'createdAt'>): Promise<Review> => {
+      try {
+        const reviewRef = await addDoc(collection(db, 'reviews'), {
+          ...reviewData,
+          createdAt: Timestamp.now()
+        });
+        
+        const newReview: Review = {
+          id: reviewRef.id,
+          ...reviewData,
+          createdAt: new Date().toISOString()
+        };
+        
+        return newReview;
+      } catch (error) {
+        console.error('Firebase reviews.create error:', error);
+        return mockApi.reviews.create(reviewData);
+      }
+    }
+  },
   
   news: {
     getAll: async (): Promise<NewsItem[]> => {
@@ -547,10 +657,12 @@ const firebaseApi = {
             title: data.title || '',
             description: data.description || '',
             discount: data.discount || 0,
-            validUntil: timestampToISOString(data.validUntil),
+            endDate: timestampToISOString(data.endDate),
+            startDate: timestampToISOString(data.startDate),
             salonId: data.salonId || '',
             image: data.image || '',
-            isActive: data.isActive || false
+            isActive: data.isActive || false,
+            createdAt: timestampToISOString(data.createdAt)
           });
         });
         
@@ -575,10 +687,12 @@ const firebaseApi = {
             title: data.title || '',
             description: data.description || '',
             discount: data.discount || 0,
-            validUntil: timestampToISOString(data.validUntil),
+            endDate: timestampToISOString(data.endDate),
+            startDate: timestampToISOString(data.startDate),
             salonId: data.salonId || '',
             image: data.image || '',
-            isActive: data.isActive || false
+            isActive: data.isActive || false,
+            createdAt: timestampToISOString(data.createdAt)
           });
         });
         
@@ -586,6 +700,36 @@ const firebaseApi = {
       } catch (error) {
         console.error('Firebase promotions.getActive error:', error);
         return mockApi.promotions.getActive();
+      }
+    },
+
+    getForSalon: async (salonId: string): Promise<Promotion[]> => {
+      try {
+        const promotionsCollection = collection(db, 'promotions');
+        const promotionsQuery = query(promotionsCollection, where('salonId', '==', salonId));
+        const promotionsSnapshot = await getDocs(promotionsQuery);
+        
+        const promotions: Promotion[] = [];
+        promotionsSnapshot.forEach(doc => {
+          const data = doc.data();
+          promotions.push({
+            id: doc.id,
+            title: data.title || '',
+            description: data.description || '',
+            discount: data.discount || 0,
+            endDate: timestampToISOString(data.endDate),
+            startDate: timestampToISOString(data.startDate),
+            salonId: data.salonId || '',
+            image: data.image || '',
+            isActive: data.isActive || false,
+            createdAt: timestampToISOString(data.createdAt)
+          });
+        });
+        
+        return promotions;
+      } catch (error) {
+        console.error('Firebase promotions.getForSalon error:', error);
+        return mockApi.promotions.getForSalon(salonId);
       }
     }
   },
@@ -635,6 +779,52 @@ const firebaseApi = {
       } catch (error) {
         console.error('Firebase admin.resetUserPassword error:', error);
         return mockApi.admin.resetUserPassword(userId);
+      }
+    },
+
+    getAllSalons: async (): Promise<Salon[]> => {
+      try {
+        return firebaseApi.salons.getAll();
+      } catch (error) {
+        console.error('Firebase admin.getAllSalons error:', error);
+        return mockApi.admin.getAllSalons();
+      }
+    },
+
+    getSalonById: async (salonId: string): Promise<Salon | null> => {
+      try {
+        return firebaseApi.salons.getById(salonId);
+      } catch (error) {
+        console.error('Firebase admin.getSalonById error:', error);
+        return mockApi.admin.getSalonById(salonId);
+      }
+    },
+
+    updateSalon: async (salonId: string, salonData: Partial<Salon>): Promise<Salon> => {
+      try {
+        await updateDoc(doc(db, 'salons', salonId), {
+          ...salonData,
+          updatedAt: Timestamp.now()
+        });
+        
+        const updatedSalon = await firebaseApi.salons.getById(salonId);
+        if (!updatedSalon) {
+          throw new Error('Salon not found after update');
+        }
+        
+        return updatedSalon;
+      } catch (error) {
+        console.error('Firebase admin.updateSalon error:', error);
+        return mockApi.admin.updateSalon(salonId, salonData);
+      }
+    },
+
+    deleteSalon: async (salonId: string): Promise<void> => {
+      try {
+        await deleteDoc(doc(db, 'salons', salonId));
+      } catch (error) {
+        console.error('Firebase admin.deleteSalon error:', error);
+        return mockApi.admin.deleteSalon(salonId);
       }
     },
 

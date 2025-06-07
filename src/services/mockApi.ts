@@ -1,5 +1,5 @@
 
-import { User, Salon, Service, Appointment, Review, NewsItem, Promotion, SalonWorker, SalonRequest } from '@/types';
+import { User, Salon, Service, Appointment, Review, NewsItem, Promotion, SalonWorker, SalonRequest, ServiceCategory } from '@/types';
 
 // Mock data and API implementation
 const mockUsers: User[] = [
@@ -28,6 +28,7 @@ const mockSalons: Salon[] = [
     email: 'info@glamourstudio.com',
     website: 'https://glamourstudio.com',
     images: ['https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800'],
+    coverImage: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800',
     rating: 4.8,
     reviewCount: 127,
     priceRange: '$$$',
@@ -45,6 +46,8 @@ const mockSalons: Salon[] = [
     },
     amenities: ['WiFi', 'Parking', 'Wheelchair Accessible'],
     services: ['1', '2'],
+    ownerId: '1',
+    status: 'approved',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   }
@@ -58,10 +61,18 @@ const mockServices: Service[] = [
     description: 'Professional haircut with styling',
     price: 65,
     duration: 60,
+    categoryId: '1',
     category: 'Hair',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   }
+];
+
+const mockServiceCategories: ServiceCategory[] = [
+  { id: '1', name: 'Hair' },
+  { id: '2', name: 'Nails' },
+  { id: '3', name: 'Spa' },
+  { id: '4', name: 'Makeup' }
 ];
 
 const mockAppointments: Appointment[] = [
@@ -74,6 +85,18 @@ const mockAppointments: Appointment[] = [
     date: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // Tomorrow
     status: 'confirmed',
     notes: 'Looking forward to the appointment',
+    createdAt: new Date().toISOString()
+  }
+];
+
+const mockReviews: Review[] = [
+  {
+    id: '1',
+    userId: '1',
+    salonId: '1',
+    appointmentId: '1',
+    rating: 5,
+    comment: 'Excellent service!',
     createdAt: new Date().toISOString()
   }
 ];
@@ -126,10 +149,12 @@ const mockPromotions: Promotion[] = [
     title: '50% Off First Visit',
     description: 'Get 50% off your first appointment at participating salons',
     discount: 50,
-    validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+    endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+    startDate: new Date().toISOString(),
     salonId: '1',
     image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800',
-    isActive: true
+    isActive: true,
+    createdAt: new Date().toISOString()
   }
 ];
 
@@ -199,6 +224,18 @@ const mockApi = {
     getWorkers: async (salonId: string): Promise<SalonWorker[]> => {
       await delay(600);
       return mockWorkers.filter(worker => worker.salonId === salonId);
+    },
+
+    requestNewSalon: async (salonData: Omit<SalonRequest, 'id' | 'createdAt' | 'status'>): Promise<SalonRequest> => {
+      await delay(1000);
+      const newRequest: SalonRequest = {
+        id: Date.now().toString(),
+        ...salonData,
+        status: 'pending',
+        createdAt: new Date().toISOString()
+      };
+      mockSalonRequests.push(newRequest);
+      return newRequest;
     }
   },
   
@@ -213,9 +250,9 @@ const mockApi = {
       return mockServices.filter(service => service.salonId === salonId);
     },
 
-    getServiceCategories: async (): Promise<string[]> => {
+    getServiceCategories: async (): Promise<ServiceCategory[]> => {
       await delay(400);
-      return ['Hair', 'Nails', 'Spa', 'Makeup'];
+      return mockServiceCategories;
     }
   },
 
@@ -248,6 +285,29 @@ const mockApi = {
       }
     }
   },
+
+  reviews: {
+    getAll: async (): Promise<Review[]> => {
+      await delay(600);
+      return mockReviews;
+    },
+
+    getForSalon: async (salonId: string): Promise<Review[]> => {
+      await delay(600);
+      return mockReviews.filter(review => review.salonId === salonId);
+    },
+
+    create: async (reviewData: Omit<Review, 'id' | 'createdAt'>): Promise<Review> => {
+      await delay(500);
+      const newReview: Review = {
+        id: Date.now().toString(),
+        ...reviewData,
+        createdAt: new Date().toISOString()
+      };
+      mockReviews.push(newReview);
+      return newReview;
+    }
+  },
   
   news: {
     getAll: async (): Promise<NewsItem[]> => {
@@ -275,6 +335,11 @@ const mockApi = {
     getActive: async (): Promise<Promotion[]> => {
       await delay(700);
       return mockPromotions.filter(promo => promo.isActive);
+    },
+
+    getForSalon: async (salonId: string): Promise<Promotion[]> => {
+      await delay(600);
+      return mockPromotions.filter(promo => promo.salonId === salonId);
     }
   },
 
@@ -296,6 +361,34 @@ const mockApi = {
       await delay(500);
       // In a real implementation, this would send a password reset email
       console.log(`Password reset initiated for user ${userId}`);
+    },
+
+    getAllSalons: async (): Promise<Salon[]> => {
+      await delay(800);
+      return mockSalons;
+    },
+
+    getSalonById: async (salonId: string): Promise<Salon | null> => {
+      await delay(600);
+      return mockSalons.find(salon => salon.id === salonId) || null;
+    },
+
+    updateSalon: async (salonId: string, salonData: Partial<Salon>): Promise<Salon> => {
+      await delay(500);
+      const salonIndex = mockSalons.findIndex(salon => salon.id === salonId);
+      if (salonIndex !== -1) {
+        mockSalons[salonIndex] = { ...mockSalons[salonIndex], ...salonData, updatedAt: new Date().toISOString() };
+        return mockSalons[salonIndex];
+      }
+      throw new Error('Salon not found');
+    },
+
+    deleteSalon: async (salonId: string): Promise<void> => {
+      await delay(500);
+      const salonIndex = mockSalons.findIndex(salon => salon.id === salonId);
+      if (salonIndex !== -1) {
+        mockSalons.splice(salonIndex, 1);
+      }
     },
 
     getSalonRequests: async (): Promise<SalonRequest[]> => {

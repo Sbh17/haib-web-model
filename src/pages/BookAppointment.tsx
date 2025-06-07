@@ -130,6 +130,7 @@ const BookAppointment: React.FC = () => {
         serviceId: service.id,
         workerId: selectedWorkerId,
         date: appointmentDate.toISOString(),
+        status: 'confirmed',
         notes: notes.trim() || undefined,
         createdAt: new Date().toISOString()
       });
