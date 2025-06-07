@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useLocation as useLocationContext } from '@/context/LocationContext';
@@ -12,6 +13,7 @@ import NewsList from '@/components/NewsList';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import BottomNavigation from '@/components/BottomNavigation';
 import ThemeToggle from '@/components/ThemeToggle';
+import RealTimeNotifications from '@/components/RealTimeNotifications';
 import { useQuery } from '@tanstack/react-query';
 import AppointmentReminder from '@/components/AppointmentReminder';
 import QuickBooking from '@/components/QuickBooking';
@@ -80,6 +82,7 @@ const Index: React.FC = () => {
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle className="text-white hover:bg-white/10" />
+            <RealTimeNotifications />
             {user ? (
               <Link to="/profile">
                 <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center text-lg font-medium">
@@ -97,7 +100,7 @@ const Index: React.FC = () => {
         </div>
         
         {/* Search Bar */}
-        <Link to="/search">
+        <Link to="/enhanced-search">
           <div className="flex items-center bg-white rounded-full p-3 text-gray-600">
             <SearchIcon className="h-5 w-5 ml-2 mr-1 text-gray-400" />
             <div className="text-gray-400">Search for salons, services...</div>
@@ -136,7 +139,7 @@ const Index: React.FC = () => {
             <section className="mb-10">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Nearby Salons</h2>
-                <Link to="/search" className="text-beauty-primary text-sm flex items-center">
+                <Link to="/enhanced-search" className="text-beauty-primary text-sm flex items-center">
                   View all <ArrowRightIcon className="h-3 w-3 ml-1" />
                 </Link>
               </div>
@@ -188,7 +191,7 @@ const Index: React.FC = () => {
             <section className="mb-10">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Top Rated Salons</h2>
-                <Link to="/search" className="text-beauty-primary text-sm flex items-center">
+                <Link to="/enhanced-search" className="text-beauty-primary text-sm flex items-center">
                   View all <ArrowRightIcon className="h-3 w-3 ml-1" />
                 </Link>
               </div>
