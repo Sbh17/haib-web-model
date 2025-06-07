@@ -5,6 +5,7 @@
 export interface EnvironmentConfig {
   apiUrl: string;
   environment: 'development' | 'staging' | 'production';
+  useFirebase: boolean;
   features: {
     enableAnalytics: boolean;
     enablePushNotifications: boolean;
@@ -20,6 +21,10 @@ export interface EnvironmentConfig {
       apiKey: string;
       authDomain: string;
       projectId: string;
+      storageBucket: string;
+      messagingSenderId: string;
+      appId: string;
+      measurementId?: string;
     };
     gcp?: {
       projectId: string;
@@ -32,13 +37,24 @@ export interface EnvironmentConfig {
 const defaultConfig: EnvironmentConfig = {
   apiUrl: 'http://localhost:3000/api',
   environment: 'development',
+  useFirebase: true, // Enable Firebase by default
   features: {
     enableAnalytics: false,
     enablePushNotifications: false,
     enableRealTimeUpdates: false,
     enablePayments: false,
   },
-  integrations: {}
+  integrations: {
+    firebase: {
+      apiKey: "AIzaSyB0SwQnaMwmqX-Gwg1HdlGpMv7LmpOjajc",
+      authDomain: "haib-command-center.firebaseapp.com",
+      projectId: "haib-command-center",
+      storageBucket: "haib-command-center.firebasestorage.app",
+      messagingSenderId: "865630549304",
+      appId: "1:865630549304:web:9d9b78538e5bdd1977bdcd",
+      measurementId: "G-BWFV6TJXPE"
+    }
+  }
 };
 
 // Environment-specific configurations
@@ -46,6 +62,7 @@ const environmentConfigs: Record<string, Partial<EnvironmentConfig>> = {
   development: {
     apiUrl: 'http://localhost:3000/api',
     environment: 'development',
+    useFirebase: true,
     features: {
       enableAnalytics: false,
       enablePushNotifications: false,
@@ -57,6 +74,7 @@ const environmentConfigs: Record<string, Partial<EnvironmentConfig>> = {
   staging: {
     apiUrl: process.env.VITE_STAGING_API_URL || 'https://staging-api.beautyspot.com/api',
     environment: 'staging',
+    useFirebase: true,
     features: {
       enableAnalytics: true,
       enablePushNotifications: false,
@@ -68,6 +86,7 @@ const environmentConfigs: Record<string, Partial<EnvironmentConfig>> = {
   production: {
     apiUrl: process.env.VITE_API_URL || 'https://api.beautyspot.com/api',
     environment: 'production',
+    useFirebase: true,
     features: {
       enableAnalytics: true,
       enablePushNotifications: true,
@@ -94,11 +113,7 @@ export const getEnvironmentConfig = (): EnvironmentConfig => {
         url: process.env.VITE_SUPABASE_URL,
         anonKey: process.env.VITE_SUPABASE_ANON_KEY || ''
       } : envConfig.integrations?.supabase,
-      firebase: process.env.VITE_FIREBASE_API_KEY ? {
-        apiKey: process.env.VITE_FIREBASE_API_KEY,
-        authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN || '',
-        projectId: process.env.VITE_FIREBASE_PROJECT_ID || ''
-      } : envConfig.integrations?.firebase,
+      firebase: envConfig.integrations?.firebase || defaultConfig.integrations?.firebase,
       gcp: process.env.VITE_GCP_PROJECT_ID ? {
         projectId: process.env.VITE_GCP_PROJECT_ID,
         region: process.env.VITE_GCP_REGION || 'us-central1'

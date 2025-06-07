@@ -3,6 +3,9 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import { User, UserRole } from '@/types';
 import api from '@/services/api';
 import { useToast } from '@/components/ui/use-toast';
+import { config } from '@/config/environment';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '@/config/firebase';
 
 interface AuthContextType {
   user: User | null;
@@ -21,18 +24,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
 
   useEffect(() => {
-    const loadUser = async () => {
-      try {
-        const currentUser = await api.auth.getCurrentUser();
-        setUser(currentUser);
-      } catch (error) {
-        console.error('Failed to load user:', error);
-      } finally {
+    if (config.useFirebase) {
+      // Use Firebase auth state listener
+      const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+        if (firebaseUser) {
+          try {
+            const currentUser = await api.auth.getCurrentUser();
+            setUser(currentUser);
+          } catch (error) {
+            console.error('Failed to load user profile:', error);
+            setUser(null);
+          }
+        } else {
+          setUser(null);
+        }
         setIsLoading(false);
-      }
-    };
-    
-    loadUser();
+      });
+
+      return () => unsubscribe();
+    } else {
+      // Use mock API
+      const loadUser = async () => {
+        try {
+          const currentUser = await api.auth.getCurrentUser();
+          setUser(currentUser);
+        } catch (error) {
+          console.error('Failed to load user:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      
+      loadUser();
+    }
   }, []);
 
   const login = async (email: string, password: string) => {
