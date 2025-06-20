@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -11,12 +12,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import SalonCard from '@/components/SalonCard';
-import PromotionCard from '@/components/PromotionCard';
-import NewsItem from '@/components/NewsItem';
 import BottomNavigation from '@/components/BottomNavigation';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import DevTools from '@/components/DevTools';
-import { Search, MapPin, Bell, Star, TrendingUp, Calendar, Users } from 'lucide-react';
+import { Search, MapPin, Calendar, Clock, Star, TrendingUp, Users } from 'lucide-react';
 
 const Index: React.FC = () => {
   const navigate = useNavigate();
@@ -37,16 +36,6 @@ const Index: React.FC = () => {
     queryFn: api.salons.getAll,
   });
 
-  const { data: promotions = [], isLoading: promotionsLoading } = useQuery({
-    queryKey: ['promotions', 'active'],
-    queryFn: api.promotions.getActive,
-  });
-
-  const { data: news = [], isLoading: newsLoading } = useQuery({
-    queryKey: ['news', 'latest'],
-    queryFn: () => api.news.getLatest(3),
-  });
-
   const { data: nearbySelons = [], isLoading: nearbyLoading } = useQuery({
     queryKey: ['salons', 'nearby', userLocation?.latitude, userLocation?.longitude],
     queryFn: () => 
@@ -54,6 +43,12 @@ const Index: React.FC = () => {
         ? api.salons.getNearby(userLocation.latitude, userLocation.longitude)
         : Promise.resolve([]),
     enabled: !!userLocation,
+  });
+
+  const { data: upcomingAppointments = [], isLoading: appointmentsLoading } = useQuery({
+    queryKey: ['appointments', 'upcoming', user?.id],
+    queryFn: () => user ? api.appointments.getMyAppointments(user.id) : Promise.resolve([]),
+    enabled: !!user,
   });
 
   if (!user) {
@@ -82,63 +77,65 @@ const Index: React.FC = () => {
       .toUpperCase();
   };
 
-  const topSalons = salons.slice(0, 5);
-  const topPromotions = promotions.slice(0, 3);
+  const topSalons = salons.slice(0, 3);
+  const upcomingCount = upcomingAppointments.filter(apt => 
+    ['pending', 'confirmed'].includes(apt.status)
+  ).length;
 
   return (
-    <div className="pb-20">
+    <div className="pb-20 bg-gradient-to-b from-beauty-primary/5 to-background">
       {/* Header */}
       <header className="bg-beauty-primary text-white p-6 pb-8">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between items-center mb-6">
           <div className="flex items-center">
-            <Avatar className="h-10 w-10 mr-3">
+            <Avatar className="h-12 w-12 mr-3 border-2 border-white/20">
               <AvatarImage src={user?.avatar} />
               <AvatarFallback className="bg-beauty-primary text-white">
                 {user ? getInitials(user.name) : 'U'}
               </AvatarFallback>
             </Avatar>
             <div>
-              <h1 className="text-lg font-semibold">
-                Welcome back, {user ? user.name.split(' ')[0] : 'Guest'}!
+              <h1 className="text-xl font-bold">
+                Welcome to HAIB
               </h1>
-              <div className="flex items-center text-sm opacity-90">
-                <MapPin className="h-3 w-3 mr-1" />
-                {userLocation ? (
-                  <span>Current location detected</span>
-                ) : (
-                  <button onClick={requestLocation} className="underline">
-                    Enable location
-                  </button>
-                )}
-              </div>
+              <p className="text-sm opacity-90">
+                Book your next appointment, {user ? user.name.split(' ')[0] : 'Guest'}
+              </p>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <Link to="/appointments">
-              <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
-                <Calendar className="h-4 w-4" />
-              </Button>
-            </Link>
+          <Link to="/appointments">
             <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
-              <Bell className="h-4 w-4" />
+              <Calendar className="h-5 w-5" />
             </Button>
-          </div>
+          </Link>
         </div>
 
-        {/* Search Bar */}
+        {/* Location Status */}
+        <div className="flex items-center mb-4 text-sm opacity-90">
+          <MapPin className="h-4 w-4 mr-2" />
+          {userLocation ? (
+            <span>Location enabled - Finding nearby salons</span>
+          ) : (
+            <button onClick={requestLocation} className="underline">
+              Enable location for better recommendations
+            </button>
+          )}
+        </div>
+
+        {/* Quick Search */}
         <div className="relative">
           <Input
             type="text"
-            placeholder="Search salons, services..."
+            placeholder="Search salons or services..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyPress={handleKeyPress}
-            className="w-full pl-10 pr-4 py-3 rounded-lg border-0 bg-white/10 text-white placeholder-white/70 focus:bg-white/20"
+            className="w-full pl-12 pr-4 py-4 rounded-xl border-0 bg-white/10 text-white placeholder-white/70 focus:bg-white/20 text-lg"
           />
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white/70" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/70" />
           <Button
             onClick={handleSearch}
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white text-beauty-primary hover:bg-white/90 px-4 py-1.5 text-sm"
+            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white text-beauty-primary hover:bg-white/90 px-6 py-2"
           >
             Search
           </Button>
@@ -146,71 +143,42 @@ const Index: React.FC = () => {
       </header>
 
       {/* Quick Stats */}
-      <div className="px-6 -mt-4 mb-6">
+      <div className="px-6 -mt-6 mb-8">
         <div className="grid grid-cols-3 gap-4">
-          <Card className="text-center">
+          <Card className="text-center shadow-lg border-0">
+            <CardContent className="p-4">
+              <Calendar className="h-6 w-6 text-beauty-primary mx-auto mb-2" />
+              <p className="text-2xl font-bold text-beauty-primary">{upcomingCount}</p>
+              <p className="text-xs text-gray-600">Upcoming</p>
+            </CardContent>
+          </Card>
+          <Card className="text-center shadow-lg border-0">
             <CardContent className="p-4">
               <Star className="h-6 w-6 text-yellow-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold">{favoriteCount}</p>
+              <p className="text-2xl font-bold text-yellow-600">{favoriteCount}</p>
               <p className="text-xs text-gray-600">Favorites</p>
             </CardContent>
           </Card>
-          <Card className="text-center">
+          <Card className="text-center shadow-lg border-0">
             <CardContent className="p-4">
-              <Calendar className="h-6 w-6 text-beauty-primary mx-auto mb-2" />
-              <p className="text-2xl font-bold">3</p>
-              <p className="text-xs text-gray-600">Appointments</p>
-            </CardContent>
-          </Card>
-          <Card className="text-center">
-            <CardContent className="p-4">
-              <TrendingUp className="h-6 w-6 text-green-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold">15%</p>
-              <p className="text-xs text-gray-600">Savings</p>
+              <Users className="h-6 w-6 text-green-500 mx-auto mb-2" />
+              <p className="text-2xl font-bold text-green-600">{salons.length}</p>
+              <p className="text-xs text-gray-600">Salons</p>
             </CardContent>
           </Card>
         </div>
       </div>
 
-      {/* Active Promotions */}
-      {topPromotions.length > 0 && (
-        <section className="px-6 mb-8">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">Special Offers</h2>
-            <Link to="/promotions">
-              <Button variant="ghost" size="sm">View All</Button>
-            </Link>
-          </div>
-          <div className="space-y-4">
-            {promotionsLoading ? (
-              <LoadingSpinner />
-            ) : (
-              topPromotions.map((promotion) => (
-                <PromotionCard key={promotion.id} promotion={promotion} />
-              ))
-            )}
-          </div>
-        </section>
-      )}
-
-      {/* Top Rated Salons */}
-      <section className="px-6 mb-8">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold">Top Rated Salons</h2>
-          <Link to="/search">
-            <Button variant="ghost" size="sm">View All</Button>
-          </Link>
-        </div>
-        <div className="space-y-4">
-          {salonsLoading ? (
-            <LoadingSpinner />
-          ) : (
-            topSalons.map((salon) => (
-              <SalonCard key={salon.id} salon={salon} />
-            ))
-          )}
-        </div>
-      </section>
+      {/* Quick Book Button */}
+      <div className="px-6 mb-8">
+        <Button 
+          onClick={() => navigate('/search')}
+          className="w-full bg-beauty-primary hover:bg-beauty-primary/90 py-6 text-lg font-semibold shadow-lg"
+        >
+          <Clock className="h-5 w-5 mr-2" />
+          Book Appointment Now
+        </Button>
+      </div>
 
       {/* Nearby Salons */}
       {userLocation && nearbySelons.length > 0 && (
@@ -231,27 +199,57 @@ const Index: React.FC = () => {
               ))
             )}
           </div>
+          {nearbySelons.length > 3 && (
+            <div className="text-center mt-4">
+              <Link to="/search">
+                <Button variant="outline" size="sm">
+                  View All Nearby ({nearbySelons.length - 3} more)
+                </Button>
+              </Link>
+            </div>
+          )}
         </section>
       )}
 
-      {/* Latest News */}
-      {news.length > 0 && (
+      {/* Featured Salons */}
+      <section className="px-6 mb-8">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">Featured Salons</h2>
+          <Link to="/search">
+            <Button variant="ghost" size="sm">View All</Button>
+          </Link>
+        </div>
+        <div className="space-y-4">
+          {salonsLoading ? (
+            <LoadingSpinner />
+          ) : (
+            topSalons.map((salon) => (
+              <SalonCard key={salon.id} salon={salon} />
+            ))
+          )}
+        </div>
+      </section>
+
+      {/* Recent Bookings Preview */}
+      {upcomingCount > 0 && (
         <section className="px-6 mb-8">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">Beauty News</h2>
-            <Link to="/news">
+            <h2 className="text-xl font-bold">Your Appointments</h2>
+            <Link to="/appointments">
               <Button variant="ghost" size="sm">View All</Button>
             </Link>
           </div>
-          <div className="space-y-4">
-            {newsLoading ? (
-              <LoadingSpinner />
-            ) : (
-              news.map((item) => (
-                <NewsItem key={item.id} news={item} />
-              ))
-            )}
-          </div>
+          <Card className="bg-gradient-to-r from-beauty-primary/10 to-beauty-primary/5 border-beauty-primary/20">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium">You have {upcomingCount} upcoming appointment{upcomingCount !== 1 ? 's' : ''}</p>
+                  <p className="text-sm text-gray-600">Tap to view details and manage</p>
+                </div>
+                <Calendar className="h-8 w-8 text-beauty-primary" />
+              </div>
+            </CardContent>
+          </Card>
         </section>
       )}
 
