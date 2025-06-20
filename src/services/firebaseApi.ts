@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { config } from '@/config/environment';
-import { User, Salon, Service, Appointment, Review, NewsItem, Promotion, SalonWorker, SalonRequest, ServiceCategory } from '@/types';
+import { User, Salon, Service, Appointment, Review, NewsItem, Promotion, SalonWorker, SalonRequest, ServiceCategory, UserRole } from '@/types';
 
 // Initialize Supabase client
 const supabaseUrl = config.supabaseUrl;
@@ -155,7 +155,7 @@ const firebaseApi = {
             data: {
               name: data.name,
               phone: data.phone,
-              role: 'customer',
+              role: 'customer' as UserRole,
             },
           },
         });
@@ -177,7 +177,7 @@ const firebaseApi = {
               email: data.email,
               name: data.name,
               phone: data.phone,
-              role: 'customer',
+              role: 'customer' as UserRole,
               avatar: '',
               created_at: authData.user.created_at,
               updated_at: authData.user.updated_at,
@@ -195,7 +195,7 @@ const firebaseApi = {
           id: authData.user.id,
           email: authData.user.email || data.email,
           name: userDetails?.name || data.name,
-          role: userDetails?.role || 'customer',
+          role: (userDetails?.role as UserRole) || 'customer',
           avatar: userDetails?.avatar || '',
           createdAt: authData.user.created_at,
           updatedAt: authData.user.updated_at,
@@ -250,7 +250,7 @@ const firebaseApi = {
                 id: user.id,
                 email: user.email || '',
                 name: user.email?.split('@')[0] || 'User',
-                role: 'customer',
+                role: 'customer' as UserRole,
                 avatar: '',
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString(),
@@ -276,7 +276,7 @@ const firebaseApi = {
             id: user.id,
             email: user.email || '',
             name: newProfileData.name,
-            role: newProfileData.role,
+            role: newProfileData.role as UserRole,
             avatar: newProfileData.avatar,
             createdAt: user.created_at,
             updatedAt: newProfileData.updated_at,
@@ -287,7 +287,7 @@ const firebaseApi = {
           id: user.id,
           email: user.email || '',
           name: userDetails.name,
-          role: userDetails.role,
+          role: userDetails.role as UserRole,
           avatar: userDetails.avatar,
           createdAt: user.created_at,
           updatedAt: userDetails.updated_at,
@@ -1252,7 +1252,7 @@ function getDemoUserName(email: string): string {
 }
 
 // Helper function to get demo user roles based on email
-function getDemoUserRole(email: string): string {
+function getDemoUserRole(email: string): UserRole {
   switch (email) {
     case 'admin@beautyspot.com':
       return 'admin';
