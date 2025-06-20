@@ -1,11 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, UserRole } from '@/types';
-import api from '@/services/api';
 import { useToast } from '@/components/ui/use-toast';
-import { config } from '@/config/environment';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/config/firebase';
 
 interface AuthContextType {
   user: User | null;
@@ -14,111 +10,119 @@ interface AuthContextType {
   register: (data: { name: string; email: string; password: string; phone?: string }) => Promise<void>;
   logout: () => Promise<void>;
   isRole: (role: UserRole | UserRole[]) => boolean;
+  switchRole: (role: UserRole) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// Mock users for different roles
+const mockUsers = {
+  admin: {
+    id: 'admin-123',
+    email: 'admin@beautyspot.com',
+    name: 'Admin User',
+    phone: '+1234567890',
+    role: 'admin' as UserRole,
+    avatar: '',
+    createdAt: new Date().toISOString(),
+    bio: 'System Administrator',
+  },
+  salon_owner: {
+    id: 'owner-123',
+    email: 'owner@beautyspot.com',
+    name: 'Salon Owner',
+    phone: '+1234567891',
+    role: 'salon_owner' as UserRole,
+    avatar: '',
+    createdAt: new Date().toISOString(),
+    bio: 'Beauty Salon Owner',
+  },
+  user: {
+    id: 'user-123',
+    email: 'user@beautyspot.com',
+    name: 'Regular User',
+    phone: '+1234567892',
+    role: 'user' as UserRole,
+    avatar: '',
+    createdAt: new Date().toISOString(),
+    bio: 'Beauty enthusiast',
+  },
+};
+
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
 
   useEffect(() => {
-    if (config.useFirebase) {
-      // Use Firebase auth state listener
-      const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-        if (firebaseUser) {
-          try {
-            const currentUser = await api.auth.getCurrentUser();
-            setUser(currentUser);
-          } catch (error) {
-            console.error('Failed to load user profile:', error);
-            setUser(null);
-          }
-        } else {
-          setUser(null);
-        }
-        setIsLoading(false);
-      });
-
-      return () => unsubscribe();
-    } else {
-      // Use mock API
-      const loadUser = async () => {
-        try {
-          const currentUser = await api.auth.getCurrentUser();
-          setUser(currentUser);
-        } catch (error) {
-          console.error('Failed to load user:', error);
-        } finally {
-          setIsLoading(false);
-        }
-      };
-      
-      loadUser();
-    }
+    // Load stored role from localStorage or default to user
+    const storedRole = localStorage.getItem('demo_role') as UserRole || 'user';
+    setUser(mockUsers[storedRole]);
   }, []);
 
   const login = async (email: string, password: string) => {
-    try {
-      setIsLoading(true);
-      const loggedInUser = await api.auth.login(email, password);
-      setUser(loggedInUser);
-      toast({
-        title: "Login successful!",
-        description: `Welcome back, ${loggedInUser.name}!`,
-      });
-    } catch (error) {
-      toast({
-        title: "Login failed",
-        description: error instanceof Error ? error.message : "An error occurred",
-        variant: "destructive",
-      });
-      throw error;
-    } finally {
-      setIsLoading(false);
+    setIsLoading(true);
+    // Simulate login delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    // Simple mock login based on email
+    let selectedUser = mockUsers.user;
+    if (email.includes('admin')) {
+      selectedUser = mockUsers.admin;
+    } else if (email.includes('salon') || email.includes('owner')) {
+      selectedUser = mockUsers.salon_owner;
     }
+    
+    setUser(selectedUser);
+    localStorage.setItem('demo_role', selectedUser.role);
+    
+    toast({
+      title: "Login successful!",
+      description: `Welcome back, ${selectedUser.name}!`,
+    });
+    setIsLoading(false);
   };
 
   const register = async (data: { name: string; email: string; password: string; phone?: string }) => {
-    try {
-      setIsLoading(true);
-      const newUser = await api.auth.register(data);
-      setUser(newUser);
-      toast({
-        title: "Registration successful!",
-        description: `Welcome, ${newUser.name}!`,
-      });
-    } catch (error) {
-      toast({
-        title: "Registration failed",
-        description: error instanceof Error ? error.message : "An error occurred",
-        variant: "destructive",
-      });
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
+    setIsLoading(true);
+    // Simulate registration delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    const newUser = {
+      ...mockUsers.user,
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+    };
+    
+    setUser(newUser);
+    localStorage.setItem('demo_role', 'user');
+    
+    toast({
+      title: "Registration successful!",
+      description: `Welcome, ${newUser.name}!`,
+    });
+    setIsLoading(false);
   };
 
   const logout = async () => {
-    try {
-      setIsLoading(true);
-      await api.auth.logout();
-      setUser(null);
-      toast({
-        title: "Logged out",
-        description: "You have been successfully logged out.",
-      });
-    } catch (error) {
-      toast({
-        title: "Logout failed",
-        description: error instanceof Error ? error.message : "An error occurred",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    setUser(null);
+    localStorage.removeItem('demo_role');
+    toast({
+      title: "Logged out",
+      description: "You have been successfully logged out.",
+    });
+  };
+
+  const switchRole = (role: UserRole) => {
+    const selectedUser = mockUsers[role];
+    setUser(selectedUser);
+    localStorage.setItem('demo_role', role);
+    
+    toast({
+      title: "Role switched",
+      description: `You are now viewing as: ${selectedUser.name}`,
+    });
   };
 
   const isRole = (role: UserRole | UserRole[]) => {
@@ -138,6 +142,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     register,
     logout,
     isRole,
+    switchRole,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

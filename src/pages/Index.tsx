@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useFavorites } from '@/context/FavoritesContext';
@@ -21,34 +20,31 @@ import { Search, MapPin, Bell, Star, TrendingUp, Calendar, Users } from 'lucide-
 
 const Index: React.FC = () => {
   const navigate = useNavigate();
-  const { user, isLoading: authLoading } = useAuth();
+  const { user } = useAuth();
   const { favoriteCount } = useFavorites();
   const { userLocation, requestLocation } = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
 
   // Redirect to login if not authenticated
   useEffect(() => {
-    if (!authLoading && !user) {
+    if (!user) {
       navigate('/login');
     }
-  }, [user, authLoading, navigate]);
+  }, [user, navigate]);
 
   const { data: salons = [], isLoading: salonsLoading } = useQuery({
     queryKey: ['salons'],
     queryFn: api.salons.getAll,
-    enabled: !!user,
   });
 
   const { data: promotions = [], isLoading: promotionsLoading } = useQuery({
     queryKey: ['promotions', 'active'],
     queryFn: api.promotions.getActive,
-    enabled: !!user,
   });
 
   const { data: news = [], isLoading: newsLoading } = useQuery({
     queryKey: ['news', 'latest'],
     queryFn: () => api.news.getLatest(3),
-    enabled: !!user,
   });
 
   const { data: nearbySelons = [], isLoading: nearbyLoading } = useQuery({
@@ -57,16 +53,8 @@ const Index: React.FC = () => {
       userLocation 
         ? api.salons.getNearby(userLocation.latitude, userLocation.longitude)
         : Promise.resolve([]),
-    enabled: !!user && !!userLocation,
+    enabled: !!userLocation,
   });
-
-  if (authLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
 
   if (!user) {
     return null; // Will redirect to login
@@ -104,13 +92,15 @@ const Index: React.FC = () => {
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center">
             <Avatar className="h-10 w-10 mr-3">
-              <AvatarImage src={user.avatar} />
+              <AvatarImage src={user?.avatar} />
               <AvatarFallback className="bg-beauty-primary text-white">
-                {getInitials(user.name)}
+                {user ? getInitials(user.name) : 'U'}
               </AvatarFallback>
             </Avatar>
             <div>
-              <h1 className="text-lg font-semibold">Welcome back, {user.name.split(' ')[0]}!</h1>
+              <h1 className="text-lg font-semibold">
+                Welcome back, {user ? user.name.split(' ')[0] : 'Guest'}!
+              </h1>
               <div className="flex items-center text-sm opacity-90">
                 <MapPin className="h-3 w-3 mr-1" />
                 {userLocation ? (

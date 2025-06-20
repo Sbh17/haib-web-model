@@ -4,29 +4,47 @@ import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { UserIcon, CrownIcon, ShieldCheckIcon, LogOutIcon } from 'lucide-react';
+import { UserIcon, CrownIcon, ShieldCheckIcon, ToggleLeftIcon, ToggleRightIcon } from 'lucide-react';
+import { UserRole } from '@/types';
 
 const DevTools: React.FC = () => {
-  const { login, logout, user, isLoading } = useAuth();
+  const { user, switchRole } = useAuth();
 
   // Only show in development
   if (import.meta.env.PROD) {
     return null;
   }
 
-  const quickLogin = async (email: string, password: string) => {
-    try {
-      await login(email, password);
-    } catch (error) {
-      console.error('Quick login error:', error);
-    }
+  const handleRoleSwitch = (role: UserRole) => {
+    switchRole(role);
   };
+
+  const roles = [
+    {
+      key: 'admin' as UserRole,
+      label: 'Admin',
+      icon: CrownIcon,
+      color: 'text-purple-500',
+    },
+    {
+      key: 'salon_owner' as UserRole,
+      label: 'Salon Owner',
+      icon: ShieldCheckIcon,
+      color: 'text-blue-500',
+    },
+    {
+      key: 'user' as UserRole,
+      label: 'Customer',
+      icon: UserIcon,
+      color: 'text-green-500',
+    },
+  ];
 
   return (
     <Card className="fixed bottom-4 right-4 w-80 z-50 bg-background/95 backdrop-blur-sm border shadow-lg">
       <CardHeader className="pb-3">
         <CardTitle className="text-sm flex items-center justify-between">
-          <span>🛠️ Dev Tools</span>
+          <span>🛠️ Role Switcher</span>
           {user && (
             <Badge variant="outline" className="text-xs">
               {user.role}
@@ -34,58 +52,34 @@ const DevTools: React.FC = () => {
           )}
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-2">
-        {user ? (
-          <div className="space-y-2">
-            <p className="text-xs text-muted-foreground">
-              Signed in as: <span className="font-medium">{user.name}</span>
-            </p>
-            <Button
-              onClick={logout}
-              variant="outline"
-              size="sm"
-              className="w-full justify-start"
-              disabled={isLoading}
-            >
-              <LogOutIcon className="h-3 w-3 mr-2" />
-              Sign Out
-            </Button>
-          </div>
-        ) : (
-          <div className="space-y-2">
-            <p className="text-xs text-muted-foreground mb-2">Quick Login:</p>
-            <Button
-              onClick={() => quickLogin('admin@beautyspot.com', 'admin123')}
-              variant="outline"
-              size="sm"
-              className="w-full justify-start text-xs"
-              disabled={isLoading}
-            >
-              <CrownIcon className="h-3 w-3 mr-2 text-purple-500" />
-              Admin
-            </Button>
-            <Button
-              onClick={() => quickLogin('salon1@example.com', 'owner123')}
-              variant="outline"
-              size="sm"
-              className="w-full justify-start text-xs"
-              disabled={isLoading}
-            >
-              <ShieldCheckIcon className="h-3 w-3 mr-2 text-blue-500" />
-              Salon Owner
-            </Button>
-            <Button
-              onClick={() => quickLogin('user@example.com', 'user123')}
-              variant="outline"
-              size="sm"
-              className="w-full justify-start text-xs"
-              disabled={isLoading}
-            >
-              <UserIcon className="h-3 w-3 mr-2 text-green-500" />
-              Customer
-            </Button>
+      <CardContent className="space-y-3">
+        {user && (
+          <div className="text-xs text-muted-foreground mb-3">
+            Current user: <span className="font-medium">{user.name}</span>
           </div>
         )}
+        
+        <div className="space-y-2">
+          <p className="text-xs text-muted-foreground mb-2">Switch Role:</p>
+          {roles.map((role) => {
+            const Icon = role.icon;
+            const isActive = user?.role === role.key;
+            
+            return (
+              <Button
+                key={role.key}
+                onClick={() => handleRoleSwitch(role.key)}
+                variant={isActive ? "default" : "outline"}
+                size="sm"
+                className="w-full justify-start text-xs"
+              >
+                <Icon className={`h-3 w-3 mr-2 ${role.color}`} />
+                {role.label}
+                {isActive && <ToggleRightIcon className="h-3 w-3 ml-auto" />}
+              </Button>
+            );
+          })}
+        </div>
       </CardContent>
     </Card>
   );

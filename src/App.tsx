@@ -48,7 +48,8 @@ function App() {
               <Router>
                 <div className="min-h-screen bg-background">
                   <Routes>
-                    <Route path="/" element={<Welcome />} />
+                    <Route path="/" element={<Navigate to="/home" replace />} />
+                    <Route path="/welcome" element={<Welcome />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
                     <Route path="/home" element={<Index />} />
