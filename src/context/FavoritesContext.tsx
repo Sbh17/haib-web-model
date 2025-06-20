@@ -6,6 +6,7 @@ import { useToast } from '@/components/ui/use-toast';
 
 interface FavoritesContextType {
   favorites: string[];
+  favoriteCount: number;
   toggleFavorite: (salonId: string) => void;
   isFavorite: (salonId: string) => boolean;
   getFavoriteSalons: (salons: Salon[]) => Salon[];
@@ -64,6 +65,7 @@ export const FavoritesProvider = ({ children }: { children: ReactNode }) => {
 
   const value = {
     favorites,
+    favoriteCount: favorites.length,
     toggleFavorite,
     isFavorite,
     getFavoriteSalons,

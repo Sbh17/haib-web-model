@@ -8,11 +8,12 @@ import { StarIcon, MapPinIcon } from 'lucide-react';
 interface SalonCardProps {
   salon: Salon;
   className?: string;
+  showDistance?: boolean;
 }
 
-const SalonCard: React.FC<SalonCardProps> = ({ salon, className = '' }) => {
+const SalonCard: React.FC<SalonCardProps> = ({ salon, className = '', showDistance = false }) => {
   return (
-    <Link to={`/salons/${salon.id}`}>
+    <Link to={`/salon/${salon.id}`}>
       <Card className={`overflow-hidden transition-all hover:shadow-lg ${className}`}>
         <div className="relative h-48">
           <img 
@@ -25,6 +26,9 @@ const SalonCard: React.FC<SalonCardProps> = ({ salon, className = '' }) => {
             <div className="flex items-center text-white text-sm">
               <MapPinIcon className="w-4 h-4 mr-1" />
               <span className="truncate">{salon.city}</span>
+              {showDistance && salon.distance && (
+                <span className="ml-2 text-xs opacity-90">• {salon.distance}km</span>
+              )}
             </div>
           </div>
         </div>
