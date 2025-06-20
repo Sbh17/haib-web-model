@@ -12,36 +12,132 @@ const firebaseApi = {
   auth: {
     login: async (email: string, password: string): Promise<User> => {
       try {
+        console.log('Attempting login for:', email);
+        
+        // First try to sign in with existing credentials
         const { data, error } = await supabase.auth.signInWithPassword({
           email: email,
           password: password,
         });
 
         if (error) {
-          throw error;
+          console.log('Login failed, attempting to create demo user:', error.message);
+          
+          // If login fails, try to create the demo user account
+          const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+              emailRedirectTo: `${window.location.origin}/`,
+              data: {
+                name: getDemoUserName(email),
+                role: getDemoUserRole(email),
+              }
+            }
+          });
+
+          if (signUpError) {
+            console.error('Sign up also failed:', signUpError);
+            throw signUpError;
+          }
+
+          if (!signUpData.user) {
+            throw new Error('Failed to create user account');
+          }
+
+          // Create profile for the new user
+          const { data: profileData, error: profileError } = await supabase
+            .from('profiles')
+            .insert([
+              {
+                id: signUpData.user.id,
+                email: email,
+                name: getDemoUserName(email),
+                role: getDemoUserRole(email),
+                avatar: '',
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+              },
+            ])
+            .select('*')
+            .single();
+
+          if (profileError) {
+            console.error('Failed to create profile:', profileError);
+            // Don't throw here, we can still return the user
+          }
+
+          const user: User = {
+            id: signUpData.user.id,
+            email: signUpData.user.email || email,
+            name: getDemoUserName(email),
+            role: getDemoUserRole(email),
+            avatar: '',
+            createdAt: signUpData.user.created_at,
+            updatedAt: signUpData.user.updated_at,
+          };
+
+          console.log('Successfully created demo user:', user);
+          return user;
+        }
+
+        if (!data.user) {
+          throw new Error('Login successful but no user data returned');
         }
 
         // Fetch user details from the public profiles table
-        const { data: userDetails, error: userDetailsError } = await supabase
+        let userDetails = null;
+        const { data: profileData, error: userDetailsError } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', data.user.id)
           .single();
 
-        if (userDetailsError) {
-          throw userDetailsError;
+        if (userDetailsError || !profileData) {
+          console.log('Profile not found, creating one for existing user');
+          
+          // Create profile for existing user
+          const { data: newProfileData, error: createProfileError } = await supabase
+            .from('profiles')
+            .insert([
+              {
+                id: data.user.id,
+                email: data.user.email || email,
+                name: getDemoUserName(email),
+                role: getDemoUserRole(email),
+                avatar: '',
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+              },
+            ])
+            .select('*')
+            .single();
+
+          if (createProfileError) {
+            console.error('Failed to create profile for existing user:', createProfileError);
+            userDetails = {
+              name: getDemoUserName(email),
+              role: getDemoUserRole(email),
+              avatar: '',
+            };
+          } else {
+            userDetails = newProfileData;
+          }
+        } else {
+          userDetails = profileData;
         }
 
         const user: User = {
           id: data.user.id,
-          email: data.user.email,
-          name: userDetails?.name || 'Unnamed User',
-          role: userDetails?.role || 'customer',
+          email: data.user.email || email,
+          name: userDetails?.name || getDemoUserName(email),
+          role: userDetails?.role || getDemoUserRole(email),
           avatar: userDetails?.avatar || '',
           createdAt: data.user.created_at,
           updatedAt: data.user.updated_at,
         };
 
+        console.log('Login successful:', user);
         return user;
       } catch (error) {
         console.error('Login failed:', error);
@@ -55,6 +151,7 @@ const firebaseApi = {
           email: data.email,
           password: data.password,
           options: {
+            emailRedirectTo: `${window.location.origin}/`,
             data: {
               name: data.name,
               phone: data.phone,
@@ -67,6 +164,10 @@ const firebaseApi = {
           throw authError;
         }
 
+        if (!authData.user) {
+          throw new Error('Registration failed - no user data returned');
+        }
+
         // Insert user details into the public profiles table
         const { data: userDetails, error: userDetailsError } = await supabase
           .from('profiles')
@@ -77,7 +178,7 @@ const firebaseApi = {
               name: data.name,
               phone: data.phone,
               role: 'customer',
-              avatar: '', // You might want to set a default avatar URL
+              avatar: '',
               created_at: authData.user.created_at,
               updated_at: authData.user.updated_at,
             },
@@ -86,15 +187,16 @@ const firebaseApi = {
           .single();
 
         if (userDetailsError) {
-          throw userDetailsError;
+          console.error('Failed to create user profile:', userDetailsError);
+          // Don't throw, we can still return the user
         }
 
         const user: User = {
           id: authData.user.id,
-          email: authData.user.email,
-          name: userDetails.name,
-          role: userDetails.role,
-          avatar: userDetails.avatar,
+          email: authData.user.email || data.email,
+          name: userDetails?.name || data.name,
+          role: userDetails?.role || 'customer',
+          avatar: userDetails?.avatar || '',
           createdAt: authData.user.created_at,
           updatedAt: authData.user.updated_at,
         };
@@ -137,17 +239,53 @@ const firebaseApi = {
           .eq('id', user.id)
           .single();
 
-        if (userDetailsError) {
-          throw userDetailsError;
-        }
+        if (userDetailsError || !userDetails) {
+          console.log('Profile not found for current user, creating one');
+          
+          // Create profile for current user if it doesn't exist
+          const { data: newProfileData, error: createProfileError } = await supabase
+            .from('profiles')
+            .insert([
+              {
+                id: user.id,
+                email: user.email || '',
+                name: user.email?.split('@')[0] || 'User',
+                role: 'customer',
+                avatar: '',
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString(),
+              },
+            ])
+            .select('*')
+            .single();
 
-        if (!userDetails) {
-          return null;
+          if (createProfileError) {
+            console.error('Failed to create profile for current user:', createProfileError);
+            return {
+              id: user.id,
+              email: user.email || '',
+              name: user.email?.split('@')[0] || 'User',
+              role: 'customer',
+              avatar: '',
+              createdAt: user.created_at,
+              updatedAt: user.updated_at,
+            };
+          }
+
+          return {
+            id: user.id,
+            email: user.email || '',
+            name: newProfileData.name,
+            role: newProfileData.role,
+            avatar: newProfileData.avatar,
+            createdAt: user.created_at,
+            updatedAt: newProfileData.updated_at,
+          };
         }
 
         const currentUser: User = {
           id: user.id,
-          email: user.email,
+          email: user.email || '',
           name: userDetails.name,
           role: userDetails.role,
           avatar: userDetails.avatar,
@@ -1098,5 +1236,33 @@ const firebaseApi = {
     },
   }
 };
+
+// Helper function to get demo user names based on email
+function getDemoUserName(email: string): string {
+  switch (email) {
+    case 'admin@beautyspot.com':
+      return 'Admin User';
+    case 'salon1@example.com':
+      return 'Salon Owner';
+    case 'user@example.com':
+      return 'Regular User';
+    default:
+      return email.split('@')[0];
+  }
+}
+
+// Helper function to get demo user roles based on email
+function getDemoUserRole(email: string): string {
+  switch (email) {
+    case 'admin@beautyspot.com':
+      return 'admin';
+    case 'salon1@example.com':
+      return 'salon_owner';
+    case 'user@example.com':
+      return 'customer';
+    default:
+      return 'customer';
+  }
+}
 
 export default firebaseApi;
