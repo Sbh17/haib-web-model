@@ -17,7 +17,7 @@ import {
 import { Input } from '@/components/ui/input';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { InfoIcon } from 'lucide-react';
+import { InfoIcon, UserIcon, ShieldCheckIcon, CrownIcon } from 'lucide-react';
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -47,6 +47,17 @@ const Login: React.FC = () => {
       console.error('Login error:', error);
     }
   };
+
+  const quickLogin = async (email: string, password: string) => {
+    form.setValue('email', email);
+    form.setValue('password', password);
+    try {
+      await login(email, password);
+      navigate('/home');
+    } catch (error) {
+      console.error('Quick login error:', error);
+    }
+  };
   
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-6">
@@ -54,6 +65,49 @@ const Login: React.FC = () => {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-beauty-primary">BeautySpot</h1>
           <p className="text-gray-600 mt-2 dark:text-gray-400">Sign in to your account</p>
+        </div>
+        
+        {/* Quick Login Buttons for Development */}
+        <div className="mb-6">
+          <p className="text-sm font-semibold mb-3 text-center">Quick Login (Development)</p>
+          <div className="space-y-2">
+            <Button
+              onClick={() => quickLogin('admin@beautyspot.com', 'admin123')}
+              variant="outline"
+              className="w-full justify-start text-left"
+              disabled={isLoading}
+            >
+              <CrownIcon className="h-4 w-4 mr-2 text-purple-500" />
+              Sign in as Admin
+            </Button>
+            <Button
+              onClick={() => quickLogin('salon1@example.com', 'owner123')}
+              variant="outline"
+              className="w-full justify-start text-left"
+              disabled={isLoading}
+            >
+              <ShieldCheckIcon className="h-4 w-4 mr-2 text-blue-500" />
+              Sign in as Salon Owner
+            </Button>
+            <Button
+              onClick={() => quickLogin('user@example.com', 'user123')}
+              variant="outline"
+              className="w-full justify-start text-left"
+              disabled={isLoading}
+            >
+              <UserIcon className="h-4 w-4 mr-2 text-green-500" />
+              Sign in as Customer
+            </Button>
+          </div>
+        </div>
+
+        <div className="relative mb-6">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">Or continue with email</span>
+          </div>
         </div>
         
         <Alert className="mb-6 bg-pink-50 dark:bg-pink-900/30 border-pink-200 dark:border-pink-800">

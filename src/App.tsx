@@ -1,87 +1,82 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider } from "@/context/AuthContext";
-import { LocationProvider } from "@/context/LocationContext";
-import { ThemeProvider } from "@/context/ThemeContext";
-import { FavoritesProvider } from "@/context/FavoritesContext";
-import Index from "./pages/Index";
-import Welcome from "./pages/Welcome";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Search from "./pages/Search";
-import EnhancedSearch from "./pages/EnhancedSearch";
-import SalonDetail from "./pages/SalonDetail";
-import BookAppointment from "./pages/BookAppointment";
-import PaymentCheckout from "./pages/PaymentCheckout";
-import PaymentSuccess from "./pages/PaymentSuccess";
-import Appointments from "./pages/Appointments";
-import Profile from "./pages/Profile";
-import ProfileSettings from "./pages/ProfileSettings";
-import Settings from "./pages/Settings";
-import SalonRequest from "./pages/SalonRequest";
-import AdminDashboard from "./pages/AdminDashboard";
-import AdminAnalytics from "./pages/AdminAnalytics";
-import AdminUsers from "./pages/AdminUsers";
-import SalonManagement from "./pages/SalonManagement";
-import SalonEdit from "./pages/SalonEdit";
-import Promotions from "./pages/Promotions";
-import News from "./pages/News";
-import NewsDetail from "./pages/NewsDetail";
-import Subscriptions from "./pages/Subscriptions";
-import NotFound from "./pages/NotFound";
-import AdminAccess from "./pages/AdminAccess";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider } from '@/context/AuthContext';
+import { FavoritesProvider } from '@/context/FavoritesContext';
+import { LocationProvider } from '@/context/LocationContext';
+import { ThemeProvider } from '@/context/ThemeContext';
+import { Toaster } from '@/components/ui/toaster';
 
-const queryClient = new QueryClient();
+// Import pages
+import Welcome from '@/pages/Welcome';
+import Login from '@/pages/Login';
+import Register from '@/pages/Register';
+import Index from '@/pages/Index';
+import Search from '@/pages/Search';
+import SalonDetail from '@/pages/SalonDetail';
+import BookAppointment from '@/pages/BookAppointment';
+import Appointments from '@/pages/Appointments';
+import Profile from '@/pages/Profile';
+import ProfileSettings from '@/pages/ProfileSettings';
+import SalonRequest from '@/pages/SalonRequest';
+import AdminDashboard from '@/pages/AdminDashboard';
+import AdminUsers from '@/pages/AdminUsers';
+import SalonManagement from '@/pages/SalonManagement';
+import SalonEdit from '@/pages/SalonEdit';
+import News from '@/pages/News';
+import NewsDetail from '@/pages/NewsDetail';
+import Promotions from '@/pages/Promotions';
+import NotFound from '@/pages/NotFound';
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider>
-      <AuthProvider>
-        <LocationProvider>
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+    },
+  },
+});
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <AuthProvider>
           <FavoritesProvider>
-            <TooltipProvider>
+            <LocationProvider>
+              <Router>
+                <div className="min-h-screen bg-background">
+                  <Routes>
+                    <Route path="/" element={<Welcome />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/home" element={<Index />} />
+                    <Route path="/search" element={<Search />} />
+                    <Route path="/salon/:id" element={<SalonDetail />} />
+                    <Route path="/book/:salonId/:serviceId" element={<BookAppointment />} />
+                    <Route path="/appointments" element={<Appointments />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/profile/settings" element={<ProfileSettings />} />
+                    <Route path="/salon-request" element={<SalonRequest />} />
+                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                    <Route path="/admin/users" element={<AdminUsers />} />
+                    <Route path="/owner/salons" element={<SalonManagement />} />
+                    <Route path="/salon/:id/edit" element={<SalonEdit />} />
+                    <Route path="/news" element={<News />} />
+                    <Route path="/news/:id" element={<NewsDetail />} />
+                    <Route path="/promotions" element={<Promotions />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </div>
+              </Router>
               <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/" element={<Welcome />} />
-                  <Route path="/home" element={<Index />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-                  <Route path="/search" element={<Search />} />
-                  <Route path="/enhanced-search" element={<EnhancedSearch />} />
-                  <Route path="/salons/:id" element={<SalonDetail />} />
-                  <Route path="/appointments/book" element={<BookAppointment />} />
-                  <Route path="/payment-checkout" element={<PaymentCheckout />} />
-                  <Route path="/payment-success" element={<PaymentSuccess />} />
-                  <Route path="/appointments" element={<Appointments />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/profile/settings" element={<ProfileSettings />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/salon-request" element={<SalonRequest />} />
-                  <Route path="/promotions" element={<Promotions />} />
-                  <Route path="/subscriptions" element={<Subscriptions />} />
-                  <Route path="/news" element={<News />} />
-                  <Route path="/news/:id" element={<NewsDetail />} />
-                  <Route path="/admin/access" element={<AdminAccess />} />
-                  <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                  <Route path="/admin/analytics" element={<AdminAnalytics />} />
-                  <Route path="/admin/users" element={<AdminUsers />} />
-                  <Route path="/admin/salons" element={<SalonManagement />} />
-                  <Route path="/admin/salons/:id" element={<SalonEdit />} />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </BrowserRouter>
-            </TooltipProvider>
+            </LocationProvider>
           </FavoritesProvider>
-        </LocationProvider>
-      </AuthProvider>
-    </ThemeProvider>
-  </QueryClientProvider>
-);
+        </AuthProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
+  );
+}
 
 export default App;
