@@ -1,4 +1,3 @@
-
 export type UserRole = "user" | "salon_owner" | "admin" | "customer";
 
 export interface User {
@@ -74,6 +73,7 @@ export interface Salon {
   updatedAt?: string;
   socialMedia?: SocialMedia;
   businessId?: string;
+  distance?: number; // Distance in kilometers for nearby salons
 }
 
 export interface Service {
