@@ -16,6 +16,7 @@ import NewsList from '@/components/NewsList';
 import BottomNavigation from '@/components/BottomNavigation';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import DevTools from '@/components/DevTools';
+import ThemeToggle from '@/components/ThemeToggle';
 import { Search, MapPin, Calendar, Star, TrendingUp, Heart } from 'lucide-react';
 
 const Index: React.FC = () => {
@@ -79,9 +80,9 @@ const Index: React.FC = () => {
   const latestNews = news.slice(0, 3);
 
   return (
-    <div className="pb-20 bg-gradient-to-b from-beauty-primary/5 to-background">
+    <div className="pb-20 bg-gradient-to-b from-beauty-primary/5 to-background min-h-screen">
       {/* Header */}
-      <header className="bg-beauty-primary text-white p-6 pb-8">
+      <header className="bg-beauty-primary dark:bg-beauty-dark text-white p-6 pb-8">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center">
             <Avatar className="h-12 w-12 mr-3 border-2 border-white/20">
@@ -99,11 +100,14 @@ const Index: React.FC = () => {
               </p>
             </div>
           </div>
-          <Link to="/appointments">
-            <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
-              <Calendar className="h-5 w-5" />
-            </Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            <ThemeToggle className="text-white hover:bg-white/20" />
+            <Link to="/appointments">
+              <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
+                <Calendar className="h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Location Status */}
@@ -184,7 +188,6 @@ const Index: React.FC = () => {
         </div>
       </section>
 
-      {/* Latest News */}
       <section className="px-6 mb-8">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Latest News</h2>
@@ -199,7 +202,6 @@ const Index: React.FC = () => {
         )}
       </section>
 
-      {/* Top Rated Salons */}
       <section className="px-6 mb-8">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Top Rated Salons</h2>

@@ -46,42 +46,42 @@
   }
 
   .dark {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
+    --background: 0 0% 3%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 5%;
-    --card-foreground: 0 0% 100%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 5%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 0%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 3%;
 
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 0 0% 10%;
-    --muted-foreground: 0 0% 70%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 65%;
 
     --accent: 0 0% 15%;
-    --accent-foreground: 0 0% 100%;
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62% 30%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive-foreground: 0 0% 98%;
 
     --border: 0 0% 15%;
     --input: 0 0% 15%;
-    --ring: 0 0% 100%;
+    --ring: 0 0% 98%;
 
     --sidebar-background: 0 0% 5%;
     --sidebar-foreground: 0 0% 90%;
-    --sidebar-primary: 0 0% 100%;
-    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 0 0% 3%;
     --sidebar-accent: 0 0% 15%;
     --sidebar-accent-foreground: 0 0% 90%;
     --sidebar-border: 0 0% 15%;
-    --sidebar-ring: 0 0% 100%;
+    --sidebar-ring: 0 0% 98%;
   }
 }
 
@@ -90,15 +90,26 @@
     @apply border-border;
   }
 
+  html {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "ss01";
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Loading theme styles */
+  .loading-theme {
+    @apply fixed inset-0 flex items-center justify-center bg-white dark:bg-gray-900 text-gray-900 dark:text-white;
+    font-size: 16px;
   }
 }
 
 @layer components {
   .beauty-card {
-    @apply rounded-xl bg-white shadow-md transition-all hover:shadow-lg p-4 border border-border;
+    @apply rounded-xl bg-card shadow-md transition-all hover:shadow-lg p-4 border border-border;
   }
   
   .beauty-button {
@@ -111,7 +122,7 @@
 
   /* New modern components */
   .glass-card {
-    @apply bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl shadow-sm;
+    @apply bg-card/80 backdrop-blur-sm border border-border/20 rounded-xl shadow-sm;
   }
   
   .gradient-border {
@@ -124,6 +135,11 @@
   
   .fade-in {
     @apply animate-[fade-in_0.3s_ease-out_forwards];
+  }
+
+  /* Theme transition classes */
+  .theme-transition {
+    @apply transition-colors duration-300 ease-in-out;
   }
 }
 
@@ -141,4 +157,27 @@
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* Smooth theme transitions */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode specific overrides */
+.dark .bg-beauty-primary {
+  background-color: #1a1a1a;
+}
+
+.dark .text-beauty-primary {
+  color: #f5f5f5;
+}
+
+/* Ensure proper contrast in dark mode */
+.dark .text-gray-600 {
+  color: #9ca3af;
+}
+
+.dark .text-gray-500 {
+  color: #6b7280;
 }
