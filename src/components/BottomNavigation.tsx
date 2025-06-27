@@ -1,13 +1,11 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Search, Calendar, User, Settings } from 'lucide-react';
-import { useAuth } from '@/context/AuthContext';
+import { Home, Search, Calendar, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const BottomNavigation: React.FC = () => {
   const location = useLocation();
-  const { user } = useAuth();
   
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -37,12 +35,12 @@ const BottomNavigation: React.FC = () => {
           <Calendar size={20} />
           <span>Appointments</span>
         </Link>
-        <Link to={user ? "/profile" : "/login"} className={cn(
+        <Link to="/news" className={cn(
           "flex flex-col items-center p-2 text-xs",
-          (isActive('/profile') || isActive('/login')) ? "text-beauty-primary" : "text-muted-foreground"
+          isActive('/news') ? "text-beauty-primary" : "text-muted-foreground"
         )}>
           <User size={20} />
-          <span>Profile</span>
+          <span>News</span>
         </Link>
       </div>
     </div>

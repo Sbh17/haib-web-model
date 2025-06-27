@@ -1,7 +1,6 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
 import { useFavorites } from '@/context/FavoritesContext';
 import { useLocation } from '@/context/LocationContext';
 import { useQuery } from '@tanstack/react-query';
@@ -9,30 +8,20 @@ import api from '@/services/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import SalonCard from '@/components/SalonCard';
 import NewsList from '@/components/NewsList';
 import BottomNavigation from '@/components/BottomNavigation';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import DevTools from '@/components/DevTools';
 import ThemeToggle from '@/components/ThemeToggle';
 import Logo from '@/components/Logo';
-import { Search, MapPin, Calendar, Star } from 'lucide-react';
+import { Search, MapPin, Star } from 'lucide-react';
 
 const Index: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const { favoriteCount } = useFavorites();
   const { userLocation, requestLocation } = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
-
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!user) {
-      navigate('/login');
-    }
-  }, [user, navigate]);
 
   const { data: salons = [], isLoading: salonsLoading } = useQuery({
     queryKey: ['salons'],
@@ -43,10 +32,6 @@ const Index: React.FC = () => {
     queryKey: ['news'],
     queryFn: () => api.news.getAll(),
   });
-
-  if (!user) {
-    return null; // Will redirect to login
-  }
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
@@ -60,14 +45,6 @@ const Index: React.FC = () => {
     if (e.key === 'Enter') {
       handleSearch();
     }
-  };
-
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(part => part[0])
-      .join('')
-      .toUpperCase();
   };
 
   // Get different categories of salons
@@ -89,7 +66,7 @@ const Index: React.FC = () => {
             <Logo className="mr-4" width={100} height={32} />
             <div>
               <h1 className="text-xl font-bold">
-                Welcome back, {user ? user.name.split(' ')[0] : 'Guest'}!
+                Welcome to HAIB!
               </h1>
               <p className="text-sm opacity-90">
                 Discover amazing salons and book your next appointment
@@ -98,11 +75,6 @@ const Index: React.FC = () => {
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle className="text-white hover:bg-white/20" />
-            <Link to="/appointments">
-              <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
-                <Calendar className="h-5 w-5" />
-              </Button>
-            </Link>
           </div>
         </div>
 
@@ -195,7 +167,6 @@ const Index: React.FC = () => {
       </section>
 
       <BottomNavigation />
-      <DevTools />
     </div>
   );
 };
