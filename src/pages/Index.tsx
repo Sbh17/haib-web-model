@@ -17,7 +17,8 @@ import BottomNavigation from '@/components/BottomNavigation';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import DevTools from '@/components/DevTools';
 import ThemeToggle from '@/components/ThemeToggle';
-import { Search, MapPin, Calendar, Star, TrendingUp, Heart } from 'lucide-react';
+import Logo from '@/components/Logo';
+import { Search, MapPin, Calendar, Star } from 'lucide-react';
 
 const Index: React.FC = () => {
   const navigate = useNavigate();
@@ -85,12 +86,7 @@ const Index: React.FC = () => {
       <header className="bg-beauty-primary dark:bg-beauty-dark text-white p-6 pb-8">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center">
-            <Avatar className="h-12 w-12 mr-3 border-2 border-white/20">
-              <AvatarImage src={user?.avatar} />
-              <AvatarFallback className="bg-beauty-primary text-white">
-                {user ? getInitials(user.name) : 'U'}
-              </AvatarFallback>
-            </Avatar>
+            <Logo className="mr-4" width={100} height={32} />
             <div>
               <h1 className="text-xl font-bold">
                 Welcome back, {user ? user.name.split(' ')[0] : 'Guest'}!
@@ -142,35 +138,8 @@ const Index: React.FC = () => {
         </div>
       </header>
 
-      {/* Quick Stats */}
-      <div className="px-6 -mt-6 mb-8">
-        <div className="grid grid-cols-3 gap-4">
-          <Card className="text-center shadow-lg border-0">
-            <CardContent className="p-4">
-              <Star className="h-6 w-6 text-yellow-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-yellow-600">{topRatedSalons.length}</p>
-              <p className="text-xs text-gray-600">Top Rated</p>
-            </CardContent>
-          </Card>
-          <Card className="text-center shadow-lg border-0">
-            <CardContent className="p-4">
-              <Heart className="h-6 w-6 text-red-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-red-600">{favoriteCount}</p>
-              <p className="text-xs text-gray-600">Favorites</p>
-            </CardContent>
-          </Card>
-          <Card className="text-center shadow-lg border-0">
-            <CardContent className="p-4">
-              <TrendingUp className="h-6 w-6 text-green-500 mx-auto mb-2" />
-              <p className="text-2xl font-bold text-green-600">{salons.length}</p>
-              <p className="text-xs text-gray-600">Total Salons</p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
       {/* Featured Salons */}
-      <section className="px-6 mb-8">
+      <section className="px-6 mb-8 mt-8">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Featured Salons</h2>
           <Link to="/search">
