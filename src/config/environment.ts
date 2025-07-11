@@ -39,7 +39,7 @@ export interface EnvironmentConfig {
 const defaultConfig: EnvironmentConfig = {
   apiUrl: 'http://localhost:3000/api',
   environment: 'development',
-  useFirebase: true, // Enable Firebase by default
+  useFirebase: false, // Use mock data instead of Firebase
   supabaseUrl: 'https://jxqdslpzqcavzchpsrrp.supabase.co',
   supabaseKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cWRzbHB6cWNhdnpjaHBzcnJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDcwNDMyNDksImV4cCI6MjA2MjYxOTI0OX0.39qm9lMU8SROxAD2zQbGTZP11WDBtXjuIqkOMC1zTeE',
   features: {
@@ -70,7 +70,7 @@ const environmentConfigs: Record<string, Partial<EnvironmentConfig>> = {
   development: {
     apiUrl: 'http://localhost:3000/api',
     environment: 'development',
-    useFirebase: true,
+    useFirebase: false,
     features: {
       enableAnalytics: false,
       enablePushNotifications: false,
