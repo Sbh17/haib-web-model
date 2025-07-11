@@ -18,7 +18,7 @@ const Welcome: React.FC = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-            <Link to="/register">
+            <Link to="/home">
               <Button size="lg" className="bg-white text-beauty-primary hover:bg-white/90 font-semibold px-8">
                 Get Started
               </Button>
@@ -112,9 +112,9 @@ const Welcome: React.FC = () => {
             Join HAIB today and discover the best beauty services in your area.
           </p>
           
-          <Link to="/register">
+          <Link to="/home">
             <Button size="lg" className="bg-beauty-primary hover:bg-beauty-primary/90 text-white font-semibold px-8">
-              Create Your Account <ArrowRightIcon className="w-4 h-4 ml-1" />
+              Get Started <ArrowRightIcon className="w-4 h-4 ml-1" />
             </Button>
           </Link>
         </div>
