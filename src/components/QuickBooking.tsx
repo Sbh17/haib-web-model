@@ -99,7 +99,7 @@ const QuickBooking: React.FC = () => {
               </div>
               
               <Link 
-                to="/appointments/book" 
+                to={`/book/${appointment.salonId}/${appointment.serviceId}`}
                 state={{ quickBookData: appointment }}
                 onClick={() => handleQuickBook(appointment)}
               >

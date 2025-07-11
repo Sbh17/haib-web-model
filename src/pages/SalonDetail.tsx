@@ -81,7 +81,7 @@ const SalonDetail: React.FC = () => {
   const handleBookNow = () => {
     if (!selectedService || !salon) return;
     
-    navigate('/appointments/book', { 
+    navigate(`/book/${salon.id}/${selectedService.id}`, { 
       state: { 
         salonId: salon.id,
         salonName: salon.name,
