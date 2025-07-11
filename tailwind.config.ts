@@ -63,16 +63,16 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Beauty salon theme colors - Updated to black and white palette
+				// Beauty salon theme colors - Using CSS variables for proper theme support
 				beauty: {
-					primary: '#000000',     // Black primary
-					secondary: '#404040',   // Dark gray
-					accent: '#F5F5F5',      // Light gray
-					dark: '#1A1A1A',        // Very dark gray
-					light: '#FFFFFF',       // White background
-					success: '#76C893',     // Mint green (unchanged)
-					warning: '#F8961E',     // Orange (unchanged)
-					info: '#577BC1',        // Blue (unchanged)
+					primary: 'hsl(var(--beauty-primary))',
+					secondary: 'hsl(var(--beauty-secondary))',
+					accent: 'hsl(var(--beauty-accent))',
+					dark: 'hsl(var(--beauty-dark))',
+					light: 'hsl(var(--beauty-light))',
+					success: 'hsl(var(--beauty-success))',
+					warning: 'hsl(var(--beauty-warning))',
+					info: 'hsl(var(--beauty-info))',
 				},
 			},
 			borderRadius: {
