@@ -14,6 +14,8 @@ import Index from '@/pages/Index';
 import Search from '@/pages/Search';
 import SalonDetail from '@/pages/SalonDetail';
 import BookAppointment from '@/pages/BookAppointment';
+import PaymentCheckout from '@/pages/PaymentCheckout';
+import PaymentSuccess from '@/pages/PaymentSuccess';
 import Appointments from '@/pages/Appointments';
 import News from '@/pages/News';
 import NewsDetail from '@/pages/NewsDetail';
@@ -45,6 +47,8 @@ function App() {
                     <Route path="/search" element={<Search />} />
                     <Route path="/salon/:id" element={<SalonDetail />} />
                     <Route path="/book/:salonId/:serviceId" element={<BookAppointment />} />
+                    <Route path="/payment-checkout" element={<PaymentCheckout />} />
+                    <Route path="/payment-success" element={<PaymentSuccess />} />
                     <Route path="/appointments" element={<Appointments />} />
                     <Route path="/news" element={<News />} />
                     <Route path="/news/:id" element={<NewsDetail />} />
