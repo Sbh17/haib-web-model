@@ -134,11 +134,11 @@ const Appointments: React.FC = () => {
   
   return (
     <div className="pb-20">
-      <header className="bg-white p-6 pt-12 shadow-sm">
+      <header className="bg-background p-6 pt-12 shadow-sm border-b">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-2xl font-bold mb-1">My Appointments</h1>
-            <p className="text-gray-500">View and manage your bookings</p>
+            <h1 className="text-2xl font-bold mb-1 text-foreground">My Appointments</h1>
+            <p className="text-muted-foreground">View and manage your bookings</p>
           </div>
           <Logo width={100} height={32} />
         </div>
@@ -150,7 +150,7 @@ const Appointments: React.FC = () => {
         </div>
       ) : appointments.length === 0 ? (
         <div className="p-6 text-center py-12">
-          <p className="text-gray-500 mb-4">You don't have any appointments yet</p>
+          <p className="text-muted-foreground mb-4">You don't have any appointments yet</p>
           <button
             onClick={() => navigate('/search')}
             className="text-beauty-primary font-medium"
@@ -178,7 +178,7 @@ const Appointments: React.FC = () => {
                   />
                 ))
               ) : (
-                <p className="text-center py-8 text-gray-500">
+                <p className="text-center py-8 text-muted-foreground">
                   No upcoming appointments
                 </p>
               )}
@@ -197,7 +197,7 @@ const Appointments: React.FC = () => {
                   />
                 ))
               ) : (
-                <p className="text-center py-8 text-gray-500">
+                <p className="text-center py-8 text-muted-foreground">
                   No past appointments
                 </p>
               )}
