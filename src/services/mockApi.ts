@@ -1,104 +1,64 @@
 import { User, Salon, Service, Appointment, Review, NewsItem, Promotion, SalonWorker, SalonRequest, ServiceCategory } from '@/types';
+import { 
+  users, 
+  salons, 
+  services, 
+  serviceCategories, 
+  appointments, 
+  reviews, 
+  newsItems, 
+  promotions, 
+  salonRequests 
+} from './mockData';
 
-// Mock data and API implementation
-const mockUsers: User[] = [
-  {
-    id: '1',
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '+1234567890',
-    role: 'customer',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=john',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  }
-];
+// Use the rich mock data from mockData.ts
+const mockUsers: User[] = users.map(user => ({
+  ...user,
+  // Ensure compatibility with User type
+  createdAt: user.createdAt,
+  updatedAt: user.createdAt
+}));
 
-const mockSalons: Salon[] = [
-  {
-    id: '1',
-    name: 'Glamour Studio',
-    description: 'Premium beauty salon with expert stylists',
-    address: '123 Beauty Street',
-    city: 'New York',
-    state: 'NY',
-    zipCode: '10001',
-    phone: '+1234567890',
-    email: 'info@glamourstudio.com',
-    website: 'https://glamourstudio.com',
-    images: ['https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800'],
-    coverImage: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800',
-    rating: 4.8,
-    reviewCount: 127,
-    priceRange: '$$$',
-    latitude: 40.7128,
-    longitude: -74.0060,
-    isOpen: true,
-    openingHours: {
-      monday: '9:00 AM - 7:00 PM',
-      tuesday: '9:00 AM - 7:00 PM',
-      wednesday: '9:00 AM - 7:00 PM',
-      thursday: '9:00 AM - 7:00 PM',
-      friday: '9:00 AM - 8:00 PM',
-      saturday: '8:00 AM - 6:00 PM',
-      sunday: '10:00 AM - 5:00 PM'
-    },
-    amenities: ['WiFi', 'Parking', 'Wheelchair Accessible'],
-    services: [],
-    ownerId: '1',
-    status: 'approved',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  }
-];
+const mockSalons: Salon[] = salons.map(salon => ({
+  ...salon,
+  // Convert to expected format
+  state: 'NY', // Default state since not in original data
+  zipCode: '10001', // Default zip since not in original data
+  phone: '+1234567890', // Default phone since not in original data
+  email: `info@${salon.name.toLowerCase().replace(/\s+/g, '')}.com`,
+  website: `https://${salon.name.toLowerCase().replace(/\s+/g, '')}.com`,
+  images: [salon.coverImage],
+  priceRange: '$$$',
+  latitude: salon.location.latitude,
+  longitude: salon.location.longitude,
+  isOpen: true,
+  openingHours: {
+    monday: '9:00 AM - 7:00 PM',
+    tuesday: '9:00 AM - 7:00 PM',
+    wednesday: '9:00 AM - 7:00 PM',
+    thursday: '9:00 AM - 7:00 PM',
+    friday: '9:00 AM - 8:00 PM',
+    saturday: '8:00 AM - 6:00 PM',
+    sunday: '10:00 AM - 5:00 PM'
+  },
+  amenities: ['WiFi', 'Parking', 'Wheelchair Accessible'],
+  updatedAt: salon.createdAt
+}));
 
-const mockServices: Service[] = [
-  {
-    id: '1',
-    salonId: '1',
-    name: 'Haircut & Style',
-    description: 'Professional haircut with styling',
-    price: 65,
-    duration: 60,
-    categoryId: '1',
-    category: 'Hair',
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
-  }
-];
+const mockServices: Service[] = services.map(service => ({
+  ...service,
+  category: serviceCategories.find(cat => cat.id === service.categoryId)?.name || 'Hair',
+  updatedAt: service.createdAt
+}));
 
-const mockServiceCategories: ServiceCategory[] = [
-  { id: '1', name: 'Hair' },
-  { id: '2', name: 'Nails' },
-  { id: '3', name: 'Spa' },
-  { id: '4', name: 'Makeup' }
-];
+const mockServiceCategories: ServiceCategory[] = serviceCategories;
 
-const mockAppointments: Appointment[] = [
-  {
-    id: '1',
-    userId: '1',
-    salonId: '1',
-    serviceId: '1',
-    workerId: '1',
-    date: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(), // Tomorrow
-    status: 'confirmed',
-    notes: 'Looking forward to the appointment',
-    createdAt: new Date().toISOString()
-  }
-];
+const mockAppointments: Appointment[] = appointments.map(appointment => ({
+  ...appointment,
+  workerId: '1' // Default worker ID since not in original data
+}));
 
-const mockReviews: Review[] = [
-  {
-    id: '1',
-    userId: '1',
-    salonId: '1',
-    appointmentId: '1',
-    rating: 5,
-    comment: 'Excellent service!',
-    createdAt: new Date().toISOString()
-  }
-];
+const mockReviews: Review[] = reviews;
 
 const mockWorkers: SalonWorker[] = [
   {
@@ -113,52 +73,87 @@ const mockWorkers: SalonWorker[] = [
     isActive: true,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
-  }
-];
-
-const mockSalonRequests: SalonRequest[] = [
+  },
   {
-    id: '1',
-    name: 'New Beauty Salon',
-    description: 'A modern beauty salon',
-    address: '456 Style Avenue',
-    city: 'Los Angeles',
-    ownerName: 'Jane Smith',
-    ownerEmail: 'jane@newbeauty.com',
-    ownerPhone: '+1987654321',
-    status: 'pending',
-    createdAt: new Date().toISOString()
-  }
-];
-
-const mockNews: NewsItem[] = [
-  {
-    id: '1',
-    title: 'Summer Beauty Trends 2024',
-    content: 'Discover the hottest beauty trends for this summer season...',
-    category: 'Trends',
-    date: new Date().toISOString(),
-    image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800'
-  }
-];
-
-const mockPromotions: Promotion[] = [
-  {
-    id: '1',
-    title: '50% Off First Visit',
-    description: 'Get 50% off your first appointment at participating salons',
-    discount: 50,
-    endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
-    startDate: new Date().toISOString(),
-    salonId: '1',
-    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800',
+    id: '2',
+    salonId: '2',
+    name: 'Mike Rodriguez',
+    specialty: 'Men\'s Grooming',
+    bio: 'Professional barber specializing in modern cuts',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=mike',
+    phone: '+1234567892',
+    email: 'mike@urbancuts.com',
     isActive: true,
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: '3',
+    salonId: '3',
+    name: 'Lisa Chen',
+    specialty: 'Massage Therapy',
+    bio: 'Licensed massage therapist with spa expertise',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=lisa',
+    phone: '+1234567893',
+    email: 'lisa@serenespa.com',
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: '4',
+    salonId: '4',
+    name: 'Amanda Foster',
+    specialty: 'Hair Coloring',
+    bio: 'Color specialist with expertise in balayage and highlights',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=amanda',
+    phone: '+1234567894',
+    email: 'amanda@glamourhair.com',
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: '5',
+    salonId: '5',
+    name: 'Jessica Wong',
+    specialty: 'Nail Art',
+    bio: 'Creative nail artist specializing in custom designs',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=jessica',
+    phone: '+1234567895',
+    email: 'jessica@blissnailspa.com',
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+  {
+    id: '6',
+    salonId: '6',
+    name: 'David Thompson',
+    specialty: 'Traditional Shaving',
+    bio: 'Master barber with expertise in classic grooming techniques',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=david',
+    phone: '+1234567896',
+    email: 'david@groominglounge.com',
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
   }
 ];
 
-// Set up salon services
-mockSalons[0].services = mockServices;
+const mockSalonRequests: SalonRequest[] = salonRequests;
+
+const mockNews: NewsItem[] = newsItems;
+
+const mockPromotions: Promotion[] = promotions.map(promo => ({
+  ...promo,
+  isActive: new Date(promo.endDate) > new Date()
+}));
+
+// Set up salon services - assign services to their respective salons
+mockSalons.forEach(salon => {
+  salon.services = mockServices.filter(service => service.salonId === salon.id);
+});
 
 // Simulate API delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
