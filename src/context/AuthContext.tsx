@@ -1,148 +1,188 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, UserRole } from '@/types';
+import { User as SupabaseUser, Session } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/components/ui/use-toast';
+import { UserRole } from '@/types';
+
+interface Profile {
+  id: string;
+  full_name: string | null;
+  avatar_url: string | null;
+  role: UserRole;
+  created_at: string;
+  updated_at: string;
+}
 
 interface AuthContextType {
-  user: User | null;
+  user: SupabaseUser | null;
+  profile: Profile | null;
+  session: Session | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (data: { name: string; email: string; password: string; phone?: string }) => Promise<void>;
-  logout: () => Promise<void>;
+  signUp: (email: string, password: string, fullName?: string) => Promise<{ error: any }>;
+  signIn: (email: string, password: string) => Promise<{ error: any }>;
+  signInWithGoogle: () => Promise<{ error: any }>;
+  signInWithFacebook: () => Promise<{ error: any }>;
+  signOut: () => Promise<void>;
   isRole: (role: UserRole | UserRole[]) => boolean;
-  switchRole: (role: UserRole) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Mock users for different roles
-const mockUsers = {
-  admin: {
-    id: 'admin-123',
-    email: 'admin@beautyspot.com',
-    name: 'Admin User',
-    phone: '+1234567890',
-    role: 'admin' as UserRole,
-    avatar: '',
-    createdAt: new Date().toISOString(),
-    bio: 'System Administrator',
-  },
-  salon_owner: {
-    id: 'owner-123',
-    email: 'owner@beautyspot.com',
-    name: 'Salon Owner',
-    phone: '+1234567891',
-    role: 'salon_owner' as UserRole,
-    avatar: '',
-    createdAt: new Date().toISOString(),
-    bio: 'Beauty Salon Owner',
-  },
-  user: {
-    id: 'user-123',
-    email: 'user@beautyspot.com',
-    name: 'Regular User',
-    phone: '+1234567892',
-    role: 'user' as UserRole,
-    avatar: '',
-    createdAt: new Date().toISOString(),
-    bio: 'Beauty enthusiast',
-  },
-};
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { toast } = useToast();
 
   useEffect(() => {
-    // Load stored role from localStorage or default to user
-    const storedRole = localStorage.getItem('demo_role') as UserRole || 'user';
-    setUser(mockUsers[storedRole]);
+    // Set up auth state listener FIRST
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        
+        if (session?.user) {
+          // Fetch user profile
+          setTimeout(async () => {
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('*')
+              .eq('id', session.user.id)
+              .maybeSingle();
+            
+            setProfile(profile as Profile);
+          }, 0);
+        } else {
+          setProfile(null);
+        }
+        
+        setIsLoading(false);
+      }
+    );
+
+    // THEN check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, fullName?: string) => {
     setIsLoading(true);
-    // Simulate login delay
-    await new Promise(resolve => setTimeout(resolve, 500));
+    const redirectUrl = `${window.location.origin}/`;
     
-    // Simple mock login based on email
-    let selectedUser = mockUsers.user;
-    if (email.includes('admin')) {
-      selectedUser = mockUsers.admin;
-    } else if (email.includes('salon') || email.includes('owner')) {
-      selectedUser = mockUsers.salon_owner;
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: redirectUrl,
+        data: fullName ? { full_name: fullName } : undefined
+      }
+    });
+    
+    if (error) {
+      toast({
+        title: "Sign up failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    } else {
+      toast({
+        title: "Sign up successful!",
+        description: "Please check your email to verify your account."
+      });
     }
     
-    setUser(selectedUser);
-    localStorage.setItem('demo_role', selectedUser.role);
-    
-    toast({
-      title: "Login successful!",
-      description: `Welcome back, ${selectedUser.name}!`,
-    });
     setIsLoading(false);
+    return { error };
   };
 
-  const register = async (data: { name: string; email: string; password: string; phone?: string }) => {
+  const signIn = async (email: string, password: string) => {
     setIsLoading(true);
-    // Simulate registration delay
-    await new Promise(resolve => setTimeout(resolve, 500));
     
-    const newUser = {
-      ...mockUsers.user,
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-    };
-    
-    setUser(newUser);
-    localStorage.setItem('demo_role', 'user');
-    
-    toast({
-      title: "Registration successful!",
-      description: `Welcome, ${newUser.name}!`,
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password
     });
+    
+    if (error) {
+      toast({
+        title: "Sign in failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    } else {
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully signed in."
+      });
+    }
+    
     setIsLoading(false);
+    return { error };
   };
 
-  const logout = async () => {
-    setUser(null);
-    localStorage.removeItem('demo_role');
-    toast({
-      title: "Logged out",
-      description: "You have been successfully logged out.",
-    });
-  };
-
-  const switchRole = (role: UserRole) => {
-    const selectedUser = mockUsers[role];
-    setUser(selectedUser);
-    localStorage.setItem('demo_role', role);
+  const signInWithGoogle = async () => {
+    setIsLoading(true);
     
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/`
+      }
+    });
+    
+    setIsLoading(false);
+    return { error };
+  };
+
+  const signInWithFacebook = async () => {
+    setIsLoading(true);
+    
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'facebook',
+      options: {
+        redirectTo: `${window.location.origin}/`
+      }
+    });
+    
+    setIsLoading(false);
+    return { error };
+  };
+
+  const signOut = async () => {
+    await supabase.auth.signOut();
     toast({
-      title: "Role switched",
-      description: `You are now viewing as: ${selectedUser.name}`,
+      title: "Signed out",
+      description: "You have been successfully signed out."
     });
   };
 
   const isRole = (role: UserRole | UserRole[]) => {
-    if (!user) return false;
+    if (!profile) return false;
     
     if (Array.isArray(role)) {
-      return role.includes(user.role);
+      return role.includes(profile.role);
     }
     
-    return user.role === role;
+    return profile.role === role;
   };
 
   const value = {
     user,
+    profile,
+    session,
     isLoading,
-    login,
-    register,
-    logout,
+    signUp,
+    signIn,
+    signInWithGoogle,
+    signInWithFacebook,
+    signOut,
     isRole,
-    switchRole,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -27,7 +27,7 @@ const registerSchema = z.object({
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
 const Register: React.FC = () => {
-  const { register: registerUser, isLoading } = useAuth();
+  const { signUp, isLoading } = useAuth();
   const navigate = useNavigate();
   
   const form = useForm<RegisterFormValues>({
@@ -50,7 +50,7 @@ const Register: React.FC = () => {
         phone: data.phone
       };
       
-      await registerUser(userData);
+      await signUp(data.email, data.password, data.name);
       navigate('/home');
     } catch (error) {
       // Error is handled in the AuthContext

@@ -22,6 +22,7 @@ import News from '@/pages/News';
 import NewsDetail from '@/pages/NewsDetail';
 import Promotions from '@/pages/Promotions';
 import Settings from '@/pages/Settings';
+import Auth from '@/pages/Auth';
 import NotFound from '@/pages/NotFound';
 
 const queryClient = new QueryClient({
@@ -61,6 +62,7 @@ function App() {
                     <Route path="/news/:id" element={<NewsDetail />} />
                     <Route path="/promotions" element={<Promotions />} />
                     <Route path="/settings" element={<Settings />} />
+                    <Route path="/auth" element={<Auth />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </div>

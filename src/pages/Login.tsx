@@ -27,7 +27,7 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 const Login: React.FC = () => {
-  const { login, isLoading } = useAuth();
+  const { signIn, isLoading } = useAuth();
   const navigate = useNavigate();
   
   const form = useForm<LoginFormValues>({
@@ -40,7 +40,7 @@ const Login: React.FC = () => {
   
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      await login(data.email, data.password);
+      await signIn(data.email, data.password);
       navigate('/home');
     } catch (error) {
       // Error is handled in the AuthContext
@@ -52,7 +52,7 @@ const Login: React.FC = () => {
     form.setValue('email', email);
     form.setValue('password', password);
     try {
-      await login(email, password);
+      await signIn(email, password);
       navigate('/home');
     } catch (error) {
       console.error('Quick login error:', error);
