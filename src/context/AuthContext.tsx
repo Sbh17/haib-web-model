@@ -20,8 +20,6 @@ interface AuthContextType {
   isLoading: boolean;
   signUp: (email: string, password: string, fullName?: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
-  signInWithGoogle: () => Promise<{ error: any }>;
-  signInWithFacebook: () => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   isRole: (role: UserRole | UserRole[]) => boolean;
 }
@@ -126,34 +124,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { error };
   };
 
-  const signInWithGoogle = async () => {
-    setIsLoading(true);
-    
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/`
-      }
-    });
-    
-    setIsLoading(false);
-    return { error };
-  };
-
-  const signInWithFacebook = async () => {
-    setIsLoading(true);
-    
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'facebook',
-      options: {
-        redirectTo: `${window.location.origin}/`
-      }
-    });
-    
-    setIsLoading(false);
-    return { error };
-  };
-
   const signOut = async () => {
     await supabase.auth.signOut();
     toast({
@@ -179,8 +149,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     isLoading,
     signUp,
     signIn,
-    signInWithGoogle,
-    signInWithFacebook,
     signOut,
     isRole,
   };

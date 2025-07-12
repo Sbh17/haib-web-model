@@ -22,11 +22,11 @@ import { Settings } from 'lucide-react';
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
-  const { user, logout, isRole } = useAuth();
+  const { user, profile, signOut, isRole } = useAuth();
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   
-  if (!user) {
-    navigate('/login');
+  if (!profile) {
+    navigate('/auth');
     return null;
   }
   
@@ -39,7 +39,7 @@ const Profile: React.FC = () => {
   };
   
   const handleLogout = async () => {
-    await logout();
+    await signOut();
     navigate('/');
   };
   
@@ -93,18 +93,18 @@ const Profile: React.FC = () => {
         </div>
         <div className="flex items-center">
           <Avatar className="h-16 w-16 mr-4">
-            <AvatarImage src={user.avatar} />
+            <AvatarImage src={profile.avatar_url || '/placeholder.svg'} />
             <AvatarFallback className="bg-beauty-primary text-white text-lg">
-              {getInitials(user.name)}
+              {getInitials(profile.full_name || 'User')}
             </AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-2xl font-bold">{user.name}</h1>
-            <p className="text-gray-500">{user.email}</p>
+            <h1 className="text-2xl font-bold">{profile.full_name}</h1>
+            <p className="text-gray-500">{user?.email}</p>
             <div className="mt-1">
               <span className="bg-beauty-primary/10 text-beauty-primary text-xs px-2 py-1 rounded-full">
-                {user.role === 'salon_owner' ? 'Salon Owner' : 
-                 user.role === 'admin' ? 'Administrator' : 'User'}
+                 {profile.role === 'salon_owner' ? 'Salon Owner' : 
+                 profile.role === 'admin' ? 'Administrator' : 'User'}
               </span>
             </div>
           </div>

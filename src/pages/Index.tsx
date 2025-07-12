@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 import { useFavorites } from '@/context/FavoritesContext';
 import { useLocation } from '@/context/LocationContext';
 import { useQuery } from '@tanstack/react-query';
@@ -15,10 +16,11 @@ import BottomNavigation from '@/components/BottomNavigation';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ThemeToggle from '@/components/ThemeToggle';
 import Logo from '@/components/Logo';
-import { Search, MapPin, Star } from 'lucide-react';
+import { Search, MapPin, Star, User } from 'lucide-react';
 
 const Index: React.FC = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { favoriteCount } = useFavorites();
   const { userLocation, requestLocation } = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
@@ -75,6 +77,20 @@ const Index: React.FC = () => {
               </div>
             </div>
             <div className="flex items-center gap-2">
+              {user ? (
+                <Link to="/profile">
+                  <Button variant="outline" size="sm" className="text-white border-white/20 hover:bg-white/20">
+                    <User className="h-4 w-4 mr-2" />
+                    Profile
+                  </Button>
+                </Link>
+              ) : (
+                <Link to="/auth">
+                  <Button variant="outline" size="sm" className="text-white border-white/20 hover:bg-white/20">
+                    Sign In
+                  </Button>
+                </Link>
+              )}
               <ThemeToggle 
                 className="text-white hover:bg-white/20 border-white/20" 
                 variant="outline"
