@@ -22,6 +22,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   isRole: (role: UserRole | UserRole[]) => boolean;
+  mockSignIn: (role?: UserRole) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -124,6 +125,43 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { error };
   };
 
+  const mockSignIn = (role: UserRole = 'user') => {
+    // Create mock user
+    const mockUser = {
+      id: `mock-${role}-${Date.now()}`,
+      email: `${role}@example.com`,
+      aud: 'authenticated',
+      role: 'authenticated',
+      email_confirmed_at: new Date().toISOString(),
+      phone: '',
+      confirmed_at: new Date().toISOString(),
+      last_sign_in_at: new Date().toISOString(),
+      app_metadata: {},
+      user_metadata: {},
+      identities: [],
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    } as SupabaseUser;
+
+    // Create mock profile
+    const mockProfile = {
+      id: mockUser.id,
+      full_name: role === 'admin' ? 'Admin User' : role === 'salon_owner' ? 'Salon Owner' : 'Regular User',
+      avatar_url: null,
+      role: role,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    } as Profile;
+
+    setUser(mockUser);
+    setProfile(mockProfile);
+
+    toast({
+      title: "Mock Sign In Successful!",
+      description: `Signed in as ${mockProfile.full_name} (${role})`,
+    });
+  };
+
   const signOut = async () => {
     await supabase.auth.signOut();
     toast({
@@ -151,6 +189,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     signIn,
     signOut,
     isRole,
+    mockSignIn,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -28,7 +28,7 @@ type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 const Auth: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
-  const { signIn, signUp, isLoading, user } = useAuth();
+  const { signIn, signUp, isLoading, user, mockSignIn } = useAuth();
   const navigate = useNavigate();
 
   const signInForm = useForm<SignInFormValues>({
@@ -82,6 +82,36 @@ const Auth: React.FC = () => {
         </CardHeader>
         
         <CardContent className="space-y-4">
+          {/* Mock Sign In Buttons for Testing */}
+          <div className="bg-muted/50 p-4 rounded-lg border-2 border-dashed border-muted-foreground/20">
+            <p className="text-sm font-medium mb-3 text-muted-foreground">Quick Demo Access:</p>
+            <div className="grid grid-cols-3 gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => mockSignIn('user')}
+                className="text-xs"
+              >
+                👤 User
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => mockSignIn('salon_owner')}
+                className="text-xs"
+              >
+                💼 Owner
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => mockSignIn('admin')}
+                className="text-xs"
+              >
+                👑 Admin
+              </Button>
+            </div>
+          </div>
 
           {/* Email/Password Form */}
           {isSignUp ? (
