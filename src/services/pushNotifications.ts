@@ -1,5 +1,6 @@
 import { PushNotifications } from '@capacitor/push-notifications';
 import { Capacitor } from '@capacitor/core';
+import { supabase } from '@/integrations/supabase/client';
 
 export class PushNotificationService {
   static async requestPermissions() {
@@ -50,15 +51,25 @@ export class PushNotificationService {
 
   private static async storeDeviceToken(token: string) {
     try {
-      // Store the device token in localStorage for now
-      // In production, you'd want to send this to your backend
+      // Store the device token in localStorage
       localStorage.setItem('pushToken', token);
       
-      // TODO: Send token to your backend API
-      // await fetch('/api/store-push-token', {
-      //   method: 'POST',
-      //   body: JSON.stringify({ token, userId: currentUserId })
-      // });
+      // Determine platform
+      const platform = Capacitor.getPlatform() === 'ios' ? 'ios' : 'android';
+      
+      // Send token to backend
+      const { data, error } = await supabase.functions.invoke('store-push-token', {
+        body: {
+          pushToken: token,
+          platform: platform
+        }
+      });
+      
+      if (error) {
+        console.error('Error storing push token in backend:', error);
+      } else {
+        console.log('Push token stored successfully in backend');
+      }
     } catch (error) {
       console.error('Error storing device token:', error);
     }

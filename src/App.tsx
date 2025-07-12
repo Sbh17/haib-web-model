@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/context/AuthContext';
@@ -7,6 +7,7 @@ import { FavoritesProvider } from '@/context/FavoritesContext';
 import { LocationProvider } from '@/context/LocationContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 import { Toaster } from '@/components/ui/toaster';
+import { PushNotificationService } from '@/services/pushNotifications';
 
 // Import pages
 import Welcome from '@/pages/Welcome';
@@ -20,6 +21,7 @@ import Appointments from '@/pages/Appointments';
 import News from '@/pages/News';
 import NewsDetail from '@/pages/NewsDetail';
 import Promotions from '@/pages/Promotions';
+import Settings from '@/pages/Settings';
 import NotFound from '@/pages/NotFound';
 
 const queryClient = new QueryClient({
@@ -32,6 +34,11 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  useEffect(() => {
+    // Initialize push notifications when the app starts
+    PushNotificationService.initialize();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
@@ -53,6 +60,7 @@ function App() {
                     <Route path="/news" element={<News />} />
                     <Route path="/news/:id" element={<NewsDetail />} />
                     <Route path="/promotions" element={<Promotions />} />
+                    <Route path="/settings" element={<Settings />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </div>

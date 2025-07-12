@@ -7,6 +7,7 @@ import { Switch } from '@/components/ui/switch';
 import { ArrowLeftIcon, BellIcon, Monitor } from 'lucide-react';
 import BottomNavigation from '@/components/BottomNavigation';
 import ThemeToggle from '@/components/ThemeToggle';
+import { NotificationSettings } from '@/components/NotificationSettings';
 import { useTheme } from '@/context/ThemeContext';
 
 const Settings: React.FC = () => {
@@ -86,39 +87,10 @@ const Settings: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl">Notifications</CardTitle>
-            <CardDescription>Configure how you receive notifications</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <BellIcon className="h-5 w-5 text-beauty-primary" />
-                <div>
-                  <p className="font-medium">Push Notifications</p>
-                  <p className="text-sm text-muted-foreground">
-                    Receive notifications about your appointments
-                  </p>
-                </div>
-              </div>
-              <Switch defaultChecked />
-            </div>
-            <Separator />
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <BellIcon className="h-5 w-5 text-beauty-primary" />
-                <div>
-                  <p className="font-medium">Email Notifications</p>
-                  <p className="text-sm text-muted-foreground">
-                    Receive emails about promotions and news
-                  </p>
-                </div>
-              </div>
-              <Switch defaultChecked />
-            </div>
-          </CardContent>
-        </Card>
+        <div className="space-y-6">
+          <h2 className="text-xl font-semibold">Notifications</h2>
+          <NotificationSettings />
+        </div>
 
         <Card>
           <CardHeader>
