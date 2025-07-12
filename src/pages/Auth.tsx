@@ -18,7 +18,7 @@ const signInSchema = z.object({
 });
 
 const signUpSchema = z.object({
-  fullName: z.string().min(1, 'Name is required').min(2, 'Name must be at least 2 characters'),
+  fullName: z.string().min(1, 'Name is required'),
   email: z.string().min(1, 'Email is required').email('Please enter a valid email'),
   password: z.string().min(1, 'Password is required').min(6, 'Password must be at least 6 characters'),
 });
@@ -33,6 +33,8 @@ const Auth: React.FC = () => {
 
   const signInForm = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
     defaultValues: {
       email: '',
       password: '',
@@ -41,7 +43,8 @@ const Auth: React.FC = () => {
 
   const signUpForm = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
-    mode: 'onChange',
+    mode: 'onSubmit',
+    reValidateMode: 'onChange',
     defaultValues: {
       fullName: '',
       email: '',
