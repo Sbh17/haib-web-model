@@ -8,15 +8,16 @@ import { UserIcon, CrownIcon, ShieldCheckIcon, ToggleLeftIcon, ToggleRightIcon }
 import { UserRole } from '@/types';
 
 const DevTools: React.FC = () => {
-  const { user, switchRole } = useAuth();
+  const { user, profile } = useAuth();
 
   // Only show in development
   if (import.meta.env.PROD) {
     return null;
   }
 
+  // Role switching temporarily disabled
   const handleRoleSwitch = (role: UserRole) => {
-    switchRole(role);
+    console.log('Role switching disabled in new auth system');
   };
 
   const roles = [
@@ -45,17 +46,17 @@ const DevTools: React.FC = () => {
       <CardHeader className="pb-3">
         <CardTitle className="text-sm flex items-center justify-between">
           <span>🛠️ Role Switcher</span>
-          {user && (
+          {profile && (
             <Badge variant="outline" className="text-xs">
-              {user.role}
+              {profile.role}
             </Badge>
           )}
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {user && (
+        {profile && (
           <div className="text-xs text-muted-foreground mb-3">
-            Current user: <span className="font-medium">{user.name}</span>
+            Current user: <span className="font-medium">{profile.full_name}</span>
           </div>
         )}
         
@@ -63,7 +64,7 @@ const DevTools: React.FC = () => {
           <p className="text-xs text-muted-foreground mb-2">Switch Role:</p>
           {roles.map((role) => {
             const Icon = role.icon;
-            const isActive = user?.role === role.key;
+            const isActive = profile?.role === role.key;
             
             return (
               <Button

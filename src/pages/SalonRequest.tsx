@@ -57,7 +57,7 @@ type SalonRequestFormValues = z.infer<typeof salonRequestSchema>;
 
 const SalonRequest: React.FC = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -71,7 +71,7 @@ const SalonRequest: React.FC = () => {
       address: '',
       city: '',
       businessId: '',
-      ownerName: user?.name || '',
+      ownerName: profile?.full_name || '',
       ownerEmail: user?.email || '',
       ownerPhone: user?.phone || '',
       services: [{ name: '', description: '', price: '', duration: '' }],
