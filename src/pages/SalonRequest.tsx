@@ -21,7 +21,7 @@ import { ChevronLeftIcon, ImageIcon, PlusIcon, X, Facebook, Instagram, Twitter, 
 import { useToast } from '@/components/ui/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ServiceInputCard, { ServiceInput } from '@/components/ServiceInputCard';
-import { SalonRequestService, SocialMedia } from '@/types';
+import { SalonRequestService, SocialMedia, SalonRequest as SalonRequestType } from '@/types';
 import { Separator } from '@/components/ui/separator';
 
 const serviceSchema = z.object({
@@ -168,15 +168,15 @@ const SalonRequest: React.FC = () => {
       ) as SalonRequestService[];
       
       // Create properly typed request data
-      const requestData = {
-        name: data.name,
-        description: data.description,
-        address: data.address,
-        city: data.city,
+      const requestData: Omit<SalonRequestType, 'id' | 'status' | 'createdAt'> = {
+        name: data.name!,
+        description: data.description!,
+        address: data.address!,
+        city: data.city!,
         businessId: data.businessId,
-        ownerName: data.ownerName,
-        ownerEmail: data.ownerEmail,
-        ownerPhone: data.ownerPhone,
+        ownerName: data.ownerName!,
+        ownerEmail: data.ownerEmail!,
+        ownerPhone: data.ownerPhone!,
         services: validServices,
         images: data.images,
         socialMedia: Object.keys(socialMedia).length > 0 ? socialMedia : undefined,

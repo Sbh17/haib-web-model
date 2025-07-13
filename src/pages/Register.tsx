@@ -42,14 +42,6 @@ const Register: React.FC = () => {
   
   const onSubmit = async (data: RegisterFormValues) => {
     try {
-      // Ensure we're sending correctly typed data to registerUser
-      const userData = {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        phone: data.phone
-      };
-      
       await signUp(data.email, data.password, data.name);
       navigate('/home');
     } catch (error) {

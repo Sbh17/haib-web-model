@@ -78,7 +78,7 @@ const Profile: React.FC = () => {
   ];
   
   const filteredNavigation = navigation.filter(item => 
-    item.roles.some(role => isRole(role))
+    isRole(item.roles)
   );
   
   return (
