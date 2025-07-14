@@ -191,7 +191,7 @@ const Auth: React.FC = () => {
                   )}
                 />
                 
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                <Button type="submit" variant="black" className="w-full" disabled={isLoading}>
                   {isLoading ? <LoadingSpinner /> : 'Sign In'}
                 </Button>
               </form>
