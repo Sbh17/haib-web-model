@@ -164,7 +164,8 @@ const Login: React.FC = () => {
             
             <Button
               type="submit"
-              className="w-full bg-beauty-primary hover:bg-beauty-primary/90 text-white font-medium shadow-md"
+              variant="black"
+              className="w-full font-medium shadow-md"
               disabled={isLoading}
             >
               {isLoading ? <LoadingSpinner size="sm" /> : 'Sign In'}
