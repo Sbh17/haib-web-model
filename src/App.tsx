@@ -22,6 +22,8 @@ import News from '@/pages/News';
 import NewsDetail from '@/pages/NewsDetail';
 import Promotions from '@/pages/Promotions';
 import Settings from '@/pages/Settings';
+import Profile from '@/pages/Profile';
+import ProfileSettings from '@/pages/ProfileSettings';
 import Auth from '@/pages/Auth';
 import NotFound from '@/pages/NotFound';
 
@@ -62,6 +64,8 @@ function App() {
                     <Route path="/news/:id" element={<NewsDetail />} />
                     <Route path="/promotions" element={<Promotions />} />
                     <Route path="/settings" element={<Settings />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/profile/settings" element={<ProfileSettings />} />
                     <Route path="/auth" element={<Auth />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
