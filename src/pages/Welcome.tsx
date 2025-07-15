@@ -2,7 +2,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowRightIcon, StarIcon, CalendarIcon, SearchIcon, MapPinIcon } from 'lucide-react';
+import { 
+  ArrowRightIcon, 
+  StarIcon, 
+  CalendarIcon, 
+  SearchIcon, 
+  MapPinIcon,
+  Instagram,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Youtube
+} from 'lucide-react';
 
 const Welcome: React.FC = () => {
   return (
@@ -144,6 +155,55 @@ const Welcome: React.FC = () => {
           <div className="text-center mb-8">
             <h3 className="dior-heading-sm text-foreground mb-2">HAIB</h3>
             <p className="dior-body-sm text-muted-foreground">Excellence in Beauty Services</p>
+          </div>
+          
+          {/* Social Media Links */}
+          <div className="flex justify-center gap-6 mb-8">
+            <a 
+              href="https://instagram.com/haib" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="w-12 h-12 bg-black text-white flex items-center justify-center hover:bg-black/80 transition-colors duration-300 group"
+              aria-label="Follow us on Instagram"
+            >
+              <Instagram className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
+            </a>
+            <a 
+              href="https://facebook.com/haib" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="w-12 h-12 bg-black text-white flex items-center justify-center hover:bg-black/80 transition-colors duration-300 group"
+              aria-label="Follow us on Facebook"
+            >
+              <Facebook className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
+            </a>
+            <a 
+              href="https://twitter.com/haib" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="w-12 h-12 bg-black text-white flex items-center justify-center hover:bg-black/80 transition-colors duration-300 group"
+              aria-label="Follow us on Twitter"
+            >
+              <Twitter className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
+            </a>
+            <a 
+              href="https://linkedin.com/company/haib" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="w-12 h-12 bg-black text-white flex items-center justify-center hover:bg-black/80 transition-colors duration-300 group"
+              aria-label="Follow us on LinkedIn"
+            >
+              <Linkedin className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
+            </a>
+            <a 
+              href="https://youtube.com/@haib" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="w-12 h-12 bg-black text-white flex items-center justify-center hover:bg-black/80 transition-colors duration-300 group"
+              aria-label="Follow us on YouTube"
+            >
+              <Youtube className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
+            </a>
           </div>
           
           <div className="flex flex-wrap justify-center gap-8 mb-8">
