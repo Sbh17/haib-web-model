@@ -8,7 +8,7 @@ interface LogoProps {
   height?: number;
 }
 
-const Logo: React.FC<LogoProps> = ({ className = '', width = 80, height = 28 }) => {
+const Logo: React.FC<LogoProps> = ({ className = '', width = 120, height = 40 }) => {
   return (
     <div className={`flex items-center ${className}`}>
       <img
