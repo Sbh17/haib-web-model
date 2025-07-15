@@ -26,6 +26,7 @@ import Profile from '@/pages/Profile';
 import ProfileSettings from '@/pages/ProfileSettings';
 import Auth from '@/pages/Auth';
 import NotFound from '@/pages/NotFound';
+import Header from '@/components/Header';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,6 +51,7 @@ function App() {
             <LocationProvider>
               <Router>
                 <div className="min-h-screen bg-background">
+                  <Header />
                   <Routes>
                     <Route path="/" element={<Navigate to="/home" replace />} />
                     <Route path="/welcome" element={<Welcome />} />
