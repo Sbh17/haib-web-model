@@ -1,10 +1,11 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Bell, User, Search, Menu } from 'lucide-react';
+import { ArrowLeft, User, Search, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import Logo from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
+import NotificationPanel from '@/components/NotificationPanel';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -84,14 +85,7 @@ const Header: React.FC = () => {
             <Search className="h-4 w-4" />
           </Button>
           
-          <Button
-            variant="ghost"
-            size="sm"
-            className="relative hover:bg-accent"
-          >
-            <Bell className="h-4 w-4" />
-            <span className="absolute -top-1 -right-1 h-2 w-2 bg-primary rounded-full"></span>
-          </Button>
+          <NotificationPanel onNavigate={navigate} />
 
           <ThemeToggle />
 
