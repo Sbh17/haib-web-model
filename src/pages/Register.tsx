@@ -10,10 +10,15 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Checkbox } from '@/components/ui/checkbox';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useAuth } from '@/context/AuthContext';
-import { Mail, Lock, User, ArrowLeft } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { Mail, Lock, User, ArrowLeft, Chrome, Github } from 'lucide-react';
 
 const signUpSchema = z.object({
-  fullName: z.string().min(2, 'Name must be at least 2 characters'),
+  fullName: z.string()
+    .min(2, 'Name must be at least 2 characters')
+    .max(50, 'Name must be less than 50 characters')
+    .regex(/^[a-zA-Z\s'-]+$/, 'Name can only contain letters, spaces, apostrophes, and hyphens')
+    .refine(val => val.trim().split(' ').length >= 2, 'Please enter your first and last name'),
   email: z.string().min(1, 'Email is required').email('Please enter a valid email'),
   password: z.string()
     .min(8, 'Password must be at least 8 characters')
@@ -53,7 +58,7 @@ const Register: React.FC = () => {
   const onSubmit = async (data: SignUpFormValues) => {
     setIsSubmitting(true);
     try {
-      const { error } = await signUp(data.email, data.password, data.fullName);
+      const { error } = await signUp(data.email, data.password, data.fullName.trim());
       if (!error) {
         // Success is handled by the auth context with toast
         // User will be redirected after email verification
@@ -62,6 +67,23 @@ const Register: React.FC = () => {
       console.error('Signup error:', error);
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleSocialSignIn = async (provider: 'google' | 'github') => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: provider,
+        options: {
+          redirectTo: `${window.location.origin}/home`
+        }
+      });
+      
+      if (error) {
+        console.error('Social sign in error:', error);
+      }
+    } catch (error) {
+      console.error('Social sign in error:', error);
     }
   };
 
@@ -95,6 +117,46 @@ const Register: React.FC = () => {
             </CardHeader>
             
             <CardContent className="px-8 pb-8">
+              {/* Social Sign Up Options */}
+              <div className="space-y-4 mb-8">
+                <div className="text-center">
+                  <p className="dior-label text-muted-foreground mb-4">Sign up with</p>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="h-12 border-2 hover:bg-accent/50"
+                    onClick={() => handleSocialSignIn('google')}
+                  >
+                    <Chrome className="w-5 h-5 mr-2" />
+                    <span className="dior-label">Google</span>
+                  </Button>
+                  
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="h-12 border-2 hover:bg-accent/50"
+                    onClick={() => handleSocialSignIn('github')}
+                  >
+                    <Github className="w-5 h-5 mr-2" />
+                    <span className="dior-label">GitHub</span>
+                  </Button>
+                </div>
+                
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t border-border" />
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-4 text-muted-foreground dior-label">
+                      Or continue with email
+                    </span>
+                  </div>
+                </div>
+              </div>
+
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <FormField
@@ -107,7 +169,7 @@ const Register: React.FC = () => {
                           <div className="relative">
                             <User className="absolute left-4 top-4 h-4 w-4 text-muted-foreground" />
                             <Input 
-                              placeholder="Enter your full name" 
+                              placeholder="Enter your first and last name" 
                               className="beauty-input pl-12 h-12 text-base" 
                               {...field} 
                             />

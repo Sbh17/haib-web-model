@@ -10,7 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Separator } from '@/components/ui/separator';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useAuth } from '@/context/AuthContext';
-import { Mail, Lock, User } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { Mail, Lock, User, Chrome, Github } from 'lucide-react';
 
 const signInSchema = z.object({
   email: z.string().email('Please enter a valid email'),
@@ -18,9 +19,15 @@ const signInSchema = z.object({
 });
 
 const signUpSchema = z.object({
-  fullName: z.string().min(1, 'Name is required'),
+  fullName: z.string()
+    .min(2, 'Name must be at least 2 characters')
+    .max(50, 'Name must be less than 50 characters')
+    .regex(/^[a-zA-Z\s'-]+$/, 'Name can only contain letters, spaces, apostrophes, and hyphens')
+    .refine(val => val.trim().split(' ').length >= 2, 'Please enter your first and last name'),
   email: z.string().min(1, 'Email is required').email('Please enter a valid email'),
-  password: z.string().min(1, 'Password is required').min(6, 'Password must be at least 6 characters'),
+  password: z.string()
+    .min(8, 'Password must be at least 8 characters')
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'Password must contain at least one uppercase letter, one lowercase letter, and one number'),
 });
 
 type SignInFormValues = z.infer<typeof signInSchema>;
@@ -63,7 +70,24 @@ const Auth: React.FC = () => {
   };
 
   const onSignUp = async (data: SignUpFormValues) => {
-    await signUp(data.email, data.password, data.fullName);
+    await signUp(data.email, data.password, data.fullName.trim());
+  };
+
+  const handleSocialSignIn = async (provider: 'google' | 'github') => {
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: provider,
+        options: {
+          redirectTo: `${window.location.origin}/home`
+        }
+      });
+      
+      if (error) {
+        console.error('Social sign in error:', error);
+      }
+    } catch (error) {
+      console.error('Social sign in error:', error);
+    }
   };
 
   return (
@@ -82,6 +106,48 @@ const Auth: React.FC = () => {
         </CardHeader>
         
         <CardContent className="space-y-4">
+          {/* Social Sign In Options */}
+          <div className="space-y-4">
+            <div className="text-center">
+              <p className="dior-label text-muted-foreground mb-4">
+                {isSignUp ? 'Sign up with' : 'Sign in with'}
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <Button
+                type="button"
+                variant="outline"
+                className="h-12 border-2 hover:bg-accent/50"
+                onClick={() => handleSocialSignIn('google')}
+              >
+                <Chrome className="w-5 h-5 mr-2" />
+                <span className="dior-label">Google</span>
+              </Button>
+              
+              <Button
+                type="button"
+                variant="outline"
+                className="h-12 border-2 hover:bg-accent/50"
+                onClick={() => handleSocialSignIn('github')}
+              >
+                <Github className="w-5 h-5 mr-2" />
+                <span className="dior-label">GitHub</span>
+              </Button>
+            </div>
+            
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t border-border" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-4 text-muted-foreground dior-label">
+                  Or continue with email
+                </span>
+              </div>
+            </div>
+          </div>
+
           {/* Mock Sign In Button for Testing */}
           <div className="bg-muted/50 p-4 rounded-lg border-2 border-dashed border-muted-foreground/20">
             <p className="text-sm font-medium mb-3 text-muted-foreground">Quick Demo Access:</p>
@@ -107,7 +173,7 @@ const Auth: React.FC = () => {
                       <FormControl>
                         <div className="relative">
                           <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                          <Input placeholder="Enter your full name" className="pl-10" {...field} />
+                          <Input placeholder="Enter your first and last name" className="pl-10" {...field} />
                         </div>
                       </FormControl>
                       <FormMessage />
