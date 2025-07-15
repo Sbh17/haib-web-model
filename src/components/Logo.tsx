@@ -8,7 +8,7 @@ interface LogoProps {
   height?: number;
 }
 
-const Logo: React.FC<LogoProps> = ({ className = '', width = 120, height = 40 }) => {
+const Logo: React.FC<LogoProps> = ({ className = '', width = 80, height = 28 }) => {
   const { theme } = useTheme();
   
   return (
@@ -18,7 +18,7 @@ const Logo: React.FC<LogoProps> = ({ className = '', width = 120, height = 40 })
         alt="HAIB Logo"
         width={width}
         height={height}
-        className="object-contain"
+        className="object-contain drop-shadow-sm transition-transform duration-200 hover:scale-105"
       />
     </div>
   );
