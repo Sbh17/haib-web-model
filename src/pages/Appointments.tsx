@@ -17,7 +17,7 @@ import {
 import AppointmentCard from '@/components/AppointmentCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import BottomNavigation from '@/components/BottomNavigation';
-import Logo from '@/components/Logo';
+
 import { useToast } from '@/components/ui/use-toast';
 
 interface FullAppointment {
@@ -134,15 +134,6 @@ const Appointments: React.FC = () => {
   
   return (
     <div className="pb-20">
-      <header className="bg-background p-6 pt-12 shadow-sm border-b">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-2xl font-bold mb-1 text-foreground">My Appointments</h1>
-            <p className="text-muted-foreground">View and manage your bookings</p>
-          </div>
-          <Logo width={100} height={32} />
-        </div>
-      </header>
       
       {isLoading ? (
         <div className="py-12">

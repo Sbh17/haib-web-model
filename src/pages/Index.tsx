@@ -14,8 +14,8 @@ import SalonCard from '@/components/SalonCard';
 import NewsList from '@/components/NewsList';
 import BottomNavigation from '@/components/BottomNavigation';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import ThemeToggle from '@/components/ThemeToggle';
-import Logo from '@/components/Logo';
+
+
 import { Search, MapPin, Star, User } from 'lucide-react';
 
 const Index: React.FC = () => {
@@ -61,42 +61,15 @@ const Index: React.FC = () => {
 
   return (
     <div className="pb-20 bg-gradient-to-b from-beauty-primary/5 to-background min-h-screen">
-      {/* Header */}
-      <header className="bg-gradient-to-r from-beauty-primary to-beauty-secondary text-white p-6 pb-8 shadow-lg">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center mb-6">
-            <div className="flex items-center">
-              <Logo className="mr-4" width={120} height={40} />
-              <div>
-                <h1 className="text-2xl font-bold text-white">
-                  Welcome to HAIB!
-                </h1>
-                <p className="text-sm text-white/90">
-                  Discover amazing salons and book your next appointment
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              {user ? (
-                <Link to="/profile">
-                  <Button variant="outline" size="sm" className="text-white border-white/20 hover:bg-white/20">
-                    <User className="h-4 w-4 mr-2" />
-                    Profile
-                  </Button>
-                </Link>
-              ) : (
-                <Link to="/auth">
-                  <Button variant="outline" size="sm" className="text-white border-white/20 hover:bg-white/20">
-                    Sign In
-                  </Button>
-                </Link>
-              )}
-              <ThemeToggle 
-                className="text-white hover:bg-white/20 border-white/20" 
-                variant="outline"
-              />
-            </div>
-          </div>
+      {/* Search Section */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="bg-gradient-to-r from-beauty-primary to-beauty-secondary text-white p-6 pb-8 shadow-lg rounded-lg mb-8">
+          <h1 className="text-2xl font-bold text-white mb-2">
+            Welcome to HAIB!
+          </h1>
+          <p className="text-sm text-white/90 mb-6">
+            Discover amazing salons and book your next appointment
+          </p>
 
           {/* Location Status */}
           <div className="flex items-center mb-6 text-sm text-white/90">
@@ -132,7 +105,7 @@ const Index: React.FC = () => {
             </Button>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Featured Salons */}
       <section className="px-6 mb-8 mt-8">

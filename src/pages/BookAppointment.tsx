@@ -15,7 +15,7 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import WorkerSelection from '@/components/WorkerSelection';
-import Logo from '@/components/Logo';
+
 
 interface BookingState {
   salonId: string;
@@ -155,19 +155,6 @@ const BookAppointment: React.FC = () => {
   
   return (
     <div className="pb-6">
-      {/* Header */}
-      <div className="bg-white p-6 shadow-sm flex items-center">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="mr-2"
-          onClick={() => navigate(-1)}
-        >
-          <ChevronLeftIcon className="h-5 w-5" />
-        </Button>
-        <h1 className="text-xl font-semibold flex-1">Book Appointment</h1>
-        <Logo width={80} height={26} />
-      </div>
       
       <div className="p-6">
         {/* Service Info */}

@@ -5,7 +5,7 @@ import api from '@/services/api';
 import NewsList from '@/components/NewsList';
 import BottomNavigation from '@/components/BottomNavigation';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import Logo from '@/components/Logo';
+
 import { ArrowLeftIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -37,26 +37,10 @@ const News: React.FC = () => {
 
   return (
     <div className="min-h-screen pb-20">
-      <header className="bg-beauty-primary text-white p-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="flex items-center justify-between mb-4">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-white hover:bg-white/10 -ml-2"
-              asChild
-            >
-              <Link to="/home">
-                <ArrowLeftIcon className="mr-2 h-4 w-4" />
-                Back to Home
-              </Link>
-            </Button>
-            <Logo width={100} height={32} />
-          </div>
-          <h1 className="text-2xl font-bold">Latest News</h1>
-          <p className="opacity-90">Stay updated with beauty trends and announcements</p>
-        </div>
-      </header>
+      <div className="bg-gradient-to-r from-beauty-primary to-beauty-secondary text-white p-6 mx-6 mt-4 rounded-lg shadow-lg">
+        <h1 className="text-2xl font-bold">Latest News</h1>
+        <p className="opacity-90">Stay updated with beauty trends and announcements</p>
+      </div>
 
       <main className="max-w-5xl mx-auto p-6">
         {news && <NewsList newsItems={news} showViewAll={false} />}
