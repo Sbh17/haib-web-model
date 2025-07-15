@@ -19,6 +19,17 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				'playfair': ['Playfair Display', 'serif'],
+				'baskerville': ['Libre Baskerville', 'serif'],
+				'inter': ['Inter', 'sans-serif'],
+			},
+			letterSpacing: {
+				'luxury': '0.025em',
+				'wide': '0.05em',
+				'wider': '0.1em',
+				'widest': '0.15em',
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
