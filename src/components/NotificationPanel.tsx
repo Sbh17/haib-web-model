@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Bell, X, Calendar, Star, Gift, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -90,11 +91,8 @@ const formatTimeAgo = (date: Date) => {
   return `${diffInDays}d ago`;
 };
 
-interface NotificationPanelProps {
-  onNavigate?: (url: string) => void;
-}
-
-const NotificationPanel: React.FC<NotificationPanelProps> = ({ onNavigate }) => {
+const NotificationPanel: React.FC = () => {
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -118,8 +116,8 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onNavigate }) => 
 
   const handleNotificationClick = (notification: Notification) => {
     markAsRead(notification.id);
-    if (notification.actionUrl && onNavigate) {
-      onNavigate(notification.actionUrl);
+    if (notification.actionUrl) {
+      navigate(notification.actionUrl);
       setIsOpen(false);
     }
   };

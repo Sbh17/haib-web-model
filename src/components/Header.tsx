@@ -85,7 +85,7 @@ const Header: React.FC = () => {
             <Search className="h-4 w-4" />
           </Button>
           
-          <NotificationPanel onNavigate={navigate} />
+          <NotificationPanel />
 
           <ThemeToggle />
 

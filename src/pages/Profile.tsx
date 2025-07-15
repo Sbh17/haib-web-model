@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -25,8 +24,13 @@ const Profile: React.FC = () => {
   const { user, profile, signOut, isRole } = useAuth();
   const [isLogoutDialogOpen, setIsLogoutDialogOpen] = useState(false);
   
+  useEffect(() => {
+    if (!profile) {
+      navigate('/auth');
+    }
+  }, [profile, navigate]);
+  
   if (!profile) {
-    navigate('/auth');
     return null;
   }
   
