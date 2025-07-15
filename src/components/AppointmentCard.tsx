@@ -4,7 +4,7 @@ import { Appointment, Service } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { CalendarIcon, ClockIcon } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock as ClockIcon } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface AppointmentCardProps {

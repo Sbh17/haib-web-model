@@ -4,7 +4,7 @@ import { SalonRequest } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { MapPinIcon, UserIcon, PhoneIcon, MailIcon, CalendarIcon, ScissorsIcon, Facebook, Instagram, Twitter, Linkedin, Youtube } from 'lucide-react';
+import { MapPin as MapPinIcon, User as UserIcon, Phone as PhoneIcon, Mail as MailIcon, Calendar as CalendarIcon, Scissors as ScissorsIcon, Facebook, Instagram, Twitter, Linkedin, Youtube } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface SalonRequestCardProps {

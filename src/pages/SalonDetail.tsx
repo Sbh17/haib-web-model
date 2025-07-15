@@ -8,8 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { 
-  StarIcon, MapPinIcon, PhoneIcon, ClockIcon, ChevronLeftIcon, 
-  CalendarIcon, MessageSquareIcon, Facebook, Instagram, Twitter, Linkedin, Youtube
+  Star as StarIcon, MapPin as MapPinIcon, Phone as PhoneIcon, Clock as ClockIcon, ChevronLeft as ChevronLeftIcon, 
+  Calendar as CalendarIcon, MessageSquare as MessageSquareIcon, Facebook, Instagram, Twitter, Linkedin, Youtube
 } from 'lucide-react';
 import ServiceCard from '@/components/ServiceCard';
 import ReviewCard from '@/components/ReviewCard';

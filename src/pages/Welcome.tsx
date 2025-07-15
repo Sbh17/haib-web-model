@@ -3,11 +3,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { 
-  ArrowRightIcon, 
-  StarIcon, 
-  CalendarIcon, 
-  SearchIcon, 
-  MapPinIcon,
+  ArrowRight as ArrowRightIcon, 
+  Star as StarIcon, 
+  Calendar as CalendarIcon, 
+  Search as SearchIcon, 
+  MapPin as MapPinIcon,
   Instagram,
   Facebook,
   Twitter,

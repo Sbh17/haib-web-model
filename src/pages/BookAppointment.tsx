@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { ChevronLeftIcon, CalendarIcon, ClockIcon } from 'lucide-react';
+import { ChevronLeft as ChevronLeftIcon, Calendar as CalendarIcon, Clock as ClockIcon } from 'lucide-react';
 import { format, addDays, startOfToday, setHours, setMinutes } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';

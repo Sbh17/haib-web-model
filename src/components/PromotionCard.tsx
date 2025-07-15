@@ -2,7 +2,7 @@
 import React from 'react';
 import { Promotion } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
-import { CalendarIcon } from 'lucide-react';
+import { Calendar as CalendarIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 
