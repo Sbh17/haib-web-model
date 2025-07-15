@@ -6,11 +6,22 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import Logo from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
 import NotificationPanel from '@/components/NotificationPanel';
+import { useAuth } from '@/context/AuthContext';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { user } = useAuth();
+  
   const isHomePage = location.pathname === '/home' || location.pathname === '/';
+  
+  // Hide header on welcome and auth pages
+  const hideHeader = location.pathname === '/welcome' || location.pathname === '/auth';
+  
+  // Don't render header if user is not authenticated or on specific pages
+  if (hideHeader || !user) {
+    return null;
+  }
 
   const handleBack = () => {
     navigate(-1);

@@ -164,10 +164,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signOut = async () => {
     await supabase.auth.signOut();
+    // Clear user state immediately
+    setUser(null);
+    setProfile(null);
+    setSession(null);
+    
     toast({
       title: "Signed out",
       description: "You have been successfully signed out."
     });
+    
+    // Redirect to welcome page
+    window.location.href = '/welcome';
   };
 
   const isRole = (role: UserRole | UserRole[]) => {

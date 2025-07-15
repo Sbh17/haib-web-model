@@ -3,9 +3,18 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, Search, Calendar, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/context/AuthContext';
 
 const BottomNavigation: React.FC = () => {
   const location = useLocation();
+  const { user } = useAuth();
+  
+  // Don't show bottom navigation if user is not authenticated or on specific pages
+  const hideNav = location.pathname === '/welcome' || location.pathname === '/auth' || !user;
+  
+  if (hideNav) {
+    return null;
+  }
   
   const isActive = (path: string) => {
     return location.pathname === path;

@@ -27,6 +27,8 @@ import ProfileSettings from '@/pages/ProfileSettings';
 import Auth from '@/pages/Auth';
 import NotFound from '@/pages/NotFound';
 import Header from '@/components/Header';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import AuthRedirect from '@/components/AuthRedirect';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,28 +52,82 @@ function App() {
           <FavoritesProvider>
             <LocationProvider>
               <Router>
-                <div className="min-h-screen bg-background">
-                  <Header />
+                <AuthRedirect>
+                  <div className="min-h-screen bg-background">
+                    <Header />
                   <Routes>
-                    <Route path="/" element={<Navigate to="/home" replace />} />
                     <Route path="/welcome" element={<Welcome />} />
-                    <Route path="/home" element={<Index />} />
-                    <Route path="/search" element={<Search />} />
-                    <Route path="/salon/:id" element={<SalonDetail />} />
-                    <Route path="/book/:salonId/:serviceId" element={<BookAppointment />} />
-                    <Route path="/payment-checkout" element={<PaymentCheckout />} />
-                    <Route path="/payment-success" element={<PaymentSuccess />} />
-                    <Route path="/appointments" element={<Appointments />} />
-                    <Route path="/news" element={<News />} />
-                    <Route path="/news/:id" element={<NewsDetail />} />
-                    <Route path="/promotions" element={<Promotions />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/profile/settings" element={<ProfileSettings />} />
                     <Route path="/auth" element={<Auth />} />
+                    <Route path="/" element={<Navigate to="/home" replace />} />
+                    <Route path="/home" element={
+                      <ProtectedRoute>
+                        <Index />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/search" element={
+                      <ProtectedRoute>
+                        <Search />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/salon/:id" element={
+                      <ProtectedRoute>
+                        <SalonDetail />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/book/:salonId/:serviceId" element={
+                      <ProtectedRoute>
+                        <BookAppointment />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/payment-checkout" element={
+                      <ProtectedRoute>
+                        <PaymentCheckout />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/payment-success" element={
+                      <ProtectedRoute>
+                        <PaymentSuccess />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/appointments" element={
+                      <ProtectedRoute>
+                        <Appointments />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/news" element={
+                      <ProtectedRoute>
+                        <News />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/news/:id" element={
+                      <ProtectedRoute>
+                        <NewsDetail />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/promotions" element={
+                      <ProtectedRoute>
+                        <Promotions />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/settings" element={
+                      <ProtectedRoute>
+                        <Settings />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/profile" element={
+                      <ProtectedRoute>
+                        <Profile />
+                      </ProtectedRoute>
+                    } />
+                    <Route path="/profile/settings" element={
+                      <ProtectedRoute>
+                        <ProfileSettings />
+                      </ProtectedRoute>
+                    } />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
-                </div>
+                  </div>
+                </AuthRedirect>
               </Router>
               <Toaster />
             </LocationProvider>
