@@ -25,6 +25,7 @@ import Settings from '@/pages/Settings';
 import Profile from '@/pages/Profile';
 import ProfileSettings from '@/pages/ProfileSettings';
 import Auth from '@/pages/Auth';
+import Register from '@/pages/Register';
 import NotFound from '@/pages/NotFound';
 import Header from '@/components/Header';
 import ProtectedRoute from '@/components/ProtectedRoute';
@@ -58,6 +59,7 @@ function App() {
                   <Routes>
                     <Route path="/welcome" element={<Welcome />} />
                     <Route path="/auth" element={<Auth />} />
+                    <Route path="/register" element={<Register />} />
                     <Route path="/" element={<Navigate to="/home" replace />} />
                     <Route path="/home" element={
                       <ProtectedRoute>

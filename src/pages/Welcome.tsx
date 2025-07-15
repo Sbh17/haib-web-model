@@ -30,7 +30,7 @@ const Welcome: React.FC = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center mt-12">
-            <Link to="/home">
+            <Link to="/register">
               <Button variant="luxury" size="xl" className="bg-white text-black hover:bg-white/90">
                 Begin Your Journey
               </Button>
@@ -141,7 +141,7 @@ const Welcome: React.FC = () => {
             where luxury meets convenience and every appointment is an experience to remember.
           </p>
           
-          <Link to="/home">
+          <Link to="/register">
             <Button variant="luxury" size="xl" className="bg-white text-black hover:bg-white/90 shadow-lg">
               Start Now <ArrowRightIcon className="w-5 h-5 ml-2" />
             </Button>
