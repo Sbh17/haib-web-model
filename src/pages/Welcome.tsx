@@ -6,25 +6,26 @@ import { ArrowRightIcon, StarIcon, CalendarIcon, SearchIcon, MapPinIcon } from '
 
 const Welcome: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Hero Section - Updated with new color */}
-      <section className="bg-gradient-to-br from-beauty-primary to-beauty-secondary/80 text-white pt-16 pb-24 px-6">
-        <div className="max-w-5xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
+    <div className="min-h-screen flex flex-col bg-background">
+      {/* Hero Section - Dior Inspired */}
+      <section className="bg-black text-white pt-20 pb-32 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <h1 className="dior-heading-xl text-white mb-8 animate-fade-in">
             HAIB
           </h1>
-          <p className="text-xl md:text-2xl opacity-90 mb-8 max-w-2xl mx-auto">
-            Discover and book beauty services at the best salons near you
+          <p className="dior-body-lg text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Discover and book exceptional beauty services at the finest salons. 
+            Experience luxury, sophistication, and unparalleled quality in every appointment.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+          <div className="flex flex-col sm:flex-row gap-6 justify-center mt-12">
             <Link to="/home">
-              <Button size="lg" className="bg-white text-beauty-primary hover:bg-white/90 font-semibold px-8">
-                Get Started
+              <Button variant="luxury" size="xl" className="bg-white text-black hover:bg-white/90">
+                Begin Your Journey
               </Button>
             </Link>
-            <Link to="/login">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 font-semibold px-8">
+            <Link to="/auth">
+              <Button variant="minimal" size="xl" className="border-white text-white hover:bg-white hover:text-black">
                 Sign In
               </Button>
             </Link>
@@ -33,70 +34,86 @@ const Welcome: React.FC = () => {
       </section>
       
       {/* Features Section */}
-      <section className="py-16 px-6 bg-white">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+      <section className="py-24 px-6 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-20">
+            <h2 className="dior-heading-lg text-foreground mb-4">How It Works</h2>
+            <p className="dior-body text-muted-foreground max-w-2xl mx-auto">
+              Three simple steps to your perfect beauty experience
+            </p>
+          </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="flex flex-col items-center text-center p-6 rounded-xl hover:shadow-md transition-shadow">
-              <div className="bg-beauty-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                <SearchIcon className="w-8 h-8 text-beauty-primary" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div className="flex flex-col items-center text-center group">
+              <div className="bg-black w-20 h-20 flex items-center justify-center mb-8 group-hover:bg-black/90 transition-colors duration-300">
+                <SearchIcon className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Discover Salons</h3>
-              <p className="text-gray-600">Find top-rated beauty salons in your area with detailed information and reviews.</p>
+              <h3 className="dior-heading-sm text-foreground mb-4">Discover</h3>
+              <p className="dior-body text-muted-foreground leading-relaxed">
+                Find exceptional beauty salons in your area with detailed information, authentic reviews, and premium services.
+              </p>
             </div>
             
-            <div className="flex flex-col items-center text-center p-6 rounded-xl hover:shadow-md transition-shadow">
-              <div className="bg-beauty-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                <CalendarIcon className="w-8 h-8 text-beauty-primary" />
+            <div className="flex flex-col items-center text-center group">
+              <div className="bg-black w-20 h-20 flex items-center justify-center mb-8 group-hover:bg-black/90 transition-colors duration-300">
+                <CalendarIcon className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Book Appointments</h3>
-              <p className="text-gray-600">Schedule your appointments easily with our intuitive booking system.</p>
+              <h3 className="dior-heading-sm text-foreground mb-4">Reserve</h3>
+              <p className="dior-body text-muted-foreground leading-relaxed">
+                Schedule your appointments effortlessly with our sophisticated booking system designed for your convenience.
+              </p>
             </div>
             
-            <div className="flex flex-col items-center text-center p-6 rounded-xl hover:shadow-md transition-shadow">
-              <div className="bg-beauty-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                <StarIcon className="w-8 h-8 text-beauty-primary" />
+            <div className="flex flex-col items-center text-center group">
+              <div className="bg-black w-20 h-20 flex items-center justify-center mb-8 group-hover:bg-black/90 transition-colors duration-300">
+                <StarIcon className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-semibold mb-2">Enjoy Services</h3>
-              <p className="text-gray-600">Get the best beauty treatments and share your experience with others.</p>
+              <h3 className="dior-heading-sm text-foreground mb-4">Experience</h3>
+              <p className="dior-body text-muted-foreground leading-relaxed">
+                Indulge in premium beauty treatments and share your exceptional experience with our community.
+              </p>
             </div>
           </div>
         </div>
       </section>
       
       {/* Explore Section */}
-      <section className="py-16 px-6 bg-gray-50">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold mb-8">Explore HAIB</h2>
+      <section className="py-24 px-6 bg-neutral-50 dark:bg-neutral-900">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-16">
+            <h2 className="dior-heading-lg text-foreground mb-4">Explore HAIB</h2>
+            <p className="dior-body text-muted-foreground max-w-2xl">
+              Discover the sophisticated world of premium beauty services
+            </p>
+          </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-              <h3 className="text-xl font-semibold mb-4 flex items-center">
-                <MapPinIcon className="w-5 h-5 mr-2 text-beauty-primary" />
-                Find Local Salons
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div className="luxury-card p-8 group hover:shadow-xl transition-all duration-300">
+              <h3 className="dior-heading-sm text-foreground mb-6 flex items-center">
+                <MapPinIcon className="w-6 h-6 mr-4 text-black" />
+                Find Premium Salons
               </h3>
-              <p className="text-gray-600 mb-4">
-                Discover the best beauty salons in your area, browse services, and read authentic reviews.
+              <p className="dior-body text-muted-foreground mb-8 leading-relaxed">
+                Discover the finest beauty salons in your area, explore exclusive services, and read authentic reviews from our discerning community.
               </p>
               <Link to="/search">
-                <Button variant="outline" className="text-beauty-primary">
-                  Search Salons <ArrowRightIcon className="w-4 h-4 ml-1" />
+                <Button variant="minimal" className="group-hover:bg-black group-hover:text-white transition-all duration-300">
+                  Explore Salons <ArrowRightIcon className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </div>
             
-            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow">
-              <h3 className="text-xl font-semibold mb-4 flex items-center">
-                <StarIcon className="w-5 h-5 mr-2 text-beauty-primary" />
-                Special Offers
+            <div className="luxury-card p-8 group hover:shadow-xl transition-all duration-300">
+              <h3 className="dior-heading-sm text-foreground mb-6 flex items-center">
+                <StarIcon className="w-6 h-6 mr-4 text-black" />
+                Exclusive Offers
               </h3>
-              <p className="text-gray-600 mb-4">
-                Take advantage of exclusive promotions and discounts at top salons near you.
+              <p className="dior-body text-muted-foreground mb-8 leading-relaxed">
+                Access exclusive promotions and special privileges at the most prestigious salons, reserved for our valued members.
               </p>
-              <Link to="/">
-                <Button variant="outline" className="text-beauty-primary">
-                  View Promotions <ArrowRightIcon className="w-4 h-4 ml-1" />
+              <Link to="/promotions">
+                <Button variant="minimal" className="group-hover:bg-black group-hover:text-white transition-all duration-300">
+                  View Offers <ArrowRightIcon className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
             </div>
@@ -105,30 +122,49 @@ const Welcome: React.FC = () => {
       </section>
       
       {/* CTA Section */}
-      <section className="bg-beauty-primary/10 py-16 px-6">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to get started?</h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Join HAIB today and discover the best beauty services in your area.
+      <section className="bg-black py-24 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="dior-heading-lg text-white mb-6">Begin Your Beauty Journey</h2>
+          <p className="dior-body-lg text-white/80 mb-12 max-w-3xl mx-auto leading-relaxed">
+            Join HAIB today and discover a world of exceptional beauty services, 
+            where luxury meets convenience and every appointment is an experience to remember.
           </p>
           
           <Link to="/home">
-            <Button size="lg" className="bg-beauty-primary hover:bg-beauty-primary/90 text-white font-semibold px-8">
-              Get Started <ArrowRightIcon className="w-4 h-4 ml-1" />
+            <Button variant="luxury" size="xl" className="bg-white text-black hover:bg-white/90 shadow-lg">
+              Start Now <ArrowRightIcon className="w-5 h-5 ml-2" />
             </Button>
           </Link>
         </div>
       </section>
       
       {/* Footer */}
-      <footer className="bg-gray-100 py-8 px-6 mt-auto">
-        <div className="max-w-5xl mx-auto text-center">
-          <p className="text-gray-600">© 2023 HAIB. All rights reserved.</p>
-          <div className="flex justify-center gap-4 mt-4">
-            <Link to="/" className="text-gray-600 hover:text-beauty-primary">Home</Link>
-            <Link to="/search" className="text-gray-600 hover:text-beauty-primary">Search</Link>
-            <Link to="/register" className="text-gray-600 hover:text-beauty-primary">Sign Up</Link>
-            <Link to="/login" className="text-gray-600 hover:text-beauty-primary">Sign In</Link>
+      <footer className="bg-neutral-100 dark:bg-neutral-800 py-12 px-6 mt-auto">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-8">
+            <h3 className="dior-heading-sm text-foreground mb-2">HAIB</h3>
+            <p className="dior-body-sm text-muted-foreground">Excellence in Beauty Services</p>
+          </div>
+          
+          <div className="flex flex-wrap justify-center gap-8 mb-8">
+            <Link to="/" className="dior-label text-muted-foreground hover:text-foreground transition-colors">
+              Home
+            </Link>
+            <Link to="/search" className="dior-label text-muted-foreground hover:text-foreground transition-colors">
+              Search
+            </Link>
+            <Link to="/promotions" className="dior-label text-muted-foreground hover:text-foreground transition-colors">
+              Offers
+            </Link>
+            <Link to="/auth" className="dior-label text-muted-foreground hover:text-foreground transition-colors">
+              Sign In
+            </Link>
+          </div>
+          
+          <div className="text-center pt-8 border-t border-border">
+            <p className="dior-body-sm text-muted-foreground">
+              © 2024 HAIB. All rights reserved.
+            </p>
           </div>
         </div>
       </footer>
