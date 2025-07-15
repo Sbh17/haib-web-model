@@ -11,7 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { Mail, Lock, User, ArrowLeft, Chrome, MessageCircle } from 'lucide-react';
+import { Mail, Lock, User, ArrowLeft, Chrome, Facebook } from 'lucide-react';
 
 const signUpSchema = z.object({
   fullName: z.string()
@@ -70,7 +70,7 @@ const Register: React.FC = () => {
     }
   };
 
-  const handleSocialSignIn = async (provider: 'google' | 'discord') => {
+  const handleSocialSignIn = async (provider: 'google' | 'facebook') => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: provider,
@@ -138,10 +138,10 @@ const Register: React.FC = () => {
                     type="button"
                     variant="outline"
                     className="h-12 border-2 hover:bg-accent/50"
-                    onClick={() => handleSocialSignIn('discord')}
+                    onClick={() => handleSocialSignIn('facebook')}
                   >
-                    <MessageCircle className="w-5 h-5 mr-2" />
-                    <span className="dior-label">Discord</span>
+                    <Facebook className="w-5 h-5 mr-2" />
+                    <span className="dior-label">Facebook</span>
                   </Button>
                 </div>
                 
