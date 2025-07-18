@@ -14,6 +14,7 @@ import {
   Linkedin,
   Youtube
 } from 'lucide-react';
+import WelcomeSalonPartnership from '@/components/WelcomeSalonPartnership';
 
 const Welcome: React.FC = () => {
   return (
@@ -131,6 +132,9 @@ const Welcome: React.FC = () => {
           </div>
         </div>
       </section>
+      
+      {/* Salon Partnership Section */}
+      <WelcomeSalonPartnership />
       
       {/* CTA Section */}
       <section className="bg-black py-24 px-6">
