@@ -31,6 +31,8 @@ export interface EnvironmentConfig {
     gcp?: {
       projectId: string;
       region: string;
+      apiEndpoint: string;
+      databaseUrl: string;
     };
   };
 }
@@ -124,7 +126,9 @@ export const getEnvironmentConfig = (): EnvironmentConfig => {
       firebase: envConfig.integrations?.firebase || defaultConfig.integrations?.firebase,
       gcp: import.meta.env.VITE_GCP_PROJECT_ID ? {
         projectId: import.meta.env.VITE_GCP_PROJECT_ID,
-        region: import.meta.env.VITE_GCP_REGION || 'us-central1'
+        region: import.meta.env.VITE_GCP_REGION || 'us-central1',
+        apiEndpoint: import.meta.env.VITE_GCP_API_ENDPOINT || '',
+        databaseUrl: import.meta.env.VITE_GCP_DATABASE_URL || ''
       } : envConfig.integrations?.gcp
     }
   };

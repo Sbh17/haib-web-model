@@ -2,10 +2,15 @@
 import { config } from '@/config/environment';
 import mockApi from './mockApi';
 import firebaseApi from './firebaseApi';
+import gcpApi from './gcpApi';
 
-// Create a unified API service that can switch between mock and Firebase
+// Create a unified API service that can switch between different backends
 const createApiService = () => {
-  if (config.useFirebase) {
+  // Check for Google Cloud configuration first
+  if (config.integrations.gcp?.projectId && config.integrations.gcp?.apiEndpoint) {
+    console.log('Using Google Cloud API');
+    return gcpApi;
+  } else if (config.useFirebase) {
     console.log('Using Firebase API');
     return {
       // Include all API methods from both services
