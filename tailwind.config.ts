@@ -74,25 +74,16 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// DIOR Color System - Monochromatic Elegance
-				dior: {
-					black: 'hsl(var(--dior-black))',
-					white: 'hsl(var(--dior-white))',
-					pearl: 'hsl(var(--dior-pearl))',
-					smoke: 'hsl(var(--dior-smoke))',
-					silver: 'hsl(var(--dior-silver))',
-					charcoal: 'hsl(var(--dior-charcoal))',
-					gold: 'hsl(var(--dior-gold))',
-					'gold-muted': 'hsl(var(--dior-gold-muted))',
-					'gold-subtle': 'hsl(var(--dior-gold-subtle))',
-				},
-				// Beauty salon theme colors - DIOR Inspired
+				// Beauty salon theme colors - Using CSS variables for proper theme support
 				beauty: {
 					primary: 'hsl(var(--beauty-primary))',
 					secondary: 'hsl(var(--beauty-secondary))',
 					accent: 'hsl(var(--beauty-accent))',
-					gold: 'hsl(var(--beauty-gold))',
-					pearl: 'hsl(var(--beauty-pearl))',
+					dark: 'hsl(var(--beauty-dark))',
+					light: 'hsl(var(--beauty-light))',
+					success: 'hsl(var(--beauty-success))',
+					warning: 'hsl(var(--beauty-warning))',
+					info: 'hsl(var(--beauty-info))',
 				},
 			},
 			borderRadius: {
