@@ -44,15 +44,25 @@
     --sidebar-border: 0 0% 90%;
     --sidebar-ring: 0 0% 0%;
 
-    /* Beauty theme colors */
-    --beauty-primary: 0 0% 0%;         /* Black */
-    --beauty-secondary: 0 0% 25%;      /* Dark gray */
-    --beauty-accent: 0 0% 96%;         /* Light gray */
-    --beauty-dark: 0 0% 10%;           /* Very dark gray */
-    --beauty-light: 0 0% 100%;         /* White */
-    --beauty-success: 145 42% 62%;     /* Mint green */
-    --beauty-warning: 32 93% 54%;      /* Orange */
-    --beauty-info: 217 44% 56%;        /* Blue */
+    /* DIOR Monochromatic Foundation */
+    --dior-black: 0 0% 0%;             /* Pure Black */
+    --dior-white: 0 0% 100%;           /* Pure White */
+    --dior-pearl: 0 0% 98%;            /* Off-white */
+    --dior-smoke: 0 0% 95%;            /* Light gray */
+    --dior-silver: 0 0% 60%;           /* Medium gray */
+    --dior-charcoal: 0 0% 20%;         /* Dark gray */
+    
+    /* DIOR Strategic Gold Accents */
+    --dior-gold: 43 96% 56%;           /* Luxury Gold */
+    --dior-gold-muted: 43 84% 65%;     /* Softer Gold */
+    --dior-gold-subtle: 43 74% 85%;    /* Whisper Gold */
+    
+    /* Beauty theme colors - DIOR Inspired */
+    --beauty-primary: 0 0% 0%;         /* DIOR Black */
+    --beauty-secondary: 0 0% 95%;      /* DIOR Smoke */
+    --beauty-accent: 43 96% 56%;       /* DIOR Gold */
+    --beauty-gold: 43 96% 56%;         /* DIOR Gold */
+    --beauty-pearl: 0 0% 98%;          /* DIOR Pearl */
   }
 
   .dark {
@@ -93,15 +103,25 @@
     --sidebar-border: 0 0% 15%;
     --sidebar-ring: 0 0% 98%;
 
-    /* Beauty theme colors - Dark mode */
-    --beauty-primary: 0 0% 98%;        /* Light for dark mode */
-    --beauty-secondary: 0 0% 75%;      /* Light gray */
-    --beauty-accent: 0 0% 15%;         /* Dark gray for dark mode */
-    --beauty-dark: 0 0% 5%;            /* Very dark for dark mode */
-    --beauty-light: 0 0% 10%;          /* Dark background for dark mode */
-    --beauty-success: 145 42% 62%;     /* Mint green (same) */
-    --beauty-warning: 32 93% 54%;      /* Orange (same) */
-    --beauty-info: 217 44% 56%;        /* Blue (same) */
+    /* DIOR Dark Mode Sophistication */
+    --dior-black: 0 0% 100%;           /* White in dark mode */
+    --dior-white: 0 0% 2%;             /* Near black in dark mode */
+    --dior-pearl: 0 0% 6%;             /* Dark pearl */
+    --dior-smoke: 0 0% 8%;             /* Dark smoke */
+    --dior-silver: 0 0% 50%;           /* Adjusted silver */
+    --dior-charcoal: 0 0% 85%;         /* Light charcoal */
+    
+    /* DIOR Gold - Enhanced for Dark Mode */
+    --dior-gold: 43 100% 65%;          /* Brighter gold */
+    --dior-gold-muted: 43 84% 75%;     /* Lighter gold */
+    --dior-gold-subtle: 43 64% 45%;    /* Deeper gold */
+    
+    /* Beauty theme colors - DIOR Dark Mode */
+    --beauty-primary: 0 0% 100%;       /* DIOR White (inverted) */
+    --beauty-secondary: 0 0% 8%;       /* DIOR Dark Smoke */
+    --beauty-accent: 43 100% 65%;      /* DIOR Enhanced Gold */
+    --beauty-gold: 43 100% 65%;        /* DIOR Enhanced Gold */
+    --beauty-pearl: 0 0% 6%;           /* DIOR Dark Pearl */
   }
 }
 
@@ -130,37 +150,66 @@
 }
 
 @layer components {
-  /* Dior-inspired Typography Classes */
+  /* DIOR Typography System - Sophisticated Hierarchy */
   .dior-heading-xl {
-    @apply text-4xl md:text-5xl lg:text-6xl font-playfair font-normal tracking-tight leading-tight;
+    @apply text-5xl md:text-7xl font-playfair font-extralight leading-none;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: hsl(var(--dior-black));
   }
   
   .dior-heading-lg {
-    @apply text-2xl md:text-3xl lg:text-4xl font-playfair font-normal tracking-tight;
+    @apply text-3xl md:text-4xl font-playfair font-light leading-tight;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: hsl(var(--dior-black));
   }
   
   .dior-heading-md {
-    @apply text-xl md:text-2xl font-playfair font-medium tracking-tight;
+    @apply text-2xl md:text-3xl font-playfair font-normal leading-tight;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: hsl(var(--dior-black));
   }
   
   .dior-heading-sm {
-    @apply text-lg md:text-xl font-playfair font-medium tracking-tight;
+    @apply text-xl md:text-2xl font-playfair font-normal leading-tight;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: hsl(var(--dior-black));
   }
   
   .dior-body-lg {
-    @apply text-base md:text-lg font-inter font-light leading-relaxed tracking-wide;
+    @apply text-lg font-inter font-light leading-relaxed;
+    letter-spacing: 0.02em;
+    color: hsl(var(--dior-silver));
   }
   
   .dior-body {
-    @apply text-sm md:text-base font-inter font-light leading-relaxed;
+    @apply text-base font-inter font-light leading-relaxed;
+    letter-spacing: 0.01em;
+    color: hsl(var(--dior-silver));
   }
   
   .dior-body-sm {
-    @apply text-xs md:text-sm font-inter font-light tracking-wide;
+    @apply text-sm font-inter font-light leading-relaxed;
+    letter-spacing: 0.01em;
+    color: hsl(var(--dior-silver));
   }
   
   .dior-label {
-    @apply text-xs md:text-sm font-inter font-medium uppercase tracking-widest;
+    @apply text-xs font-inter font-medium uppercase;
+    letter-spacing: 0.25em;
+    color: hsl(var(--dior-charcoal));
+  }
+
+  /* DIOR Gold Typography Accents */
+  .dior-gold-text {
+    color: hsl(var(--dior-gold));
+  }
+  
+  .dior-gold-muted-text {
+    color: hsl(var(--dior-gold-muted));
   }
 
   /* Luxury Components */
