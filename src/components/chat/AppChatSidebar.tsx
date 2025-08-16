@@ -123,10 +123,8 @@ const AppChatSidebar: React.FC<AppChatSidebarProps> = ({ onBookAppointment }) =>
     return (
       <Sidebar className="w-14 border-r border-border">
         <div className="flex flex-col items-center py-4">
-          <SidebarTrigger asChild>
-            <Button variant="ghost" size="icon" className="mb-4">
-              <MessageCircle className="h-6 w-6" />
-            </Button>
+          <SidebarTrigger className="mb-4">
+            <MessageCircle className="h-6 w-6" />
           </SidebarTrigger>
         </div>
       </Sidebar>
@@ -141,10 +139,8 @@ const AppChatSidebar: React.FC<AppChatSidebarProps> = ({ onBookAppointment }) =>
             <Bot className="h-6 w-6 text-primary" />
             <h2 className="font-semibold text-lg">AI Assistant</h2>
           </div>
-          <SidebarTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <X className="h-4 w-4" />
-            </Button>
+          <SidebarTrigger>
+            <X className="h-4 w-4" />
           </SidebarTrigger>
         </div>
       </SidebarHeader>
