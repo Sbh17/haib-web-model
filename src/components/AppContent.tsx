@@ -3,8 +3,7 @@ import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-
 import Header from '@/components/Header';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import AuthRedirect from '@/components/AuthRedirect';
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
-import AppChatSidebar from '@/components/chat/AppChatSidebar';
+import SimpleChatWidget from '@/components/chat/SimpleChatWidget';
 
 // Import pages
 import Welcome from '@/pages/Welcome';
@@ -39,103 +38,89 @@ const AppContent: React.FC = () => {
     });
   };
 
-  const showSidebar = location.pathname !== '/welcome' && location.pathname !== '/auth' && location.pathname !== '/register';
-
   return (
     <AuthRedirect>
-      {showSidebar ? (
-        <SidebarProvider defaultOpen={false}>
-          <div className="min-h-screen flex w-full bg-background">
-            <AppChatSidebar onBookAppointment={handleBookAppointment} />
-            
-            <div className="flex-1 flex flex-col">
-              <Header />
-              
-              <main className="flex-1 overflow-auto">
-                <Routes>
-                  <Route path="/" element={<Navigate to="/home" replace />} />
-                  <Route path="/home" element={
-                    <ProtectedRoute>
-                      <Index />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/search" element={
-                    <ProtectedRoute>
-                      <Search />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/salon/:id" element={
-                    <ProtectedRoute>
-                      <SalonDetail />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/book/:salonId/:serviceId" element={
-                    <ProtectedRoute>
-                      <BookAppointment />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/payment-checkout" element={
-                    <ProtectedRoute>
-                      <PaymentCheckout />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/payment-success" element={
-                    <ProtectedRoute>
-                      <PaymentSuccess />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/appointments" element={
-                    <ProtectedRoute>
-                      <Appointments />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/news" element={
-                    <ProtectedRoute>
-                      <News />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/news/:id" element={
-                    <ProtectedRoute>
-                      <NewsDetail />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/promotions" element={
-                    <ProtectedRoute>
-                      <Promotions />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/settings" element={
-                    <ProtectedRoute>
-                      <Settings />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/profile" element={
-                    <ProtectedRoute>
-                      <Profile />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="/profile/settings" element={
-                    <ProtectedRoute>
-                      <ProfileSettings />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </main>
-            </div>
-          </div>
-        </SidebarProvider>
-      ) : (
-        <div className="min-h-screen bg-background">
-          <Header />
+      <div className="min-h-screen bg-background">
+        <Header />
+        
+        <main className="flex-1 overflow-auto">
           <Routes>
+            <Route path="/" element={<Navigate to="/home" replace />} />
+            <Route path="/home" element={
+              <ProtectedRoute>
+                <Index />
+              </ProtectedRoute>
+            } />
+            <Route path="/search" element={
+              <ProtectedRoute>
+                <Search />
+              </ProtectedRoute>
+            } />
+            <Route path="/salon/:id" element={
+              <ProtectedRoute>
+                <SalonDetail />
+              </ProtectedRoute>
+            } />
+            <Route path="/book/:salonId/:serviceId" element={
+              <ProtectedRoute>
+                <BookAppointment />
+              </ProtectedRoute>
+            } />
+            <Route path="/payment-checkout" element={
+              <ProtectedRoute>
+                <PaymentCheckout />
+              </ProtectedRoute>
+            } />
+            <Route path="/payment-success" element={
+              <ProtectedRoute>
+                <PaymentSuccess />
+              </ProtectedRoute>
+            } />
+            <Route path="/appointments" element={
+              <ProtectedRoute>
+                <Appointments />
+              </ProtectedRoute>
+            } />
+            <Route path="/news" element={
+              <ProtectedRoute>
+                <News />
+              </ProtectedRoute>
+            } />
+            <Route path="/news/:id" element={
+              <ProtectedRoute>
+                <NewsDetail />
+              </ProtectedRoute>
+            } />
+            <Route path="/promotions" element={
+              <ProtectedRoute>
+                <Promotions />
+              </ProtectedRoute>
+            } />
+            <Route path="/settings" element={
+              <ProtectedRoute>
+                <Settings />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile/settings" element={
+              <ProtectedRoute>
+                <ProfileSettings />
+              </ProtectedRoute>
+            } />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/register" element={<Register />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </div>
-      )}
+        </main>
+
+        {/* Simple Chat Widget - always available when authenticated */}
+        <SimpleChatWidget onBookAppointment={handleBookAppointment} />
+      </div>
     </AuthRedirect>
   );
 };
