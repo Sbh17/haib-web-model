@@ -65,15 +65,15 @@ const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex h-14 md:h-16 items-center justify-between px-3 md:px-6">
-        {/* Left side - Sidebar trigger and navigation */}
-        <div className={`flex items-center transition-all duration-300 gap-4`}>
+      <div className="flex h-14 items-center justify-between px-4">
+        {/* Left side */}
+        <div className="flex items-center gap-3">
           {!isHomePage ? (
             <Button
               variant="ghost"
               size="sm"
               onClick={handleBack}
-              className="flex items-center gap-2 hover:bg-accent p-2"
+              className="flex items-center gap-2"
             >
               <ArrowLeft className="h-4 w-4" />
               <span className="hidden md:inline">Back</span>
@@ -85,46 +85,41 @@ const Header: React.FC = () => {
           )}
           
           {getPageTitle() && (
-            <h1 className="text-base md:text-lg font-semibold text-foreground hidden sm:block truncate">
+            <h1 className="text-lg font-semibold hidden sm:block">
               {getPageTitle()}
             </h1>
           )}
         </div>
 
         {/* Center - Logo */}
-        <div className="flex-1 flex justify-center mx-2">
+        <div className="flex-1 flex justify-center">
           <div onClick={() => navigate('/home')} className="cursor-pointer">
-            <Logo 
-              width={window.innerWidth < 768 ? 100 : 120} 
-              height={window.innerWidth < 768 ? 32 : 40} 
-            />
+            <Logo width={120} height={40} />
           </div>
         </div>
 
         {/* Right side */}
-        <div className="flex items-center gap-1 md:gap-2">
+        <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate('/search')}
-            className="hidden md:flex items-center gap-2 hover:bg-accent p-2"
+            className="hidden md:flex"
           >
             <Search className="h-4 w-4" />
           </Button>
           
           <NotificationPanel />
-
           <ThemeToggle />
 
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate('/profile')}
-            className="hover:bg-accent p-2"
           >
-            <Avatar className="h-6 w-6 md:h-7 md:w-7">
-              <AvatarFallback className="text-xs bg-primary/10 text-primary">
-                <User className="h-3 w-3 md:h-4 md:w-4" />
+            <Avatar className="h-7 w-7">
+              <AvatarFallback>
+                <User className="h-4 w-4" />
               </AvatarFallback>
             </Avatar>
           </Button>
