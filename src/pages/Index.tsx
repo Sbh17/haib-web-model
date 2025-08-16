@@ -61,15 +61,16 @@ const Index: React.FC = () => {
 
   return (
     <div className="pb-20 bg-background min-h-screen">
-      {/* Hero Search Section */}
-      <div className="max-w-7xl mx-auto px-6 py-12">
-        <div className="bg-black text-white p-8 md:p-12 mb-12">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="dior-heading-xl text-white mb-6">
-              HAIB
+      {/* Luxury Hero Section */}
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="luxury-hero p-12 md:p-20 mb-16 rounded-lg relative">
+          <div className="max-w-5xl mx-auto text-center relative z-10">
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-playfair font-light text-beauty-light mb-8 tracking-luxury">
+              H<span className="gold-accent">A</span>IB
             </h1>
-            <p className="dior-body-lg text-white/80 mb-8 max-w-2xl mx-auto">
-              Discover exceptional beauty experiences and book your next appointment with the finest salons
+            <div className="w-24 h-0.5 bg-beauty-accent mx-auto mb-8"></div>
+            <p className="text-xl md:text-2xl font-inter font-light text-beauty-light/90 mb-12 max-w-3xl mx-auto leading-relaxed tracking-wide">
+              Where luxury meets beauty. Experience exceptional treatments in the finest salons, curated for the discerning clientele.
             </p>
 
             {/* Location Status */}
@@ -87,39 +88,41 @@ const Index: React.FC = () => {
               )}
             </div>
 
-            {/* Elegant Search Bar */}
-            <div className="relative max-w-3xl mx-auto">
-              <Input
-                type="text"
-                placeholder="Search salons, services, or locations..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={handleKeyPress}
-                className="w-full pl-12 pr-32 py-5 border border-white/20 bg-white/10 backdrop-blur-sm text-white placeholder-white/60 focus:bg-white/15 text-base focus:ring-1 focus:ring-white/40 font-inter tracking-wide"
-              />
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/60" />
-              <Button
-                onClick={handleSearch}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white text-black hover:bg-white/90 px-8 py-3 font-inter font-medium tracking-wide uppercase text-sm"
-              >
-                Search
-              </Button>
+            {/* Luxury Search Bar */}
+            <div className="relative max-w-4xl mx-auto">
+              <div className="elegant-border bg-beauty-light/10 backdrop-blur-md rounded-none p-2">
+                <Input
+                  type="text"
+                  placeholder="Discover your perfect beauty experience..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  className="w-full pl-16 pr-40 py-6 border-none bg-transparent text-beauty-light placeholder-beauty-light/60 focus:ring-2 focus:ring-beauty-accent text-lg font-inter tracking-wide"
+                />
+                <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 h-6 w-6 text-beauty-accent" />
+                <Button
+                  onClick={handleSearch}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 beauty-button px-10 py-4 text-sm"
+                >
+                  Discover
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       {/* Featured Salons */}
-      <section className="px-6 mb-16">
+      <section className="px-6 mb-20">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-end mb-8">
-            <div>
-              <h2 className="dior-heading-lg text-foreground mb-2">Featured Salons</h2>
-              <p className="dior-body text-muted-foreground">Discover our curated selection of premium beauty destinations</p>
-            </div>
-            <Link to="/search">
-              <Button variant="ghost" size="sm" className="dior-label text-beauty-primary hover:bg-beauty-primary/5 tracking-widest">View All</Button>
-            </Link>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-playfair font-light text-foreground mb-4 tracking-luxury">
+              Featured <span className="gold-accent">Experiences</span>
+            </h2>
+            <div className="w-16 h-0.5 bg-beauty-accent mx-auto mb-6"></div>
+            <p className="text-lg font-inter font-light text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Handpicked sanctuaries of beauty where excellence meets luxury
+            </p>
           </div>
           <div className="space-y-4">
             {salonsLoading ? (
@@ -133,16 +136,16 @@ const Index: React.FC = () => {
         </div>
       </section>
 
-      <section className="px-6 mb-16">
+      <section className="px-6 mb-20">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-end mb-8">
-            <div>
-              <h2 className="dior-heading-lg text-foreground mb-2">Latest News</h2>
-              <p className="dior-body text-muted-foreground">Stay informed with the latest beauty trends and updates</p>
-            </div>
-            <Link to="/news">
-              <Button variant="ghost" size="sm" className="dior-label text-beauty-primary hover:bg-beauty-primary/5 tracking-widest">View All</Button>
-            </Link>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-playfair font-light text-foreground mb-4 tracking-luxury">
+              Beauty <span className="gold-accent">Chronicles</span>
+            </h2>
+            <div className="w-16 h-0.5 bg-beauty-accent mx-auto mb-6"></div>
+            <p className="text-lg font-inter font-light text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Immerse yourself in the latest trends and timeless beauty wisdom
+            </p>
           </div>
           {newsLoading ? (
             <LoadingSpinner />
@@ -152,16 +155,19 @@ const Index: React.FC = () => {
         </div>
       </section>
 
-      <section className="px-6 mb-16">
+      <section className="px-6 mb-20">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-end mb-8">
-            <div>
-              <h2 className="dior-heading-lg text-foreground mb-2">Top Rated Salons</h2>
-              <p className="dior-body text-muted-foreground">Excellence recognized by our community</p>
-            </div>
-            <Badge variant="secondary" className="dior-label bg-black text-white px-3 py-1 tracking-widest">
-              <Star className="h-3 w-3 mr-2" />
-              4.5+ Rating
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-playfair font-light text-foreground mb-4 tracking-luxury">
+              Award <span className="gold-accent">Winners</span>
+            </h2>
+            <div className="w-16 h-0.5 bg-beauty-accent mx-auto mb-6"></div>
+            <p className="text-lg font-inter font-light text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Celebrated establishments that define excellence in beauty
+            </p>
+            <Badge className="mt-6 bg-gradient-to-r from-beauty-accent to-beauty-accent/80 text-beauty-dark px-6 py-2 tracking-widest font-playfair">
+              <Star className="h-4 w-4 mr-2" />
+              4.5+ Rated Excellence
             </Badge>
           </div>
           <div className="space-y-4">

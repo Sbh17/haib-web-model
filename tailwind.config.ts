@@ -81,6 +81,8 @@ export default {
 					accent: 'hsl(var(--beauty-accent))',
 					dark: 'hsl(var(--beauty-dark))',
 					light: 'hsl(var(--beauty-light))',
+					rose: 'hsl(var(--beauty-rose))',
+					cream: 'hsl(var(--beauty-cream))',
 					success: 'hsl(var(--beauty-success))',
 					warning: 'hsl(var(--beauty-warning))',
 					info: 'hsl(var(--beauty-info))',
