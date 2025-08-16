@@ -16,9 +16,11 @@ const Header: React.FC = () => {
   
   // Only get sidebar context if we're in a sidebar-enabled route
   let toggleSidebar: (() => void) | undefined;
+  let sidebarOpen = false;
   try {
     const sidebarContext = useSidebar();
     toggleSidebar = sidebarContext?.toggleSidebar;
+    sidebarOpen = sidebarContext?.open || false;
   } catch {
     // Not in a sidebar context, which is fine for non-sidebar routes
   }
@@ -62,18 +64,27 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex h-16 items-center justify-between px-4 md:px-6">
-        {/* Sidebar trigger for when sidebar is available */}
-        <div className="flex items-center gap-4">
+    <header className={`sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-all duration-300 ${
+      sidebarOpen ? 'md:ml-80' : ''
+    }`}>
+      <div className={`flex h-16 items-center justify-between px-4 md:px-6 transition-all duration-300 ${
+        sidebarOpen ? 'gap-2' : 'gap-4'
+      }`}>
+        {/* Left side - Sidebar trigger and navigation */}
+        <div className={`flex items-center transition-all duration-300 ${
+          sidebarOpen ? 'gap-2' : 'gap-4'
+        }`}>
           {showSidebar && toggleSidebar && (
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={toggleSidebar}
-              className="flex items-center gap-2"
+              className={`flex items-center gap-2 transition-all duration-300 ${
+                sidebarOpen ? 'text-primary bg-primary/10' : ''
+              }`}
             >
               <MessageCircle className="h-4 w-4" />
+              {!sidebarOpen && <span className="hidden md:inline">Chat</span>}
             </Button>
           )}
           {!isHomePage ? (
@@ -81,10 +92,12 @@ const Header: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={handleBack}
-              className="flex items-center gap-2 hover:bg-accent"
+              className={`flex items-center gap-2 hover:bg-accent ${
+                sidebarOpen ? 'hidden sm:flex' : 'flex'
+              }`}
             >
               <ArrowLeft className="h-4 w-4" />
-              <span className="hidden sm:inline">Back</span>
+              <span className={sidebarOpen ? 'hidden lg:inline' : 'hidden sm:inline'}>Back</span>
             </Button>
           ) : (
             <Button variant="ghost" size="sm" className="md:hidden">
@@ -93,28 +106,41 @@ const Header: React.FC = () => {
           )}
           
           {getPageTitle() && (
-            <h1 className="text-lg font-semibold text-foreground hidden sm:block">
+            <h1 className={`text-lg font-semibold text-foreground transition-all duration-300 ${
+              sidebarOpen ? 'hidden lg:block' : 'hidden sm:block'
+            }`}>
               {getPageTitle()}
             </h1>
           )}
         </div>
 
         {/* Center - Logo */}
-        <div className="flex-1 flex justify-center">
+        <div className={`flex-1 flex justify-center transition-all duration-300 ${
+          sidebarOpen ? 'ml-2 mr-2' : ''
+        }`}>
           <div onClick={() => navigate('/home')} className="cursor-pointer">
-            <Logo width={120} height={40} />
+            <Logo 
+              width={sidebarOpen ? 100 : 120} 
+              height={sidebarOpen ? 32 : 40} 
+              className="transition-all duration-300"
+            />
           </div>
         </div>
 
         {/* Right side */}
-        <div className="flex items-center gap-2">
+        <div className={`flex items-center transition-all duration-300 ${
+          sidebarOpen ? 'gap-1' : 'gap-2'
+        }`}>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate('/search')}
-            className="hidden sm:flex items-center gap-2 hover:bg-accent"
+            className={`items-center gap-2 hover:bg-accent transition-all duration-300 ${
+              sidebarOpen ? 'hidden lg:flex' : 'hidden sm:flex'
+            }`}
           >
             <Search className="h-4 w-4" />
+            {!sidebarOpen && <span className="hidden xl:inline">Search</span>}
           </Button>
           
           <NotificationPanel />
@@ -127,9 +153,13 @@ const Header: React.FC = () => {
             onClick={() => navigate('/profile')}
             className="hover:bg-accent"
           >
-            <Avatar className="h-7 w-7">
+            <Avatar className={`transition-all duration-300 ${
+              sidebarOpen ? 'h-6 w-6' : 'h-7 w-7'
+            }`}>
               <AvatarFallback className="text-xs bg-primary/10 text-primary">
-                <User className="h-4 w-4" />
+                <User className={`transition-all duration-300 ${
+                  sidebarOpen ? 'h-3 w-3' : 'h-4 w-4'
+                }`} />
               </AvatarFallback>
             </Avatar>
           </Button>
