@@ -1,9 +1,9 @@
 import React from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import Header from '@/components/Header';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import AuthRedirect from '@/components/AuthRedirect';
-import FloatingChatButton from '@/components/chat/FloatingChatButton';
+import ChatSidebar from '@/components/chat/ChatSidebar';
 
 // Import pages
 import Welcome from '@/pages/Welcome';
@@ -26,6 +26,7 @@ import NotFound from '@/pages/NotFound';
 
 const AppContent: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleBookAppointment = (bookingData: any) => {
     // Navigate to booking page with the AI-suggested appointment data
@@ -115,7 +116,9 @@ const AppContent: React.FC = () => {
         </Routes>
         
         {/* AI Chat Assistant - Available on all protected routes */}
-        <FloatingChatButton onBookAppointment={handleBookAppointment} />
+        {location.pathname !== '/welcome' && location.pathname !== '/auth' && location.pathname !== '/register' && (
+          <ChatSidebar onBookAppointment={handleBookAppointment} />
+        )}
       </div>
     </AuthRedirect>
   );
