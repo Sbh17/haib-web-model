@@ -64,8 +64,8 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex h-16 items-center justify-between px-4 md:px-6">
+    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex h-14 md:h-16 items-center justify-between px-3 md:px-6">
         {/* Left side - Sidebar trigger and navigation */}
         <div className={`flex items-center transition-all duration-300 gap-4`}>
           {!isHomePage ? (
@@ -73,10 +73,10 @@ const Header: React.FC = () => {
               variant="ghost"
               size="sm"
               onClick={handleBack}
-              className="flex items-center gap-2 hover:bg-accent"
+              className="flex items-center gap-2 hover:bg-accent p-2"
             >
               <ArrowLeft className="h-4 w-4" />
-              <span className="hidden sm:inline">Back</span>
+              <span className="hidden md:inline">Back</span>
             </Button>
           ) : (
             <Button variant="ghost" size="sm" className="md:hidden">
@@ -85,26 +85,29 @@ const Header: React.FC = () => {
           )}
           
           {getPageTitle() && (
-            <h1 className="text-lg font-semibold text-foreground hidden sm:block">
+            <h1 className="text-base md:text-lg font-semibold text-foreground hidden sm:block truncate">
               {getPageTitle()}
             </h1>
           )}
         </div>
 
         {/* Center - Logo */}
-        <div className="flex-1 flex justify-center">
+        <div className="flex-1 flex justify-center mx-2">
           <div onClick={() => navigate('/home')} className="cursor-pointer">
-            <Logo width={120} height={40} />
+            <Logo 
+              width={window.innerWidth < 768 ? 100 : 120} 
+              height={window.innerWidth < 768 ? 32 : 40} 
+            />
           </div>
         </div>
 
         {/* Right side */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 md:gap-2">
           <Button
             variant="ghost"
             size="sm"
             onClick={() => navigate('/search')}
-            className="hidden sm:flex items-center gap-2 hover:bg-accent"
+            className="hidden md:flex items-center gap-2 hover:bg-accent p-2"
           >
             <Search className="h-4 w-4" />
           </Button>
@@ -117,11 +120,11 @@ const Header: React.FC = () => {
             variant="ghost"
             size="sm"
             onClick={() => navigate('/profile')}
-            className="hover:bg-accent"
+            className="hover:bg-accent p-2"
           >
-            <Avatar className="h-7 w-7">
+            <Avatar className="h-6 w-6 md:h-7 md:w-7">
               <AvatarFallback className="text-xs bg-primary/10 text-primary">
-                <User className="h-4 w-4" />
+                <User className="h-3 w-3 md:h-4 md:w-4" />
               </AvatarFallback>
             </Avatar>
           </Button>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import AuthRedirect from '@/components/AuthRedirect';
@@ -26,7 +26,6 @@ import NotFound from '@/pages/NotFound';
 
 const AppContent: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleBookAppointment = (bookingData: any) => {
     // Navigate to booking page with the AI-suggested appointment data
@@ -40,10 +39,10 @@ const AppContent: React.FC = () => {
 
   return (
     <AuthRedirect>
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background touch-manipulation">
         <Header />
         
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto safe-area-bottom">
           <Routes>
             <Route path="/" element={<Navigate to="/home" replace />} />
             <Route path="/home" element={
@@ -118,7 +117,7 @@ const AppContent: React.FC = () => {
           </Routes>
         </main>
 
-        {/* Simple Chat Widget - always available when authenticated */}
+        {/* Simple Chat Widget - mobile optimized and always available when authenticated */}
         <SimpleChatWidget onBookAppointment={handleBookAppointment} />
       </div>
     </AuthRedirect>

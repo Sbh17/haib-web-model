@@ -114,17 +114,17 @@ const SimpleChatWidget: React.FC<SimpleChatWidgetProps> = ({ onBookAppointment }
     return (
       <Button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-300"
+        className="fixed bottom-4 right-4 z-50 h-12 w-12 md:h-14 md:w-14 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 bg-primary hover:bg-primary/90"
         size="icon"
       >
-        <MessageCircle className="h-6 w-6" />
+        <MessageCircle className="h-5 w-5 md:h-6 md:w-6" />
       </Button>
     );
   }
 
   return (
-    <Card className="fixed bottom-6 right-6 z-50 w-96 h-[600px] shadow-2xl border-2 border-border">
-      <CardHeader className="pb-3">
+    <Card className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 w-[calc(100vw-2rem)] max-w-sm md:w-96 h-[70vh] md:h-[600px] shadow-2xl border-2 border-border">
+      <CardHeader className="pb-3 px-4">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-primary" />
@@ -141,17 +141,17 @@ const SimpleChatWidget: React.FC<SimpleChatWidgetProps> = ({ onBookAppointment }
         </div>
       </CardHeader>
 
-      <CardContent className="p-0 flex flex-col h-[calc(100%-80px)]">
+      <CardContent className="p-0 flex flex-col h-[calc(100%-64px)] md:h-[calc(100%-80px)]">
         {/* Quick Actions */}
-        <div className="p-4 border-b">
+        <div className="p-3 md:p-4 border-b">
           <h4 className="text-sm font-medium mb-2">Quick Actions</h4>
-          <div className="grid gap-2">
+          <div className="grid grid-cols-1 gap-2">
             {quickActions.map((action, index) => (
               <Button
                 key={index}
                 variant="outline"
                 size="sm"
-                className="justify-start text-left h-auto py-2 px-3 text-xs"
+                className="justify-start text-left h-auto py-2 px-3 text-xs leading-tight"
                 onClick={() => {
                   setInputValue(action);
                   inputRef.current?.focus();
@@ -164,38 +164,38 @@ const SimpleChatWidget: React.FC<SimpleChatWidgetProps> = ({ onBookAppointment }
         </div>
 
         {/* Messages */}
-        <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-          <div className="space-y-4">
+        <ScrollArea className="flex-1 p-3 md:p-4" ref={scrollRef}>
+          <div className="space-y-3 md:space-y-4">
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex gap-3 ${!message.isAI ? 'flex-row-reverse' : 'flex-row'}`}
+                className={`flex gap-2 md:gap-3 ${!message.isAI ? 'flex-row-reverse' : 'flex-row'}`}
               >
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                <div className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                   !message.isAI 
                     ? 'bg-primary text-primary-foreground' 
                     : 'bg-muted text-muted-foreground'
                 }`}>
-                  {!message.isAI ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                  {!message.isAI ? <User className="h-3 w-3 md:h-4 md:w-4" /> : <Bot className="h-3 w-3 md:h-4 md:w-4" />}
                 </div>
-                <div className={`max-w-[70%] p-3 rounded-lg ${
+                <div className={`max-w-[75%] md:max-w-[70%] p-2 md:p-3 rounded-lg ${
                   !message.isAI
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted text-muted-foreground'
                 }`}>
-                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                  <p className="text-xs opacity-70 mt-1">
+                  <p className="text-xs md:text-sm whitespace-pre-wrap leading-relaxed">{message.content}</p>
+                  <p className="text-[10px] md:text-xs opacity-70 mt-1">
                     {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>
               </div>
             ))}
             {isProcessing && (
-              <div className="flex gap-3">
-                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-                  <Bot className="h-4 w-4 text-muted-foreground" />
+              <div className="flex gap-2 md:gap-3">
+                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-muted flex items-center justify-center">
+                  <Bot className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
                 </div>
-                <div className="bg-muted p-3 rounded-lg">
+                <div className="bg-muted p-2 md:p-3 rounded-lg">
                   <div className="flex gap-1">
                     <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"></div>
                     <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
@@ -208,15 +208,15 @@ const SimpleChatWidget: React.FC<SimpleChatWidgetProps> = ({ onBookAppointment }
         </ScrollArea>
 
         {/* Input */}
-        <div className="p-4 border-t bg-background">
+        <div className="p-3 md:p-4 border-t bg-background">
           <div className="flex gap-2">
             <Input
               ref={inputRef}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyDown={handleKeyPress}
-              placeholder="Type your message here..."
-              className="flex-1 focus:ring-2 focus:ring-primary/20"
+              placeholder="Type here..."
+              className="flex-1 focus:ring-2 focus:ring-primary/20 text-sm"
               disabled={isProcessing}
               autoComplete="off"
             />
@@ -224,9 +224,9 @@ const SimpleChatWidget: React.FC<SimpleChatWidgetProps> = ({ onBookAppointment }
               onClick={handleSendMessage}
               disabled={!inputValue.trim() || isProcessing}
               size="icon"
-              className="bg-primary hover:bg-primary/90 text-primary-foreground"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground flex-shrink-0"
             >
-              <Send className="h-4 w-4" />
+              <Send className="h-3 w-3 md:h-4 md:w-4" />
             </Button>
           </div>
           {isProcessing && (
