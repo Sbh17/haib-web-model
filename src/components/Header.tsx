@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, User, Search, Menu, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { useSidebar } from '@/components/ui/sidebar';
 import Logo from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
 import NotificationPanel from '@/components/NotificationPanel';
@@ -13,6 +13,15 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
+  
+  // Only get sidebar context if we're in a sidebar-enabled route
+  let toggleSidebar: (() => void) | undefined;
+  try {
+    const sidebarContext = useSidebar();
+    toggleSidebar = sidebarContext?.toggleSidebar;
+  } catch {
+    // Not in a sidebar context, which is fine for non-sidebar routes
+  }
   
   const isHomePage = location.pathname === '/home' || location.pathname === '/';
   
@@ -57,10 +66,15 @@ const Header: React.FC = () => {
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         {/* Sidebar trigger for when sidebar is available */}
         <div className="flex items-center gap-4">
-          {showSidebar && (
-            <SidebarTrigger className="mr-2">
+          {showSidebar && toggleSidebar && (
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={toggleSidebar}
+              className="flex items-center gap-2"
+            >
               <MessageCircle className="h-4 w-4" />
-            </SidebarTrigger>
+            </Button>
           )}
           {!isHomePage ? (
             <Button
