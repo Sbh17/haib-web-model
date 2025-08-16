@@ -32,15 +32,17 @@ const AppChatSidebar: React.FC<AppChatSidebarProps> = ({ onBookAppointment }) =>
   const collapsed = state === 'collapsed';
 
   useEffect(() => {
-    // Initialize with welcome message
-    const welcomeMessage: ChatMessage = {
-      id: '1',
-      content: "Hi! I'm your AI assistant. I can help you book appointments, find salons, and answer questions about beauty services. How can I help you today?",
-      isAI: true,
-      timestamp: new Date(),
-      type: 'text'
-    };
-    setMessages([welcomeMessage]);
+    // Initialize with welcome message only if no messages exist
+    if (messages.length === 0) {
+      const welcomeMessage: ChatMessage = {
+        id: '1',
+        content: "Hi! I'm your AI assistant. I can help you book appointments, find salons, and answer questions about beauty services. How can I help you today?",
+        isAI: true,
+        timestamp: new Date(),
+        type: 'text'
+      };
+      setMessages([welcomeMessage]);
+    }
   }, []);
 
   useEffect(() => {
@@ -54,7 +56,11 @@ const AppChatSidebar: React.FC<AppChatSidebarProps> = ({ onBookAppointment }) =>
   };
 
   const handleSendMessage = async () => {
-    if (!inputValue.trim() || isProcessing) return;
+    console.log('handleSendMessage called with:', inputValue);
+    if (!inputValue.trim() || isProcessing) {
+      console.log('Message blocked - empty or processing');
+      return;
+    }
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
@@ -64,11 +70,15 @@ const AppChatSidebar: React.FC<AppChatSidebarProps> = ({ onBookAppointment }) =>
       type: 'text'
     };
 
+    console.log('Adding user message:', userMessage);
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputValue;
     setInputValue('');
 
     try {
-      const response = await processMessage(inputValue);
+      console.log('Processing message with AI...');
+      const response = await processMessage(currentInput);
+      console.log('AI response received:', response);
       setMessages(prev => [...prev, response]);
 
       // Handle booking appointments
@@ -123,9 +133,12 @@ const AppChatSidebar: React.FC<AppChatSidebarProps> = ({ onBookAppointment }) =>
     return (
       <Sidebar className="w-14 border-r border-border">
         <div className="flex flex-col items-center py-4">
-          <SidebarTrigger className="mb-4">
+          <SidebarTrigger className="mb-4 hover:bg-accent rounded-md p-2">
             <MessageCircle className="h-6 w-6" />
           </SidebarTrigger>
+          <div className="text-xs text-center text-muted-foreground px-1">
+            Chat
+          </div>
         </div>
       </Sidebar>
     );
@@ -155,8 +168,15 @@ const AppChatSidebar: React.FC<AppChatSidebarProps> = ({ onBookAppointment }) =>
                   key={index}
                   variant="outline"
                   size="sm"
-                  className="justify-start text-left h-auto py-2 px-3 whitespace-normal"
-                  onClick={() => setInputValue(action)}
+                  className="justify-start text-left h-auto py-2 px-3 whitespace-normal hover:bg-primary/10 hover:border-primary/20"
+                  onClick={() => {
+                    setInputValue(action);
+                    // Auto-focus the input after setting the value
+                    setTimeout(() => {
+                      const input = document.querySelector('input[placeholder*="Type your message"]') as HTMLInputElement;
+                      if (input) input.focus();
+                    }, 100);
+                  }}
                 >
                   {action}
                 </Button>
@@ -213,21 +233,23 @@ const AppChatSidebar: React.FC<AppChatSidebarProps> = ({ onBookAppointment }) =>
               </div>
             </ScrollArea>
 
-            <div className="p-3 border-t border-border">
+            <div className="p-3 border-t border-border bg-background">
               <div className="flex gap-2">
                 <Input
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Type your message..."
-                  className="flex-1"
+                  onKeyDown={handleKeyPress}
+                  placeholder="Type your message here..."
+                  className="flex-1 focus:ring-2 focus:ring-primary/20"
                   disabled={isProcessing}
+                  autoComplete="off"
                 />
                 <Button
                   variant="outline"
                   size="icon"
                   onClick={toggleRecording}
-                  className={isRecording ? 'bg-red-100 text-red-600' : ''}
+                  className={`transition-all duration-200 ${isRecording ? 'bg-red-100 text-red-600 border-red-300' : 'hover:bg-accent'}`}
+                  title="Voice recording"
                 >
                   <Mic className="h-4 w-4" />
                 </Button>
@@ -235,10 +257,18 @@ const AppChatSidebar: React.FC<AppChatSidebarProps> = ({ onBookAppointment }) =>
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim() || isProcessing}
                   size="icon"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                  title="Send message"
                 >
                   <Send className="h-4 w-4" />
                 </Button>
               </div>
+              {isProcessing && (
+                <div className="mt-2 text-xs text-muted-foreground flex items-center gap-2">
+                  <div className="animate-spin h-3 w-3 border border-primary border-t-transparent rounded-full"></div>
+                  AI is thinking...
+                </div>
+              )}
             </div>
           </SidebarGroupContent>
         </SidebarGroup>
