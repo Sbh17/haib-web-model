@@ -49,12 +49,7 @@ const AppContent: React.FC = () => {
             <AppChatSidebar onBookAppointment={handleBookAppointment} />
             
             <div className="flex-1 flex flex-col">
-              <header className="h-16 flex items-center border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4">
-                <SidebarTrigger className="mr-4" />
-                <div className="flex-1">
-                  <Header />
-                </div>
-              </header>
+              <Header />
               
               <main className="flex-1 overflow-auto">
                 <Routes>

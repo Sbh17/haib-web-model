@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, User, Search, Menu } from 'lucide-react';
+import { ArrowLeft, User, Search, Menu, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 import Logo from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
 import NotificationPanel from '@/components/NotificationPanel';
@@ -15,8 +16,9 @@ const Header: React.FC = () => {
   
   const isHomePage = location.pathname === '/home' || location.pathname === '/';
   
-  // Hide header on welcome and auth pages
-  const hideHeader = location.pathname === '/welcome' || location.pathname === '/auth';
+  // Hide header on welcome and auth pages  
+  const hideHeader = location.pathname === '/welcome' || location.pathname === '/auth' || location.pathname === '/register';
+  const showSidebar = !hideHeader;
   
   // Don't render header if user is not authenticated or on specific pages
   if (hideHeader || !user) {
@@ -53,8 +55,15 @@ const Header: React.FC = () => {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
-        {/* Left side */}
+        {/* Sidebar trigger for when sidebar is available */}
         <div className="flex items-center gap-4">
+          {showSidebar && (
+            <SidebarTrigger asChild>
+              <Button variant="ghost" size="sm">
+                <MessageCircle className="h-4 w-4" />
+              </Button>
+            </SidebarTrigger>
+          )}
           {!isHomePage ? (
             <Button
               variant="ghost"
