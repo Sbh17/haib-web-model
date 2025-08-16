@@ -58,10 +58,8 @@ const Header: React.FC = () => {
         {/* Sidebar trigger for when sidebar is available */}
         <div className="flex items-center gap-4">
           {showSidebar && (
-            <SidebarTrigger asChild>
-              <Button variant="ghost" size="sm">
-                <MessageCircle className="h-4 w-4" />
-              </Button>
+            <SidebarTrigger className="mr-2">
+              <MessageCircle className="h-4 w-4" />
             </SidebarTrigger>
           )}
           {!isHomePage ? (
