@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-
 import Header from '@/components/Header';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import AuthRedirect from '@/components/AuthRedirect';
-import ModernChatWidget from '@/components/chat/ModernChatWidget';
+import SleekChatWidget from '@/components/chat/SleekChatWidget';
 
 // Import pages
 import Welcome from '@/pages/Welcome';
@@ -117,7 +117,7 @@ const AppContent: React.FC = () => {
         
         {/* AI Chat Assistant - Available on all protected routes */}
         {location.pathname !== '/welcome' && location.pathname !== '/auth' && location.pathname !== '/register' && (
-          <ModernChatWidget onBookAppointment={handleBookAppointment} />
+          <SleekChatWidget onBookAppointment={handleBookAppointment} />
         )}
       </div>
     </AuthRedirect>
