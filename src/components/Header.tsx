@@ -109,6 +109,14 @@ const Header: React.FC = () => {
             <Search className="h-4 w-4" />
           </Button>
           
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => navigate('/chat')}
+          >
+            <MessageCircle className="h-4 w-4" />
+          </Button>
+          
           <NotificationPanel />
           <ThemeToggle />
 

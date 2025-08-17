@@ -20,6 +20,7 @@ import Promotions from '@/pages/Promotions';
 import Settings from '@/pages/Settings';
 import Profile from '@/pages/Profile';
 import ProfileSettings from '@/pages/ProfileSettings';
+import Chat from '@/pages/Chat';
 import Auth from '@/pages/Auth';
 import Register from '@/pages/Register';
 import NotFound from '@/pages/NotFound';
@@ -110,6 +111,11 @@ const AppContent: React.FC = () => {
                 <ProfileSettings />
               </ProtectedRoute>
             } />
+            <Route path="/chat" element={
+              <ProtectedRoute>
+                <Chat onBookAppointment={handleBookAppointment} />
+              </ProtectedRoute>
+            } />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/register" element={<Register />} />
@@ -117,8 +123,6 @@ const AppContent: React.FC = () => {
           </Routes>
         </main>
 
-        {/* Simple Chat Widget - mobile optimized and always available when authenticated */}
-        <SimpleChatWidget onBookAppointment={handleBookAppointment} />
       </div>
     </AuthRedirect>
   );
