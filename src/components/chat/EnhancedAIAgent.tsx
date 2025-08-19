@@ -122,7 +122,7 @@ export class EnhancedAIAgent {
     };
   }
 
-  async processMessage(message: string): Promise<ChatMessage> {
+  async processMessage(message: string, user?: any): Promise<ChatMessage> {
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
       content: message,
@@ -144,7 +144,7 @@ export class EnhancedAIAgent {
     }
 
     // Generate response based on message content and sentiment
-    const response = await this.generateResponse(message, sentimentScore);
+    const response = await this.generateResponse(message, sentimentScore, user);
 
     const aiMessage: ChatMessage = {
       id: (Date.now() + 1).toString(),
@@ -159,7 +159,7 @@ export class EnhancedAIAgent {
     return aiMessage;
   }
 
-  private async generateResponse(message: string, sentimentScore: number): Promise<{
+  private async generateResponse(message: string, sentimentScore: number, user?: any): Promise<{
     content: string;
     type?: 'text' | 'booking-suggestion' | 'confirmation';
     bookingData?: any;
@@ -192,10 +192,10 @@ export class EnhancedAIAgent {
       }
     }
 
-  // Booking intent
-  if (this.isBookingIntent(lowerMessage)) {
-    return this.handleBookingRequest(lowerMessage);
-  }
+    // Booking intent
+    if (this.isBookingIntent(lowerMessage)) {
+      return this.handleBookingRequest(lowerMessage, user);
+    }
 
     // Beauty tips and advice
     if (this.isAdviceRequest(lowerMessage)) {
@@ -249,15 +249,13 @@ export class EnhancedAIAgent {
     return trendKeywords.some(keyword => message.includes(keyword));
   }
 
-  private async handleBookingRequest(message: string): Promise<{
+  private async handleBookingRequest(message: string, user?: any): Promise<{
     content: string;
     type: 'text' | 'booking-suggestion' | 'confirmation';
     bookingData?: any;
   }> {
     try {
-      // Get current user
-      const { data: { user } } = await supabase.auth.getUser();
-      
+      // Check if user is provided from AuthContext
       if (!user) {
         return {
           content: "I'd be delighted to help you book an appointment! However, you'll need to sign in first. Once you're logged in, I can check availability and make your reservation.",

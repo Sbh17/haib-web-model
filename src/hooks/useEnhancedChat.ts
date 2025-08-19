@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { EnhancedAIAgent, ChatMessage, UserPreferences } from '@/components/chat/EnhancedAIAgent';
 import { VoiceInterface } from '@/utils/VoiceInterface';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/context/AuthContext';
 
 interface UseEnhancedChatProps {
   onBookAppointment?: (bookingData: any) => void;
@@ -17,6 +18,7 @@ export const useEnhancedChat = ({ onBookAppointment, enableVoice = false }: UseE
   const agentRef = useRef<EnhancedAIAgent | null>(null);
   const voiceRef = useRef<VoiceInterface | null>(null);
   const { toast } = useToast();
+  const { user } = useAuth(); // Get authenticated user from context
 
   // Initialize AI agent
   useEffect(() => {
@@ -53,7 +55,7 @@ export const useEnhancedChat = ({ onBookAppointment, enableVoice = false }: UseE
       setMessages(prev => [...prev, userMessage]);
 
       // Process with AI agent
-      const aiResponse = await agentRef.current.processMessage(messageContent);
+      const aiResponse = await agentRef.current.processMessage(messageContent, user);
       
       setMessages(prev => [...prev, aiResponse]);
 
@@ -86,7 +88,7 @@ export const useEnhancedChat = ({ onBookAppointment, enableVoice = false }: UseE
     } finally {
       setIsProcessing(false);
     }
-  }, [isProcessing, voiceEnabled, onBookAppointment, toast]);
+  }, [isProcessing, voiceEnabled, onBookAppointment, toast, user]); // Add user dependency
 
   const startVoiceInput = useCallback(() => {
     if (!voiceRef.current || !voiceEnabled || isListening) return;
