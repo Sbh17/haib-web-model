@@ -3,7 +3,7 @@ import { Send, Sparkles, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { useChatAgent } from '@/hooks/useChatAgent';
+import { useEnhancedChat } from '@/hooks/useEnhancedChat';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { ChatMessage } from '@/components/chat/ChatMessage';
@@ -20,24 +20,23 @@ interface ChatProps {
 }
 
 const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
-  const [messages, setMessages] = useState<Message[]>([]);
+  
   const [inputValue, setInputValue] = useState('');
-  const { processMessage, isProcessing } = useChatAgent();
+  const { 
+    messages: chatMessages, 
+    processMessage, 
+    isProcessing,
+    voiceEnabled,
+    isListening,
+    startVoiceInput,
+    stopVoiceInput,
+    toggleVoiceResponse
+  } = useEnhancedChat({ onBookAppointment });
   const { toast } = useToast();
   const navigate = useNavigate();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Welcome message on mount
-  useEffect(() => {
-    const welcomeMessage: Message = {
-      id: '1',
-      content: "Hi! I'm your beauty assistant. I can help you find salons, book appointments, and answer questions about beauty services. What would you like to do today?",
-      sender: 'ai',
-      timestamp: new Date()
-    };
-    setMessages([welcomeMessage]);
-  }, []);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -47,7 +46,7 @@ const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
         scrollContainer.scrollTop = scrollContainer.scrollHeight;
       }
     }
-  }, [messages]);
+  }, [chatMessages]);
 
   // Auto-resize textarea
   useEffect(() => {
@@ -59,41 +58,11 @@ const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
 
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isProcessing) return;
-
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      content: inputValue.trim(),
-      sender: 'user',
-      timestamp: new Date()
-    };
-
-    setMessages(prev => [...prev, userMessage]);
+    
+    const messageText = inputValue.trim();
     setInputValue('');
-
-    try {
-      const aiResponse = await processMessage(userMessage.content);
-      
-      const aiMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content: aiResponse.content,
-        sender: 'ai',
-        timestamp: new Date()
-      };
-
-      setMessages(prev => [...prev, aiMessage]);
-
-      // Handle booking if AI suggests it
-      if (aiResponse.bookingData && onBookAppointment) {
-        handleBookAppointment(aiResponse.bookingData);
-      }
-    } catch (error) {
-      console.error('Error processing message:', error);
-      toast({
-        title: "Error",
-        description: "Failed to get AI response. Please try again.",
-        variant: "destructive"
-      });
-    }
+    
+    await processMessage(messageText);
   };
 
   const handleBookAppointment = (bookingData: any) => {
@@ -149,7 +118,7 @@ const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
       {/* Messages Area */}
       <ScrollArea ref={scrollAreaRef} className="flex-1 px-8">
         <div className="py-8 space-y-8">
-          {messages.length === 1 && (
+          {chatMessages.length === 1 && (
             <div className="mb-12">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {quickSuggestions.map((suggestion, index) => (
@@ -166,24 +135,24 @@ const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
             </div>
           )}
 
-          {messages.map((message) => (
+          {chatMessages.map((message) => (
             <div
               key={message.id}
-              className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
+              className={`flex ${!message.isAI ? 'justify-end' : 'justify-start'} animate-fade-in`}
             >
               <div
                 className={`max-w-[75%] rounded-3xl px-6 py-4 ${
-                  message.sender === 'user'
+                  !message.isAI
                     ? 'bg-gradient-champagne text-black ml-6 shadow-elegant'
                     : 'bg-white/10 border border-white/20 text-white mr-6 backdrop-blur-sm shadow-dior'
                 }`}
               >
-                <p className={`whitespace-pre-wrap leading-relaxed ${message.sender === 'user' ? 'font-medium' : 'font-light'}`}>
+                <p className={`whitespace-pre-wrap leading-relaxed ${!message.isAI ? 'font-medium' : 'font-light'}`}>
                   {message.content}
                 </p>
                 <p
                   className={`text-xs mt-3 font-light ${
-                    message.sender === 'user'
+                    !message.isAI
                       ? 'text-black/60'
                       : 'text-white/50'
                   }`}
