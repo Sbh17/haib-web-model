@@ -130,33 +130,33 @@ const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
   ];
 
   return (
-    <div className="flex flex-col h-[calc(100vh-3.5rem)]">
+    <div className="flex flex-col h-[calc(100vh-3.5rem)] bg-gradient-dior">
       {/* Chat Header */}
-      <div className="border-b bg-card px-6 py-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center">
-            <Sparkles className="w-5 h-5 text-white" />
+      <div className="border-b border-white/10 bg-black/40 backdrop-blur-xl px-8 py-6">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-full bg-gradient-champagne flex items-center justify-center shadow-dior">
+            <Sparkles className="w-6 h-6 text-black" />
           </div>
           <div>
-            <h1 className="text-lg font-semibold">Beauty Assistant</h1>
-            <p className="text-sm text-muted-foreground">
-              {isProcessing ? 'Thinking...' : 'Online'}
+            <h1 className="text-xl font-luxury font-medium text-white tracking-wide">Beauty Concierge</h1>
+            <p className="text-sm text-white/60 font-light">
+              {isProcessing ? 'Crafting your experience...' : 'At your service'}
             </p>
           </div>
         </div>
       </div>
 
       {/* Messages Area */}
-      <ScrollArea ref={scrollAreaRef} className="flex-1 px-6">
-        <div className="py-6 space-y-6">
+      <ScrollArea ref={scrollAreaRef} className="flex-1 px-8">
+        <div className="py-8 space-y-8">
           {messages.length === 1 && (
-            <div className="mb-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div className="mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {quickSuggestions.map((suggestion, index) => (
                   <Button
                     key={index}
                     variant="outline"
-                    className="h-auto p-4 text-left justify-start whitespace-normal"
+                    className="h-auto p-6 text-left justify-start whitespace-normal bg-white/5 border-white/20 text-white/90 hover:bg-white/10 hover:border-white/30 font-light backdrop-blur-sm transition-all duration-300 shadow-soft"
                     onClick={() => setInputValue(suggestion)}
                   >
                     {suggestion}
@@ -169,21 +169,23 @@ const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
             >
               <div
-                className={`max-w-[80%] rounded-2xl px-4 py-3 ${
+                className={`max-w-[75%] rounded-3xl px-6 py-4 ${
                   message.sender === 'user'
-                    ? 'bg-primary text-primary-foreground ml-4'
-                    : 'bg-card border mr-4'
+                    ? 'bg-gradient-champagne text-black ml-6 shadow-elegant'
+                    : 'bg-white/10 border border-white/20 text-white mr-6 backdrop-blur-sm shadow-dior'
                 }`}
               >
-                <p className="whitespace-pre-wrap">{message.content}</p>
+                <p className={`whitespace-pre-wrap leading-relaxed ${message.sender === 'user' ? 'font-medium' : 'font-light'}`}>
+                  {message.content}
+                </p>
                 <p
-                  className={`text-xs mt-2 ${
+                  className={`text-xs mt-3 font-light ${
                     message.sender === 'user'
-                      ? 'text-primary-foreground/70'
-                      : 'text-muted-foreground'
+                      ? 'text-black/60'
+                      : 'text-white/50'
                   }`}
                 >
                   {message.timestamp.toLocaleTimeString([], { 
@@ -196,15 +198,15 @@ const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
           ))}
 
           {isProcessing && (
-            <div className="flex justify-start">
-              <div className="bg-card border rounded-2xl px-4 py-3 mr-4">
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-1">
-                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" />
-                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                    <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+            <div className="flex justify-start animate-fade-in">
+              <div className="bg-white/10 border border-white/20 rounded-3xl px-6 py-4 mr-6 backdrop-blur-sm shadow-dior">
+                <div className="flex items-center gap-3">
+                  <div className="flex gap-1.5">
+                    <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" />
+                    <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
+                    <div className="w-2 h-2 bg-white/60 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
                   </div>
-                  <span className="text-sm text-muted-foreground">AI is thinking...</span>
+                  <span className="text-sm text-white/70 font-light">Concierge is thinking...</span>
                 </div>
               </div>
             </div>
@@ -213,26 +215,25 @@ const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
       </ScrollArea>
 
       {/* Input Area */}
-      <div className="border-t bg-card p-4">
-        <div className="flex gap-3 items-end">
+      <div className="border-t border-white/10 bg-black/20 backdrop-blur-xl p-6">
+        <div className="flex gap-4 items-end">
           <div className="flex-1 relative">
             <Textarea
               ref={textareaRef}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask me anything about beauty services..."
-              className="min-h-[44px] max-h-[120px] resize-none pr-12"
+              placeholder="Share your beauty aspirations..."
+              className="min-h-[52px] max-h-[120px] resize-none bg-white/10 border-white/20 text-white placeholder:text-white/50 backdrop-blur-sm focus:bg-white/15 focus:border-white/30 rounded-2xl px-5 py-4 font-light shadow-inner transition-all duration-300"
               rows={1}
             />
           </div>
           <Button
             onClick={handleSendMessage}
             disabled={!inputValue.trim() || isProcessing}
-            size="sm"
-            className="px-4 py-2 h-11"
+            className="px-6 py-4 h-[52px] bg-gradient-champagne hover:opacity-90 text-black font-medium rounded-2xl shadow-elegant transition-all duration-300 hover:scale-105"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-5 h-5" />
           </Button>
         </div>
       </div>

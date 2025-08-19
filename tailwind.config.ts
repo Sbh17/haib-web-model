@@ -23,6 +23,7 @@ export default {
 				'playfair': ['Playfair Display', 'serif'],
 				'baskerville': ['Libre Baskerville', 'serif'],
 				'inter': ['Inter', 'sans-serif'],
+				'luxury': ['Cormorant Garamond', 'Playfair Display', 'serif'],
 			},
 			letterSpacing: {
 				'luxury': '0.025em',
