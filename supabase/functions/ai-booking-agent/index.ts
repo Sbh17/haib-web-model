@@ -54,22 +54,23 @@ async function parseBookingRequest(message: string): Promise<BookingDetails | nu
         messages: [
           {
             role: 'system',
-            content: `You are a booking assistant for beauty salons. Extract booking details from user messages.
+            content: `You are a luxury beauty concierge specializing in women's beauty appointments. Extract booking details from user messages.
             
-Available services: "Women Haircut", "Men Haircut", "Hair Coloring", "Manicure", "Pedicure", "Facial Treatment", "Massage Therapy", "Beard Trim"
+Available services: "Women Haircut", "Hair Coloring", "Highlights & Lowlights", "Blowout Styling", "Deep Conditioning Treatment", "Makeup Application", "Bridal Makeup", "Eyebrow Shaping", "Eyelash Extensions", "Manicure", "Gel Manicure", "French Manicure", "Pedicure", "Facial Treatment", "Anti-Aging Facial", "Massage Therapy"
 
 Return a JSON object with:
 - service: exact service name from the list above (or closest match)
 - date: in YYYY-MM-DD format (if relative like "tomorrow", "next week", calculate based on today being ${new Date().toISOString().split('T')[0]})
 - time: in HH:MM format (24-hour)
-- preferences: array of any specific preferences mentioned
+- preferences: array of any specific preferences mentioned (e.g., color preferences, special occasions)
 
 If the message doesn't contain enough booking information, return null.
 
 Examples:
 "I want a haircut tomorrow at 2pm" → {"service": "Women Haircut", "date": "2025-08-20", "time": "14:00"}
-"Book me a manicure next Friday morning" → {"service": "Manicure", "date": "2025-08-23", "time": "10:00"}
-"Can I get a massage this afternoon?" → {"service": "Massage Therapy", "date": "2025-08-19", "time": "15:00"}`
+"Book me a gel manicure this Friday morning" → {"service": "Gel Manicure", "date": "2025-08-23", "time": "10:00"}
+"I need bridal makeup for my wedding next Saturday" → {"service": "Bridal Makeup", "date": "2025-08-30", "time": "10:00", "preferences": ["bridal", "wedding"]}
+"Can I get highlights and a blowout this afternoon?" → {"service": "Highlights & Lowlights", "date": "2025-08-19", "time": "15:00"}`
           },
           {
             role: 'user',
@@ -123,7 +124,7 @@ async function checkAvailability(supabase: any, bookingDetails: BookingDetails):
     if (!services || services.length === 0) {
       return {
         available: false,
-        message: `Sorry, I couldn't find the service "${bookingDetails.service}". Available services include Women Haircut, Men Haircut, Hair Coloring, Manicure, Pedicure, Facial Treatment, Massage Therapy, and Beard Trim.`
+        message: `I couldn't find the service "${bookingDetails.service}". Available services include Hair Services (Women Haircut, Hair Coloring, Highlights & Lowlights, Blowout Styling), Makeup Services (Makeup Application, Bridal Makeup), Beauty Treatments (Eyebrow Shaping, Eyelash Extensions), Nail Services (Manicure, Gel Manicure, French Manicure, Pedicure), and Skincare (Facial Treatment, Anti-Aging Facial, Massage Therapy).`
       };
     }
 
@@ -184,7 +185,7 @@ async function checkAvailability(supabase: any, bookingDetails: BookingDetails):
         available: true,
         salon,
         service,
-        message: `Perfect! I found availability for ${service.name} at ${salon.name} on ${bookingDetails.date} at ${requestedTime}. The appointment will take ${service.duration_minutes} minutes and costs $${service.price}. Would you like me to book this for you?`
+        message: `Perfect! I found availability for ${service.name} at ${salon.name} on ${bookingDetails.date} at ${requestedTime}. This luxurious ${service.duration_minutes}-minute treatment costs $${service.price}. Would you like me to book this appointment for you?`
       };
     }
 

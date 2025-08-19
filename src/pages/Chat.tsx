@@ -93,10 +93,10 @@ const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
   };
 
   const quickSuggestions = [
-    "Find a nearby salon for haircut",
-    "Book a manicure appointment",
-    "Show me spa treatments",
-    "What services are popular?"
+    "Book a haircut and blowout for tomorrow",
+    "I need bridal makeup for my wedding",
+    "Schedule a gel manicure this week",
+    "Find me a facial treatment appointment"
   ];
 
   return (

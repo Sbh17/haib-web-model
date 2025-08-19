@@ -29,7 +29,7 @@ export const useEnhancedChat = ({ onBookAppointment, enableVoice = false }: UseE
     // Add welcome message
     const welcomeMessage: ChatMessage = {
       id: 'welcome',
-      content: "Welcome to your personal beauty concierge! ✨ I'm here to help you discover exquisite beauty experiences tailored just for you. What would you like to explore today?",
+      content: "Welcome to your personal beauty concierge! ✨ I specialize in women's beauty services including hair styling, makeup, skincare, and nail treatments. I can help you book appointments, provide beauty advice, and share the latest trends. What beauty experience would you like to explore today?",
       isAI: true,
       timestamp: new Date()
     };
@@ -149,7 +149,7 @@ export const useEnhancedChat = ({ onBookAppointment, enableVoice = false }: UseE
       // Re-add welcome message
       const welcomeMessage: ChatMessage = {
         id: 'welcome-reset',
-        content: "How wonderful to see you again! I'm ready to curate another exquisite beauty experience for you. What shall we explore today?",
+        content: "How wonderful to see you again! I'm your beauty concierge specializing in women's hair, makeup, skincare, and nail services. I can book appointments, share beauty tips, and help you discover the latest trends. What beauty experience shall we create today?",
         isAI: true,
         timestamp: new Date()
       };

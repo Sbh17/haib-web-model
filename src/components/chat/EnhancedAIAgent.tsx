@@ -64,37 +64,59 @@ export class EnhancedAIAgent {
   private initializeBeautyKnowledge(): BeautyKnowledge {
     return {
       services: {
-        'haircut': { description: 'Professional hair cutting and styling', averagePrice: 80, duration: '1 hour' },
-        'coloring': { description: 'Hair coloring and highlighting services', averagePrice: 150, duration: '2-3 hours' },
-        'manicure': { description: 'Nail care and polish application', averagePrice: 40, duration: '45 minutes' },
-        'pedicure': { description: 'Foot and toenail care', averagePrice: 50, duration: '1 hour' },
-        'facial': { description: 'Deep cleansing and skin treatment', averagePrice: 100, duration: '1.5 hours' },
-        'massage': { description: 'Relaxing therapeutic massage', averagePrice: 120, duration: '1 hour' },
-        'eyebrows': { description: 'Eyebrow shaping and tinting', averagePrice: 35, duration: '30 minutes' },
-        'eyelash extensions': { description: 'Semi-permanent eyelash enhancement', averagePrice: 200, duration: '2 hours' }
+        'haircut': { description: 'Professional women\'s hair cutting and styling', averagePrice: 80, duration: '1 hour' },
+        'hair coloring': { description: 'Full hair coloring and color correction services', averagePrice: 150, duration: '2-3 hours' },
+        'highlights': { description: 'Partial hair coloring with highlights and lowlights', averagePrice: 180, duration: '2.5 hours' },
+        'blowout': { description: 'Professional hair washing, drying and styling', averagePrice: 65, duration: '45 minutes' },
+        'hair treatment': { description: 'Deep conditioning and restorative hair treatments', averagePrice: 85, duration: '1 hour' },
+        'makeup': { description: 'Professional makeup application for any occasion', averagePrice: 120, duration: '1.5 hours' },
+        'bridal makeup': { description: 'Complete bridal makeup package with trial', averagePrice: 200, duration: '2 hours' },
+        'eyebrows': { description: 'Professional eyebrow shaping and threading', averagePrice: 45, duration: '30 minutes' },
+        'eyelash extensions': { description: 'Semi-permanent eyelash enhancement', averagePrice: 180, duration: '2 hours' },
+        'manicure': { description: 'Professional nail care and polish application', averagePrice: 40, duration: '45 minutes' },
+        'gel manicure': { description: 'Long-lasting gel nail polish treatment', averagePrice: 55, duration: '1 hour' },
+        'french manicure': { description: 'Classic French manicure styling', averagePrice: 48, duration: '50 minutes' },
+        'pedicure': { description: 'Complete foot and toenail care treatment', averagePrice: 50, duration: '1 hour' },
+        'facial': { description: 'Deep cleansing and rejuvenating facial treatment', averagePrice: 100, duration: '1.5 hours' },
+        'anti-aging facial': { description: 'Advanced anti-aging skincare treatment', averagePrice: 140, duration: '75 minutes' },
+        'massage': { description: 'Relaxing therapeutic body massage', averagePrice: 120, duration: '1 hour' }
       },
       trends: [
-        'Korean glass skin treatments',
-        'Sustainable beauty practices',
-        'Personalized skincare routines',
-        'Bold nail art designs',
-        'Natural hair textures'
+        'Glass skin makeup techniques',
+        'Curtain bangs and face-framing layers',
+        'Sustainable and clean beauty products',
+        'Bold graphic eyeliner looks',
+        'Natural texture hair movement',
+        'Chrome and metallic nail finishes',
+        'Skin-first makeup approach',
+        'Babylights hair coloring',
+        'Russian volume lash extensions',
+        'Gua sha facial treatments'
       ],
       tips: {
         'hair care': [
-          'Use heat protectant before styling',
-          'Deep condition weekly for healthy hair',
-          'Trim every 6-8 weeks to prevent split ends'
+          'Use heat protectant before any heat styling tools',
+          'Deep condition weekly for healthy, shiny hair',
+          'Trim every 6-8 weeks to prevent split ends and maintain shape',
+          'Sleep on silk pillowcases to reduce friction and frizz'
         ],
         'skin care': [
-          'Always wear SPF, even indoors',
-          'Double cleanse in the evening',
-          'Hydrate from within by drinking water'
+          'Always apply SPF 30+ daily, even when staying indoors',
+          'Double cleanse in the evening to remove makeup and impurities',
+          'Hydrate from within by drinking plenty of water throughout the day',
+          'Use a serum with active ingredients suited to your skin concerns'
         ],
         'nail care': [
-          'Use a base coat to protect nails',
-          'Moisturize cuticles daily',
-          'Take breaks between gel manicures'
+          'Always use a base coat to protect nails from staining',
+          'Moisturize cuticles daily with nourishing oils',
+          'Take breaks between gel manicures to let nails breathe',
+          'File nails in one direction to prevent splitting'
+        ],
+        'makeup': [
+          'Prime your skin for longer-lasting makeup application',
+          'Blend eyeshadow in windshield wiper motions for seamless color',
+          'Set your makeup with powder or setting spray',
+          'Clean brushes weekly to prevent bacteria buildup'
         ]
       }
     };
