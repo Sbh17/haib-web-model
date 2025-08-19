@@ -20,7 +20,7 @@ interface ChatProps {
   onBookAppointment?: (bookingData: any) => void;
 }
 
-const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
+  const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
   
   const [inputValue, setInputValue] = useState('');
   const { 
@@ -32,7 +32,9 @@ const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
     startVoiceInput,
     stopVoiceInput,
     toggleVoiceResponse
-  } = useEnhancedChat({ onBookAppointment });
+  } = useEnhancedChat({ 
+    onBookAppointment: undefined // Don't pass the redirect function to prevent navigation
+  });
   const { toast } = useToast();
   const navigate = useNavigate();
   const scrollAreaRef = useRef<HTMLDivElement>(null);

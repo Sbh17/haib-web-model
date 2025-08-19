@@ -254,15 +254,20 @@ export class EnhancedAIAgent {
     type: 'text' | 'booking-suggestion' | 'confirmation';
     bookingData?: any;
   }> {
+    console.log('🔍 AI Agent: Processing booking request:', { message, hasUser: !!user });
+    
     try {
       // Check if user is provided from AuthContext
       if (!user) {
+        console.log('❌ AI Agent: No user found, requesting sign in');
         return {
           content: "I'd be delighted to help you book an appointment! However, you'll need to sign in first. Once you're logged in, I can check availability and make your reservation.",
           type: 'text'
         };
       }
 
+      console.log('✅ AI Agent: User authenticated, calling booking agent API');
+      
       // Call the AI booking agent
       const response = await supabase.functions.invoke('ai-booking-agent', {
         body: {
@@ -271,8 +276,10 @@ export class EnhancedAIAgent {
         }
       });
 
+      console.log('📡 AI Agent: Booking agent response:', response);
+
       if (response.error) {
-        console.error('Booking agent error:', response.error);
+        console.error('💥 AI Agent: Booking agent error:', response.error);
         return {
           content: "I apologize, but I'm having trouble accessing the booking system right now. Please try again in a moment, or feel free to browse available salons manually.",
           type: 'text'
@@ -280,8 +287,10 @@ export class EnhancedAIAgent {
       }
 
       const result = response.data;
+      console.log('📊 AI Agent: Processing booking result:', result);
 
       if (result.success && result.booked) {
+        console.log('🎉 AI Agent: Booking confirmed!');
         // Successfully booked
         return {
           content: result.message,
@@ -289,17 +298,14 @@ export class EnhancedAIAgent {
           bookingData: result.appointment
         };
       } else if (result.success && !result.booked && result.availability) {
+        console.log('💡 AI Agent: Availability found, suggesting alternatives');
         // Available but not booked (suggestions provided)
         return {
-          content: result.message,
-          type: 'booking-suggestion',
-          bookingData: {
-            salon: result.availability.salon,
-            service: result.availability.service,
-            suggestedTimes: result.availability.suggestedTimes
-          }
+          content: result.message + "\n\nWould you like me to book one of these times for you?",
+          type: 'text'  // Changed from 'booking-suggestion' to 'text' to prevent navigation
         };
       } else {
+        console.log('⚠️ AI Agent: Parsing or availability issue');
         // Parsing or availability issue
         return {
           content: result.message || "I couldn't process your booking request. Please try specifying the service, date, and preferred time more clearly.",
@@ -308,7 +314,7 @@ export class EnhancedAIAgent {
       }
 
     } catch (error) {
-      console.error('Error in booking request:', error);
+      console.error('💥 AI Agent: Error in booking request:', error);
       return {
         content: "I'm experiencing some technical difficulties with the booking system. Please try again, or browse our salon directory to make a reservation directly.",
         type: 'text'

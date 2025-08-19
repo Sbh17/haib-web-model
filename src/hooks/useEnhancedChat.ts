@@ -64,9 +64,15 @@ export const useEnhancedChat = ({ onBookAppointment, enableVoice = false }: UseE
         voiceRef.current.speak(aiResponse.content);
       }
 
-      // Handle booking suggestions
+      // Handle booking responses - don't redirect for confirmed bookings
       if (aiResponse.type === 'booking-suggestion' && aiResponse.bookingData && onBookAppointment) {
-        onBookAppointment(aiResponse.bookingData);
+        // Only call onBookAppointment for external integrations, not for standalone chat
+        if (onBookAppointment.toString().includes('navigate')) {
+          // This is the default redirect function, skip it for standalone chat
+          console.log('Skipping redirect - AI agent should handle booking internally');
+        } else {
+          onBookAppointment(aiResponse.bookingData);
+        }
       }
 
     } catch (error) {
