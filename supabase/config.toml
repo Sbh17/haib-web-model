@@ -1,5 +1,8 @@
 project_id = "pruhplqrmepvrbkzdomx"
 
+[functions.ai-booking-agent]
+verify_jwt = false
+
 [functions.send-appointment-reminders]
 verify_jwt = false
 

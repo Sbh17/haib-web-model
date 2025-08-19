@@ -1,4 +1,4 @@
-import { pipeline } from '@huggingface/transformers';
+import { supabase } from "@/integrations/supabase/client";
 
 export interface ChatMessage {
   id: string;
@@ -51,11 +51,11 @@ export class EnhancedAIAgent {
 
   private async initializeAI() {
     try {
-      // Initialize sentiment analysis
-      this.sentiment = await pipeline('sentiment-analysis', 'Xenova/distilbert-base-uncased-finetuned-sst-2-english');
+      // Initialize sentiment analysis (disabled for now)
+      // this.sentiment = await pipeline('sentiment-analysis', 'Xenova/distilbert-base-uncased-finetuned-sst-2-english');
       
-      // Initialize embeddings for semantic search
-      this.embeddings = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+      // Initialize embeddings for semantic search (disabled for now)
+      // this.embeddings = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
     } catch (error) {
       console.log('AI models not loaded, using fallback logic:', error);
     }
@@ -170,10 +170,10 @@ export class EnhancedAIAgent {
       }
     }
 
-    // Booking intent
-    if (this.isBookingIntent(lowerMessage)) {
-      return this.generateBookingSuggestion(lowerMessage);
-    }
+  // Booking intent
+  if (this.isBookingIntent(lowerMessage)) {
+    return this.handleBookingRequest(lowerMessage);
+  }
 
     // Beauty tips and advice
     if (this.isAdviceRequest(lowerMessage)) {
@@ -225,6 +225,75 @@ export class EnhancedAIAgent {
   private isTrendInquiry(message: string): boolean {
     const trendKeywords = ['trend', 'popular', 'fashionable', 'latest', 'new', 'what\'s in'];
     return trendKeywords.some(keyword => message.includes(keyword));
+  }
+
+  private async handleBookingRequest(message: string): Promise<{
+    content: string;
+    type: 'text' | 'booking-suggestion' | 'confirmation';
+    bookingData?: any;
+  }> {
+    try {
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        return {
+          content: "I'd be delighted to help you book an appointment! However, you'll need to sign in first. Once you're logged in, I can check availability and make your reservation.",
+          type: 'text'
+        };
+      }
+
+      // Call the AI booking agent
+      const response = await supabase.functions.invoke('ai-booking-agent', {
+        body: {
+          message: message,
+          userId: user.id
+        }
+      });
+
+      if (response.error) {
+        console.error('Booking agent error:', response.error);
+        return {
+          content: "I apologize, but I'm having trouble accessing the booking system right now. Please try again in a moment, or feel free to browse available salons manually.",
+          type: 'text'
+        };
+      }
+
+      const result = response.data;
+
+      if (result.success && result.booked) {
+        // Successfully booked
+        return {
+          content: result.message,
+          type: 'confirmation',
+          bookingData: result.appointment
+        };
+      } else if (result.success && !result.booked && result.availability) {
+        // Available but not booked (suggestions provided)
+        return {
+          content: result.message,
+          type: 'booking-suggestion',
+          bookingData: {
+            salon: result.availability.salon,
+            service: result.availability.service,
+            suggestedTimes: result.availability.suggestedTimes
+          }
+        };
+      } else {
+        // Parsing or availability issue
+        return {
+          content: result.message || "I couldn't process your booking request. Please try specifying the service, date, and preferred time more clearly.",
+          type: 'text'
+        };
+      }
+
+    } catch (error) {
+      console.error('Error in booking request:', error);
+      return {
+        content: "I'm experiencing some technical difficulties with the booking system. Please try again, or browse our salon directory to make a reservation directly.",
+        type: 'text'
+      };
+    }
   }
 
   private generateBookingSuggestion(message: string): {
