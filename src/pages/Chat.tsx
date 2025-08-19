@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Sparkles, Home } from 'lucide-react';
+import { Send, Home, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -7,6 +7,7 @@ import { useEnhancedChat } from '@/hooks/useEnhancedChat';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { ChatMessage } from '@/components/chat/ChatMessage';
+import haibLogo from '@/assets/haib-logo-light.png';
 
 interface Message {
   id: string;
@@ -103,8 +104,20 @@ const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
       {/* Chat Header */}
       <div className="border-b border-border bg-gradient-dior backdrop-blur-xl px-8 py-6">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-gradient-champagne flex items-center justify-center shadow-elegant">
-            <Sparkles className="w-6 h-6 text-beauty-dark dark:text-beauty-light" />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate('/')}
+            className="text-beauty-light hover:bg-white/10 rounded-full"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shadow-elegant">
+            <img 
+              src={haibLogo} 
+              alt="HAIB Logo" 
+              className="w-8 h-8 object-contain filter invert"
+            />
           </div>
           <div>
             <h1 className="text-xl font-luxury font-medium text-beauty-light tracking-wide">Beauty Concierge</h1>

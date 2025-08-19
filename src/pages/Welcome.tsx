@@ -31,11 +31,6 @@ const Welcome: React.FC = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center mt-12">
-            <Link to="/">
-              <Button variant="luxury" size="xl" className="bg-white text-black hover:bg-white/90">
-                Browse App
-              </Button>
-            </Link>
             <Link to="/register">
               <Button variant="luxury" size="xl" className="bg-white text-black hover:bg-white/90">
                 Begin Your Journey
