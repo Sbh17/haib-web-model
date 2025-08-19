@@ -82,6 +82,7 @@
     --shadow-champagne: 0 10px 30px -10px hsl(40 70% 55% / 0.3);
     --shadow-soft: 0 4px 20px -2px hsl(0 0% 0% / 0.1);
     --shadow-inner: inset 0 2px 4px hsl(0 0% 0% / 0.1);
+    --shadow-elegant: 0 20px 40px -10px hsl(0 0% 0% / 0.2);
   }
 
   .dark {
@@ -135,11 +136,20 @@
     --beauty-info: 217 44% 56%;        /* Blue (same) */
     
     /* Dark mode luxury gradients */
+    --gradient-dior: linear-gradient(135deg, hsl(0 0% 5%), hsl(40 15% 8%));
+    --gradient-champagne: linear-gradient(135deg, hsl(40 50% 75%), hsl(45 60% 80%));
+    --gradient-pearl: linear-gradient(135deg, hsl(40 20% 85%), hsl(40 15% 88%));
+    --gradient-noir: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 5%));
     --gradient-luxury: linear-gradient(135deg, hsl(var(--beauty-accent)), hsl(var(--beauty-primary)));
     --gradient-gold: linear-gradient(135deg, hsl(var(--beauty-primary)), hsl(43 84% 76%));
     --gradient-rose: linear-gradient(135deg, hsl(var(--beauty-rose)), hsl(343 89% 89%));
     
     /* Dark mode luxury shadows */
+    --shadow-dior: 0 8px 32px -8px hsl(0 0% 0% / 0.6);
+    --shadow-champagne: 0 10px 30px -10px hsl(40 60% 45% / 0.4);
+    --shadow-soft: 0 4px 20px -2px hsl(0 0% 0% / 0.3);
+    --shadow-inner: inset 0 2px 4px hsl(0 0% 0% / 0.2);
+    --shadow-elegant: 0 20px 40px -10px hsl(0 0% 0% / 0.4);
     --shadow-luxury: 0 25px 50px -12px hsl(0 0% 0% / 0.5);
     --shadow-gold: 0 10px 30px -5px hsl(var(--beauty-primary) / 0.4);
     --shadow-elevation: 0 4px 20px hsl(0 0% 0% / 0.3);
@@ -171,6 +181,40 @@
 }
 
 @layer components {
+  /* Gradient utility classes */
+  .bg-gradient-dior {
+    background: var(--gradient-dior);
+  }
+  
+  .bg-gradient-champagne {
+    background: var(--gradient-champagne);
+  }
+  
+  .bg-gradient-pearl {
+    background: var(--gradient-pearl);
+  }
+  
+  .bg-gradient-noir {
+    background: var(--gradient-noir);
+  }
+  
+  /* Shadow utility classes */
+  .shadow-dior {
+    box-shadow: var(--shadow-dior);
+  }
+  
+  .shadow-champagne {
+    box-shadow: var(--shadow-champagne);
+  }
+  
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+
   /* Dior-inspired Typography Classes */
   .dior-heading-xl {
     @apply text-4xl md:text-5xl lg:text-6xl font-playfair font-normal tracking-tight leading-tight;
