@@ -133,27 +133,16 @@ const Chat: React.FC<ChatProps> = ({ onBookAppointment }) => {
     <div className="flex flex-col h-[calc(100vh-3.5rem)]">
       {/* Chat Header */}
       <div className="border-b bg-card px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <h1 className="text-lg font-semibold">Beauty Assistant</h1>
-              <p className="text-sm text-muted-foreground">
-                {isProcessing ? 'Thinking...' : 'Online'}
-              </p>
-            </div>
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center">
+            <Sparkles className="w-5 h-5 text-white" />
           </div>
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => navigate('/home')}
-            className="flex items-center gap-2"
-          >
-            <Home className="w-4 h-4" />
-            <span className="hidden sm:inline">Browse App</span>
-          </Button>
+          <div>
+            <h1 className="text-lg font-semibold">Beauty Assistant</h1>
+            <p className="text-sm text-muted-foreground">
+              {isProcessing ? 'Thinking...' : 'Online'}
+            </p>
+          </div>
         </div>
       </div>
 
