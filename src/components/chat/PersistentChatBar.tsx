@@ -159,93 +159,93 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
       )}
 
       {/* Chat Input Bar */}
-      <div className="p-3" style={{ backgroundColor: 'rgb(255, 255, 255)' }}>
-        <div className="flex items-center gap-2 max-w-4xl mx-auto">
-          {/* AI Indicator */}
-          <div className="flex items-center gap-2 text-sm" style={{ color: 'rgb(107, 114, 128)' }}>
-            <Bot className="h-4 w-4" style={{ color: 'rgb(220, 162, 67)' }} />
-            <span className="hidden sm:inline">Ask AI</span>
-          </div>
+        <div className="p-3" style={{ backgroundColor: '#ffffff' }}>
+          <div className="flex items-center gap-2 max-w-4xl mx-auto">
+            {/* AI Indicator */}
+            <div className="flex items-center gap-2 text-sm" style={{ color: '#6b7280' }}>
+              <Bot className="h-4 w-4" style={{ color: '#dca243' }} />
+              <span className="hidden sm:inline">Ask AI</span>
+            </div>
 
-          {/* Input Field */}
-          <div className="flex-1 relative">
-            <Input
-              ref={inputRef}
-              value={inputValue}
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              onKeyDown={handleKeyPress}
-              placeholder="Ask about beauty services, book appointments..."
-              className="pr-20 transition-all duration-200"
-              style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                border: isExpanded ? '2px solid rgba(220, 162, 67, 0.2)' : '1px solid rgb(229, 231, 235)',
-                color: 'rgb(17, 24, 39)'
-              }}
-              disabled={isProcessing}
-              autoComplete="off"
-            />
-            
-            {/* Voice Button */}
-            {voiceEnabled && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={handleVoiceToggle}
-                className="absolute right-10 top-1/2 -translate-y-1/2 h-7 w-7"
+            {/* Input Field */}
+            <div className="flex-1 relative">
+              <Input
+                ref={inputRef}
+                value={inputValue}
+                onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                onKeyDown={handleKeyPress}
+                placeholder="Ask about beauty services, book appointments..."
+                className="pr-20 transition-all duration-200 text-gray-900 placeholder-gray-500"
                 style={{
-                  color: isListening ? 'rgb(239, 68, 68)' : 'rgb(107, 114, 128)'
+                  backgroundColor: '#ffffff',
+                  border: isExpanded ? '2px solid rgba(220, 162, 67, 0.2)' : '1px solid #e5e7eb',
+                  color: '#111827'
                 }}
                 disabled={isProcessing}
-              >
-                {isListening ? <MicOff className="h-3 w-3" /> : <Mic className="h-3 w-3" />}
-              </Button>
-            )}
+                autoComplete="off"
+              />
+              
+              {/* Voice Button */}
+              {voiceEnabled && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={handleVoiceToggle}
+                  className="absolute right-10 top-1/2 -translate-y-1/2 h-7 w-7"
+                  style={{
+                    color: isListening ? '#ef4444' : '#6b7280'
+                  }}
+                  disabled={isProcessing}
+                >
+                  {isListening ? <MicOff className="h-3 w-3" /> : <Mic className="h-3 w-3" />}
+                </Button>
+              )}
 
-            {/* Send Button */}
-            <Button 
-              onClick={handleSendMessage}
-              disabled={!inputValue.trim() || isProcessing}
+              {/* Send Button */}
+              <Button 
+                onClick={handleSendMessage}
+                disabled={!inputValue.trim() || isProcessing}
+                size="icon"
+                className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
+                style={{
+                  backgroundColor: '#dca243',
+                  color: '#ffffff'
+                }}
+              >
+                <Send className="h-3 w-3" />
+              </Button>
+            </div>
+
+            {/* Expand Button */}
+            <Button
+              variant="ghost"
               size="icon"
-              className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
-              style={{
-                backgroundColor: 'rgb(220, 162, 67)',
-                color: 'rgb(255, 255, 255)'
-              }}
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="h-8 w-8"
+              style={{ color: '#6b7280' }}
             >
-              <Send className="h-3 w-3" />
+              {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
             </Button>
           </div>
 
-          {/* Expand Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="h-8 w-8"
-            style={{ color: 'rgb(107, 114, 128)' }}
-          >
-            {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
-          </Button>
-        </div>
-
-        {/* Status Indicators */}
-        {(isProcessing || isListening) && (
-          <div className="mt-2 text-center">
-            {isProcessing && (
-              <div className="text-xs flex items-center justify-center gap-2" style={{ color: 'rgb(107, 114, 128)' }}>
-                <div className="animate-spin h-3 w-3 rounded-full" style={{ border: '2px solid rgb(220, 162, 67)', borderTopColor: 'transparent' }}></div>
-                AI is thinking...
-              </div>
-            )}
-            {isListening && (
-              <div className="text-xs flex items-center justify-center gap-2" style={{ color: 'rgb(239, 68, 68)' }}>
-                <div className="animate-pulse h-3 w-3 rounded-full" style={{ backgroundColor: 'rgb(239, 68, 68)' }}></div>
-                Listening... Speak now
-              </div>
-            )}
-          </div>
-        )}
+          {/* Status Indicators */}
+          {(isProcessing || isListening) && (
+            <div className="mt-2 text-center">
+              {isProcessing && (
+                <div className="text-xs flex items-center justify-center gap-2" style={{ color: '#6b7280' }}>
+                  <div className="animate-spin h-3 w-3 rounded-full" style={{ border: '2px solid #dca243', borderTopColor: 'transparent' }}></div>
+                  AI is thinking...
+                </div>
+              )}
+              {isListening && (
+                <div className="text-xs flex items-center justify-center gap-2" style={{ color: '#ef4444' }}>
+                  <div className="animate-pulse h-3 w-3 rounded-full" style={{ backgroundColor: '#ef4444' }}></div>
+                  Listening... Speak now
+                </div>
+              )}
+            </div>
+          )}
       </div>
     </div>
   );

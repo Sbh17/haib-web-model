@@ -75,18 +75,18 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Beauty salon theme colors - Using CSS variables for proper theme support
+				// Beauty salon theme colors - Using proper HSL values
 				beauty: {
-					primary: 'hsl(var(--beauty-primary))',
-					secondary: 'hsl(var(--beauty-secondary))',
-					accent: 'hsl(var(--beauty-accent))',
-					dark: 'hsl(var(--beauty-dark))',
-					light: 'hsl(var(--beauty-light))',
-					rose: 'hsl(var(--beauty-rose))',
-					cream: 'hsl(var(--beauty-cream))',
-					success: 'hsl(var(--beauty-success))',
-					warning: 'hsl(var(--beauty-warning))',
-					info: 'hsl(var(--beauty-info))',
+					primary: '24 9% 10%',     // Rich dark charcoal
+					secondary: '44 13% 23%',   // Warm dark brown  
+					accent: '43 74% 66%',      // Elegant gold
+					dark: '0 0% 5%',           // Deep black
+					light: '0 0% 100%',        // Pure white
+					rose: '343 89% 89%',       // Soft rose gold
+					cream: '45 23% 95%',       // Warm cream
+					success: '145 42% 62%',    // Mint green
+					warning: '32 93% 54%',     // Orange
+					info: '217 44% 56%',       // Blue
 				},
 			},
 			borderRadius: {
