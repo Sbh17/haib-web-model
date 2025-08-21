@@ -27,19 +27,20 @@ interface AIChatSidebarProps {
 // Remove navigation items - sidebar is chat-only now
 
 const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
-  const navigate = useNavigate();
   const location = useLocation();
+  
+  // Hide sidebar on welcome and auth screens - CHECK THIS FIRST BEFORE ANY HOOKS
+  const hideOnPages = ['/welcome', '/auth', '/register'];
+  if (hideOnPages.includes(location.pathname)) {
+    return null;
+  }
+
+  const navigate = useNavigate();
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const [inputValue, setInputValue] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  // Hide sidebar on welcome and auth screens
-  const hideOnPages = ['/welcome', '/auth', '/register'];
-  if (hideOnPages.includes(location.pathname)) {
-    return null;
-  }
 
   const {
     messages,
