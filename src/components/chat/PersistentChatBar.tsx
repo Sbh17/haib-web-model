@@ -100,120 +100,118 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40" style={{ backgroundColor: '#ffffff', borderTop: '1px solid #e5e7eb' }}>
-      {/* Quick Action Buttons & Text Input - Always Visible */}
+      {/* AI Assistant Bar - Always Visible */}
       <div className="px-3 py-3" style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
-        <div className="max-w-4xl mx-auto space-y-3">
-          {/* AI Assistant Header */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Bot className="h-4 w-4" style={{ color: '#dca243' }} />
-              <span className="text-xs font-medium" style={{ color: '#374151' }}>AI Assistant</span>
-            </div>
-            <div className="flex gap-2">
-              <Button 
-                size="sm"
-                variant="outline"
-                className="text-xs px-3 py-1 h-auto"
-                style={{ 
-                  borderColor: '#dca243', 
-                  color: '#374151',
-                  backgroundColor: '#ffffff'
-                }}
-                onClick={() => handleQuickAction("Book a haircut appointment")}
-              >
-                Book
-              </Button>
-              <Button 
-                size="sm"
-                variant="outline"
-                className="text-xs px-3 py-1 h-auto"
-                style={{ 
-                  borderColor: '#dca243', 
-                  color: '#374151',
-                  backgroundColor: '#ffffff'
-                }}
-                onClick={() => handleQuickAction("Find nail salons near me")}
-              >
-                Find
-              </Button>
-              <Button 
-                size="sm"
-                variant="outline"
-                className="text-xs px-3 py-1 h-auto"
-                style={{ 
-                  borderColor: '#dca243', 
-                  color: '#374151',
-                  backgroundColor: '#ffffff'
-                }}
-                onClick={() => handleQuickAction("Show my appointments")}
-              >
-                Bookings
-              </Button>
-            </div>
+        <div className="flex items-center gap-3 max-w-4xl mx-auto">
+          {/* AI Assistant Label */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <Bot className="h-4 w-4" style={{ color: '#dca243' }} />
+            <span className="text-xs font-medium" style={{ color: '#374151' }}>AI Assistant</span>
           </div>
           
-          {/* Always Visible Text Input */}
-          <div className="flex items-center gap-2">
-            <div className="flex-1 relative">
-              <Input
-                ref={inputRef}
-                value={inputValue}
-                onChange={handleInputChange}
-                onFocus={handleInputFocus}
-                onKeyDown={handleKeyPress}
-                placeholder="Ask AI about beauty services, appointments..."
-                className="pr-20 text-sm"
+          {/* Text Input Bar */}
+          <div className="flex-1 relative">
+            <Input
+              ref={inputRef}
+              value={inputValue}
+              onChange={handleInputChange}
+              onFocus={handleInputFocus}
+              onKeyDown={handleKeyPress}
+              placeholder="Ask AI about beauty services, appointments..."
+              className="pr-20 text-sm"
+              style={{
+                backgroundColor: '#ffffff',
+                border: '1px solid #dca243',
+                color: '#111827'
+              }}
+              disabled={isProcessing}
+              autoComplete="off"
+            />
+            
+            {/* Voice Button */}
+            {voiceEnabled && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleVoiceToggle}
+                className="absolute right-10 top-1/2 -translate-y-1/2 h-7 w-7"
                 style={{
-                  backgroundColor: '#ffffff',
-                  border: '1px solid #dca243',
-                  color: '#111827'
+                  color: isListening ? '#ef4444' : '#6b7280'
                 }}
                 disabled={isProcessing}
-                autoComplete="off"
-              />
-              
-              {/* Voice Button */}
-              {voiceEnabled && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleVoiceToggle}
-                  className="absolute right-10 top-1/2 -translate-y-1/2 h-7 w-7"
-                  style={{
-                    color: isListening ? '#ef4444' : '#6b7280'
-                  }}
-                  disabled={isProcessing}
-                >
-                  {isListening ? <MicOff className="h-3 w-3" /> : <Mic className="h-3 w-3" />}
-                </Button>
-              )}
-
-              {/* Send Button */}
-              <Button 
-                onClick={handleSendMessage}
-                disabled={!inputValue.trim() || isProcessing}
-                size="icon"
-                className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
-                style={{
-                  backgroundColor: '#dca243',
-                  color: '#ffffff'
-                }}
               >
-                <Send className="h-3 w-3" />
+                {isListening ? <MicOff className="h-3 w-3" /> : <Mic className="h-3 w-3" />}
               </Button>
-            </div>
+            )}
 
-            {/* Expand Button */}
-            <Button
-              variant="ghost"
+            {/* Send Button */}
+            <Button 
+              onClick={handleSendMessage}
+              disabled={!inputValue.trim() || isProcessing}
               size="icon"
-              onClick={() => setIsExpanded(!isExpanded)}
-              className="h-8 w-8"
-              style={{ color: '#6b7280' }}
+              className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
+              style={{
+                backgroundColor: '#dca243',
+                color: '#ffffff'
+              }}
             >
-              {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
+              <Send className="h-3 w-3" />
             </Button>
           </div>
+
+          {/* Quick Action Buttons */}
+          <div className="flex gap-2 flex-shrink-0">
+            <Button 
+              size="sm"
+              variant="outline"
+              className="text-xs px-3 py-1 h-auto"
+              style={{ 
+                borderColor: '#dca243', 
+                color: '#374151',
+                backgroundColor: '#ffffff'
+              }}
+              onClick={() => handleQuickAction("Book a haircut appointment")}
+            >
+              Book
+            </Button>
+            <Button 
+              size="sm"
+              variant="outline"
+              className="text-xs px-3 py-1 h-auto"
+              style={{ 
+                borderColor: '#dca243', 
+                color: '#374151',
+                backgroundColor: '#ffffff'
+              }}
+              onClick={() => handleQuickAction("Find nail salons near me")}
+            >
+              Find
+            </Button>
+            <Button 
+              size="sm"
+              variant="outline"
+              className="text-xs px-3 py-1 h-auto"
+              style={{ 
+                borderColor: '#dca243', 
+                color: '#374151',
+                backgroundColor: '#ffffff'
+              }}
+              onClick={() => handleQuickAction("Show my appointments")}
+            >
+              Bookings
+            </Button>
+          </div>
+
+          {/* Expand Button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="h-8 w-8 flex-shrink-0"
+            style={{ color: '#6b7280' }}
+          >
+            {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
+          </Button>
         </div>
       </div>
       {/* Expanded Chat Window */}
