@@ -128,7 +128,7 @@ const NotificationPanel: React.FC = () => {
         <Button
           variant="ghost"
           size="sm"
-          className="relative hover:bg-accent"
+          className="relative text-beauty-dark hover:text-beauty-accent hover:bg-beauty-accent/10 transition-all duration-300 rounded-sm"
         >
           <Bell className="h-4 w-4" />
           {unreadCount > 0 && (
@@ -142,11 +142,11 @@ const NotificationPanel: React.FC = () => {
         </Button>
       </SheetTrigger>
       
-      <SheetContent className="w-full sm:max-w-md">
+      <SheetContent className="w-full sm:max-w-md bg-gradient-to-b from-beauty-light/95 to-beauty-cream/90 backdrop-blur-lg border-l border-beauty-accent/20">
         <SheetHeader>
           <div className="flex items-center justify-between">
-            <SheetTitle className="flex items-center gap-2">
-              <Bell className="h-5 w-5" />
+            <SheetTitle className="flex items-center gap-2 dior-heading-sm text-beauty-dark">
+              <Bell className="h-5 w-5 text-beauty-accent" />
               Notifications
             </SheetTitle>
             {unreadCount > 0 && (
@@ -154,13 +154,13 @@ const NotificationPanel: React.FC = () => {
                 variant="outline"
                 size="sm"
                 onClick={markAllAsRead}
-                className="text-xs"
+                className="text-xs border-beauty-accent/30 text-beauty-dark bg-beauty-light/50 hover:bg-beauty-accent/10 hover:border-beauty-accent transition-all duration-300 rounded-sm"
               >
                 Mark all read
               </Button>
             )}
           </div>
-          <SheetDescription>
+          <SheetDescription className="dior-body-sm text-beauty-dark/70">
             Stay updated with your appointments and offers
           </SheetDescription>
         </SheetHeader>
@@ -168,16 +168,16 @@ const NotificationPanel: React.FC = () => {
         <ScrollArea className="h-[calc(100vh-8rem)] mt-6">
           <div className="space-y-4">
             {notifications.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">
-                <Bell className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>No notifications yet</p>
+              <div className="text-center py-8 text-beauty-dark/60">
+                <Bell className="h-12 w-12 mx-auto mb-4 opacity-50 text-beauty-accent" />
+                <p className="dior-body">No notifications yet</p>
               </div>
             ) : (
               notifications.map((notification, index) => (
                 <div key={notification.id}>
                   <div
-                    className={`p-4 rounded-lg border cursor-pointer transition-colors hover:bg-accent/50 ${
-                      !notification.read ? 'bg-primary/5 border-primary/20' : 'bg-card'
+                    className={`p-4 rounded-sm border cursor-pointer transition-colors hover:bg-beauty-accent/10 ${
+                      !notification.read ? 'bg-beauty-accent/5 border-beauty-accent/20' : 'bg-beauty-cream/30 border-beauty-accent/10'
                     }`}
                     onClick={() => handleNotificationClick(notification)}
                   >
@@ -188,25 +188,25 @@ const NotificationPanel: React.FC = () => {
                       
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
-                          <h4 className={`text-sm font-medium ${!notification.read ? 'text-foreground' : 'text-muted-foreground'}`}>
+                          <h4 className={`dior-body font-medium ${!notification.read ? 'text-beauty-dark' : 'text-beauty-dark/60'}`}>
                             {notification.title}
                           </h4>
                           {!notification.read && (
-                            <div className="h-2 w-2 bg-primary rounded-full flex-shrink-0" />
+                            <div className="h-2 w-2 bg-beauty-accent rounded-full flex-shrink-0" />
                           )}
                         </div>
                         
-                        <p className="text-sm text-muted-foreground mb-2">
+                        <p className="dior-body-sm text-beauty-dark/70 mb-2">
                           {notification.message}
                         </p>
                         
                         <div className="flex items-center justify-between">
-                          <span className="text-xs text-muted-foreground">
+                          <span className="dior-body-sm text-beauty-dark/50">
                             {formatTimeAgo(notification.timestamp)}
                           </span>
                           
                           {notification.actionUrl && (
-                            <Badge variant="outline" className="text-xs">
+                            <Badge variant="outline" className="text-xs border-beauty-accent/30 text-beauty-dark bg-beauty-light/50 rounded-sm">
                               Tap to view
                             </Badge>
                           )}
@@ -215,7 +215,7 @@ const NotificationPanel: React.FC = () => {
                     </div>
                   </div>
                   
-                  {index < notifications.length - 1 && <Separator className="my-2" />}
+                  {index < notifications.length - 1 && <Separator className="my-2 bg-beauty-accent/20" />}
                 </div>
               ))
             )}
