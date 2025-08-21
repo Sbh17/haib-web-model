@@ -189,13 +189,13 @@ const Index: React.FC = () => {
       {/* AI Chat Section - Above Footer */}
       <section className="px-6 mb-16">
         <div className="max-w-7xl mx-auto">
-          <Card className="luxury-gradient p-8 md:p-12 text-center relative overflow-hidden">
+          <Card className="bg-gradient-to-br from-gray-50 to-gray-100 border border-gray-200 p-8 md:p-12 text-center relative overflow-hidden">
             <div className="relative z-10">
-              <h2 className="text-4xl md:text-5xl font-playfair font-light text-beauty-light mb-4 tracking-luxury">
-                Your Personal <span className="gold-accent">AI Assistant</span>
+              <h2 className="text-4xl md:text-5xl font-playfair font-light text-gray-900 mb-4 tracking-luxury">
+                Your Personal <span className="text-yellow-600 font-medium">AI Assistant</span>
               </h2>
-              <div className="w-16 h-0.5 bg-beauty-accent mx-auto mb-6"></div>
-              <p className="text-lg font-inter font-light text-beauty-light/90 max-w-2xl mx-auto leading-relaxed mb-8">
+              <div className="w-16 h-0.5 bg-yellow-600 mx-auto mb-6"></div>
+              <p className="text-lg font-inter font-light text-gray-700 max-w-2xl mx-auto leading-relaxed mb-8">
                 Get instant help with bookings, recommendations, and beauty advice from our intelligent assistant
               </p>
               
@@ -203,7 +203,7 @@ const Index: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
                 <Button 
                   variant="outline" 
-                  className="border-beauty-accent/50 text-beauty-light hover:bg-beauty-accent/20 py-6 text-sm tracking-wide"
+                  className="border-yellow-600/50 text-gray-900 hover:bg-yellow-600/10 py-6 text-sm tracking-wide"
                   onClick={() => {
                     const chatInput = document.querySelector('input[placeholder*="Ask about beauty"]') as HTMLInputElement;
                     if (chatInput) {
@@ -217,7 +217,7 @@ const Index: React.FC = () => {
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="border-beauty-accent/50 text-beauty-light hover:bg-beauty-accent/20 py-6 text-sm tracking-wide"
+                  className="border-yellow-600/50 text-gray-900 hover:bg-yellow-600/10 py-6 text-sm tracking-wide"
                   onClick={() => {
                     const chatInput = document.querySelector('input[placeholder*="Ask about beauty"]') as HTMLInputElement;
                     if (chatInput) {
@@ -231,7 +231,7 @@ const Index: React.FC = () => {
                 </Button>
                 <Button 
                   variant="outline" 
-                  className="border-beauty-accent/50 text-beauty-light hover:bg-beauty-accent/20 py-6 text-sm tracking-wide"
+                  className="border-yellow-600/50 text-gray-900 hover:bg-yellow-600/10 py-6 text-sm tracking-wide"
                   onClick={() => {
                     const chatInput = document.querySelector('input[placeholder*="Ask about beauty"]') as HTMLInputElement;
                     if (chatInput) {
