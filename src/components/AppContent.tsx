@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import AuthRedirect from '@/components/AuthRedirect';
-import GlobalAIChatFooter from '@/components/chat/GlobalAIChatFooter';
+import PersistentChatBar from '@/components/chat/PersistentChatBar';
 
 // Import pages
 import Welcome from '@/pages/Welcome';
@@ -42,7 +42,7 @@ const AppContent: React.FC = () => {
       <div className="min-h-screen bg-background touch-manipulation">
         <Header />
         
-        <main className="flex-1 overflow-auto safe-area-bottom">
+        <main className="flex-1 overflow-auto safe-area-bottom pb-20">
           <Routes>
             <Route path="/" element={<Navigate to="/home" replace />} />
             <Route path="/home" element={
@@ -117,8 +117,8 @@ const AppContent: React.FC = () => {
           </Routes>
         </main>
 
-        {/* Global AI Chat Footer - Available on all pages */}
-        <GlobalAIChatFooter onBookAppointment={handleBookAppointment} />
+        {/* Persistent AI Chat Bar - Available on all pages */}
+        <PersistentChatBar onBookAppointment={handleBookAppointment} />
 
       </div>
     </AuthRedirect>
