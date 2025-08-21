@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useEnhancedChat } from '@/hooks/useEnhancedChat';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 
 interface PersistentChatBarProps {
@@ -13,6 +13,13 @@ interface PersistentChatBarProps {
 
 const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  
+  // Hide assistant on welcome and auth screens
+  const hideOnPages = ['/welcome', '/auth', '/register'];
+  if (hideOnPages.includes(location.pathname)) {
+    return null;
+  }
   const [isExpanded, setIsExpanded] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
