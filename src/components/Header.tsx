@@ -13,6 +13,7 @@ import LanguageSelector from '@/components/LanguageSelector';
 import { cn } from '@/lib/utils';
 
 const Header: React.FC = () => {
+  // Always call ALL hooks first in consistent order
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
@@ -29,13 +30,12 @@ const Header: React.FC = () => {
     // Not in a sidebar context, which is fine for non-sidebar routes
   }
   
+  // Now calculate values
   const isHomePage = location.pathname === '/home' || location.pathname === '/';
-  
-  // Hide header on welcome and auth pages  
   const hideHeader = location.pathname === '/welcome' || location.pathname === '/auth' || location.pathname === '/register';
   const showSidebar = !hideHeader;
   
-  // Don't render header if user is not authenticated or on specific pages
+  // AFTER all hooks are called, check if we should render
   if (hideHeader || !user) {
     return null;
   }
