@@ -124,7 +124,7 @@ const Index: React.FC = () => {
               Handpicked sanctuaries of beauty where excellence meets luxury
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {salonsLoading ? (
               <div className="col-span-full flex justify-center">
                 <LoadingSpinner />
@@ -172,7 +172,7 @@ const Index: React.FC = () => {
               4.5+ Rated Excellence
             </Badge>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {salonsLoading ? (
               <div className="col-span-full flex justify-center">
                 <LoadingSpinner />
