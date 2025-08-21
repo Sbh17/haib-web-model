@@ -99,7 +99,7 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40" style={{ backgroundColor: '#ffffff', borderTop: '1px solid #e5e7eb' }}>
+    <div className="fixed bottom-4 left-0 right-0 z-40" style={{ backgroundColor: '#ffffff', borderTop: '1px solid #e5e7eb' }}>
       {/* AI Assistant Bar - Always Visible */}
       <div className="px-3 py-3" style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
         <div className="flex items-center gap-3 max-w-4xl mx-auto">
