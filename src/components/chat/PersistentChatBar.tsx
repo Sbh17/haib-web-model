@@ -84,8 +84,72 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
     }
   };
 
+  const handleQuickAction = (message: string) => {
+    setInputValue(message);
+    if (!isExpanded) {
+      setIsExpanded(true);
+    }
+    // Focus the input and trigger the message
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+        inputRef.current.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    }, 100);
+  };
+
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40" style={{ backgroundColor: 'rgb(255, 255, 255)', borderTop: '1px solid rgb(229, 231, 235)' }}>
+    <div className="fixed bottom-0 left-0 right-0 z-40" style={{ backgroundColor: '#ffffff', borderTop: '1px solid #e5e7eb' }}>
+      {/* Quick Action Buttons - Always Visible */}
+      <div className="px-3 py-2" style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
+        <div className="flex items-center justify-between max-w-4xl mx-auto">
+          <div className="flex items-center gap-2">
+            <Bot className="h-4 w-4" style={{ color: '#dca243' }} />
+            <span className="text-xs font-medium" style={{ color: '#374151' }}>AI Assistant</span>
+          </div>
+          <div className="flex gap-2">
+            <Button 
+              size="sm"
+              variant="outline"
+              className="text-xs px-3 py-1 h-auto"
+              style={{ 
+                borderColor: '#dca243', 
+                color: '#374151',
+                backgroundColor: '#ffffff'
+              }}
+              onClick={() => handleQuickAction("Book a haircut appointment")}
+            >
+              Book
+            </Button>
+            <Button 
+              size="sm"
+              variant="outline"
+              className="text-xs px-3 py-1 h-auto"
+              style={{ 
+                borderColor: '#dca243', 
+                color: '#374151',
+                backgroundColor: '#ffffff'
+              }}
+              onClick={() => handleQuickAction("Find nail salons near me")}
+            >
+              Find
+            </Button>
+            <Button 
+              size="sm"
+              variant="outline"
+              className="text-xs px-3 py-1 h-auto"
+              style={{ 
+                borderColor: '#dca243', 
+                color: '#374151',
+                backgroundColor: '#ffffff'
+              }}
+              onClick={() => handleQuickAction("Show my appointments")}
+            >
+              Bookings
+            </Button>
+          </div>
+        </div>
+      </div>
       {/* Expanded Chat Window */}
       {isExpanded && (
         <div className="max-h-96 flex flex-col" style={{ backgroundColor: 'rgb(255, 255, 255)' }}>
