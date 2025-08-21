@@ -113,7 +113,7 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
           <div className="h-8 w-8 rounded-full bg-foreground flex items-center justify-center">
             <Bot className="h-4 w-4 text-background animate-pulse" />
           </div>
-          {!collapsed && <span className="font-medium text-foreground">{t.aiAssistantDior}</span>}
+          {!collapsed && <span className="font-medium text-foreground">{t.aiAssistantHaib}</span>}
         </div>
       </SidebarHeader>
 

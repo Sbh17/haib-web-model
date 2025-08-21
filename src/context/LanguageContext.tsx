@@ -20,10 +20,10 @@ interface Translations {
   news: string;
   promotions: string;
   
-  // AI Chat
-  aiAssistant: string;
-  aiAssistantDior: string;
-  chatPlaceholder: string;
+    // AI Chat
+    aiAssistant: string;
+    aiAssistantHaib: string;
+    chatPlaceholder: string;
   aiThinking: string;
   listeningNow: string;
   bookAppointment: string;
@@ -67,7 +67,7 @@ const translations: Record<Language, Translations> = {
     
     // AI Chat
     aiAssistant: 'AI Assistant',
-    aiAssistantDior: 'DIOR Beauty Assistant',
+    aiAssistantHaib: 'HAIB Beauty Assistant',
     chatPlaceholder: 'Ask your beauty assistant for advice...',
     aiThinking: 'AI is thinking...',
     listeningNow: 'Listening... Speak now',
@@ -110,7 +110,7 @@ const translations: Record<Language, Translations> = {
     
     // AI Chat
     aiAssistant: 'المساعد الذكي',
-    aiAssistantDior: 'مساعد الجمال ديور',
+    aiAssistantHaib: 'مساعد الجمال هايب',
     chatPlaceholder: 'اسأل مساعد الجمال للحصول على النصيحة...',
     aiThinking: 'الذكاء الاصطناعي يفكر...',
     listeningNow: 'الاستماع... تحدث الآن',
@@ -153,7 +153,7 @@ const translations: Record<Language, Translations> = {
     
     // AI Chat
     aiAssistant: 'Assistente IA',
-    aiAssistantDior: 'Assistente Bellezza DIOR',
+    aiAssistantHaib: 'Assistente Bellezza HAIB',
     chatPlaceholder: 'Chiedi consiglio al tuo assistente di bellezza...',
     aiThinking: 'L\'IA sta pensando...',
     listeningNow: 'In ascolto... Parla ora',
