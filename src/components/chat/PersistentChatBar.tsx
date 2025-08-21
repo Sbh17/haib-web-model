@@ -85,34 +85,35 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-sm border-t border-border">
+    <div className="fixed bottom-0 left-0 right-0 z-40" style={{ backgroundColor: 'rgb(255, 255, 255)', borderTop: '1px solid rgb(229, 231, 235)' }}>
       {/* Expanded Chat Window */}
       {isExpanded && (
-        <div className="max-h-96 flex flex-col">
+        <div className="max-h-96 flex flex-col" style={{ backgroundColor: 'rgb(255, 255, 255)' }}>
           {/* Chat Header */}
-          <div className="flex items-center justify-between p-3 border-b border-border bg-muted/30">
+          <div className="flex items-center justify-between p-3" style={{ backgroundColor: 'rgb(249, 250, 251)', borderBottom: '1px solid rgb(229, 231, 235)' }}>
             <div className="flex items-center gap-2">
-              <Bot className="h-4 w-4 text-primary animate-pulse" />
-              <span className="text-sm font-medium">AI Beauty Assistant</span>
+              <Bot className="h-4 w-4 animate-pulse" style={{ color: 'rgb(220, 162, 67)' }} />
+              <span className="text-sm font-medium" style={{ color: 'rgb(17, 24, 39)' }}>AI Beauty Assistant</span>
             </div>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsExpanded(false)}
               className="h-6 w-6"
+              style={{ color: 'rgb(107, 114, 128)' }}
             >
               <ChevronDown className="h-4 w-4" />
             </Button>
           </div>
 
           {/* Messages */}
-          <ScrollArea className="flex-1 max-h-60 p-3" ref={scrollRef}>
+          <ScrollArea className="flex-1 max-h-60 p-3" ref={scrollRef} style={{ backgroundColor: 'rgb(255, 255, 255)' }}>
             <div className="space-y-3">
               {messages.length === 0 && (
-                <div className="text-center text-muted-foreground text-sm py-4">
-                  <Bot className="h-8 w-8 mx-auto mb-2 text-primary/50" />
-                  <p>Hi! I'm your AI beauty assistant.</p>
-                  <p>Ask me about appointments, salons, or services!</p>
+                <div className="text-center py-4">
+                  <Bot className="h-8 w-8 mx-auto mb-2" style={{ color: 'rgba(220, 162, 67, 0.5)' }} />
+                  <p style={{ color: 'rgb(107, 114, 128)', fontSize: '14px' }}>Hi! I'm your AI beauty assistant.</p>
+                  <p style={{ color: 'rgb(107, 114, 128)', fontSize: '14px' }}>Ask me about appointments, salons, or services!</p>
                 </div>
               )}
               {messages.map((message) => (
@@ -121,33 +122,33 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
                   className={`flex gap-2 ${!message.isAI ? 'flex-row-reverse' : 'flex-row'}`}
                 >
                   <div className={cn(
-                    "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0",
-                    !message.isAI 
-                      ? 'bg-primary text-primary-foreground' 
-                      : 'bg-muted text-muted-foreground border border-border'
-                  )}>
+                    "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
+                  )} style={{
+                    backgroundColor: !message.isAI ? 'rgb(220, 162, 67)' : 'rgb(243, 244, 246)',
+                    color: !message.isAI ? 'rgb(255, 255, 255)' : 'rgb(107, 114, 128)',
+                    border: !message.isAI ? 'none' : '1px solid rgb(229, 231, 235)'
+                  }}>
                     {!message.isAI ? <User className="h-3 w-3" /> : <Bot className="h-3 w-3" />}
                   </div>
-                  <div className={cn(
-                    "max-w-[80%] p-2 rounded-lg text-sm",
-                    !message.isAI
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted/80 text-foreground border border-border/50'
-                  )}>
+                  <div className={cn("max-w-[80%] p-2 rounded-lg text-sm")} style={{
+                    backgroundColor: !message.isAI ? 'rgb(220, 162, 67)' : 'rgb(249, 250, 251)',
+                    color: !message.isAI ? 'rgb(255, 255, 255)' : 'rgb(17, 24, 39)',
+                    border: !message.isAI ? 'none' : '1px solid rgba(229, 231, 235, 0.5)'
+                  }}>
                     <p className="whitespace-pre-wrap">{message.content}</p>
                   </div>
                 </div>
               ))}
               {isProcessing && (
                 <div className="flex gap-2">
-                  <div className="w-6 h-6 rounded-full bg-muted border border-border flex items-center justify-center">
-                    <Bot className="h-3 w-3 text-muted-foreground animate-pulse" />
+                  <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgb(243, 244, 246)', border: '1px solid rgb(229, 231, 235)' }}>
+                    <Bot className="h-3 w-3 animate-pulse" style={{ color: 'rgb(107, 114, 128)' }} />
                   </div>
-                  <div className="bg-muted/80 p-2 rounded-lg border border-border/50">
+                  <div className="p-2 rounded-lg" style={{ backgroundColor: 'rgb(249, 250, 251)', border: '1px solid rgba(229, 231, 235, 0.5)' }}>
                     <div className="flex gap-1">
-                      <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce"></div>
-                      <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                      <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: 'rgb(220, 162, 67)' }}></div>
+                      <div className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: 'rgb(220, 162, 67)', animationDelay: '0.1s' }}></div>
+                      <div className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: 'rgb(220, 162, 67)', animationDelay: '0.2s' }}></div>
                     </div>
                   </div>
                 </div>
@@ -158,11 +159,11 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
       )}
 
       {/* Chat Input Bar */}
-      <div className="p-3">
+      <div className="p-3" style={{ backgroundColor: 'rgb(255, 255, 255)' }}>
         <div className="flex items-center gap-2 max-w-4xl mx-auto">
           {/* AI Indicator */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Bot className="h-4 w-4 text-primary" />
+          <div className="flex items-center gap-2 text-sm" style={{ color: 'rgb(107, 114, 128)' }}>
+            <Bot className="h-4 w-4" style={{ color: 'rgb(220, 162, 67)' }} />
             <span className="hidden sm:inline">Ask AI</span>
           </div>
 
@@ -175,10 +176,12 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
               onFocus={handleInputFocus}
               onKeyDown={handleKeyPress}
               placeholder="Ask about beauty services, book appointments..."
-              className={cn(
-                "pr-20 transition-all duration-200 bg-background/80",
-                isExpanded ? "ring-2 ring-primary/20" : ""
-              )}
+              className="pr-20 transition-all duration-200"
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                border: isExpanded ? '2px solid rgba(220, 162, 67, 0.2)' : '1px solid rgb(229, 231, 235)',
+                color: 'rgb(17, 24, 39)'
+              }}
               disabled={isProcessing}
               autoComplete="off"
             />
@@ -189,10 +192,10 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
                 variant="ghost"
                 size="icon"
                 onClick={handleVoiceToggle}
-                className={cn(
-                  "absolute right-10 top-1/2 -translate-y-1/2 h-7 w-7",
-                  isListening ? 'text-red-500 animate-pulse' : 'text-muted-foreground hover:text-primary'
-                )}
+                className="absolute right-10 top-1/2 -translate-y-1/2 h-7 w-7"
+                style={{
+                  color: isListening ? 'rgb(239, 68, 68)' : 'rgb(107, 114, 128)'
+                }}
                 disabled={isProcessing}
               >
                 {isListening ? <MicOff className="h-3 w-3" /> : <Mic className="h-3 w-3" />}
@@ -204,7 +207,11 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
               onClick={handleSendMessage}
               disabled={!inputValue.trim() || isProcessing}
               size="icon"
-              className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 bg-primary hover:bg-primary/90"
+              className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
+              style={{
+                backgroundColor: 'rgb(220, 162, 67)',
+                color: 'rgb(255, 255, 255)'
+              }}
             >
               <Send className="h-3 w-3" />
             </Button>
@@ -216,6 +223,7 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
             size="icon"
             onClick={() => setIsExpanded(!isExpanded)}
             className="h-8 w-8"
+            style={{ color: 'rgb(107, 114, 128)' }}
           >
             {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
           </Button>
@@ -225,14 +233,14 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
         {(isProcessing || isListening) && (
           <div className="mt-2 text-center">
             {isProcessing && (
-              <div className="text-xs text-muted-foreground flex items-center justify-center gap-2">
-                <div className="animate-spin h-3 w-3 border border-primary border-t-transparent rounded-full"></div>
+              <div className="text-xs flex items-center justify-center gap-2" style={{ color: 'rgb(107, 114, 128)' }}>
+                <div className="animate-spin h-3 w-3 rounded-full" style={{ border: '2px solid rgb(220, 162, 67)', borderTopColor: 'transparent' }}></div>
                 AI is thinking...
               </div>
             )}
             {isListening && (
-              <div className="text-xs text-red-500 flex items-center justify-center gap-2">
-                <div className="animate-pulse h-3 w-3 bg-red-500 rounded-full"></div>
+              <div className="text-xs flex items-center justify-center gap-2" style={{ color: 'rgb(239, 68, 68)' }}>
+                <div className="animate-pulse h-3 w-3 rounded-full" style={{ backgroundColor: 'rgb(239, 68, 68)' }}></div>
                 Listening... Speak now
               </div>
             )}
