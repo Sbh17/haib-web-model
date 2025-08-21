@@ -93,8 +93,8 @@ const Header: React.FC = () => {
 
         {/* Center - Logo */}
         <div className="flex-1 flex justify-center">
-          <div onClick={() => navigate('/home')} className="cursor-pointer">
-            <Logo width={120} height={40} />
+          <div onClick={() => navigate('/home')} className="cursor-pointer flex items-center">
+            <Logo width={100} height={32} />
           </div>
         </div>
 
