@@ -16,7 +16,8 @@ const Logo: React.FC<LogoProps> = ({ className = '', width = 100, height = 32 })
         alt="HAIB Logo"
         width={width}
         height={height}
-        className="object-contain drop-shadow-sm transition-transform duration-200 hover:scale-105"
+        className="object-contain drop-shadow-elegant transition-all duration-300 hover:drop-shadow-champagne"
+        style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.1))' }}
       />
     </div>
   );

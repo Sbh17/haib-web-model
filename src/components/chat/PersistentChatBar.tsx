@@ -106,14 +106,17 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
   };
 
   return (
-    <div className="fixed bottom-4 left-0 right-0 z-40" style={{ backgroundColor: '#ffffff', borderTop: '1px solid #e5e7eb' }}>
+    <div className="fixed bottom-4 left-0 right-0 z-40 shadow-elegant">
       {/* AI Assistant Bar - Always Visible */}
-      <div className="px-3 py-3" style={{ backgroundColor: '#f9fafb', borderBottom: '1px solid #e5e7eb' }}>
-        <div className="flex items-center gap-3 max-w-4xl mx-auto">
+      <div 
+        className="px-4 py-4 bg-gradient-to-r from-beauty-light/95 to-beauty-cream/90 backdrop-blur-lg border-t border-beauty-accent/30"
+        style={{ backdropFilter: 'blur(20px)' }}
+      >
+        <div className="flex items-center gap-4 max-w-4xl mx-auto">
           {/* AI Assistant Label */}
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Bot className="h-4 w-4" style={{ color: '#dca243' }} />
-            <span className="text-xs font-medium" style={{ color: '#374151' }}>AI Assistant</span>
+            <Bot className="h-5 w-5 text-beauty-accent animate-pulse" />
+            <span className="dior-label text-beauty-dark">AI Assistant</span>
           </div>
           
           {/* Text Input Bar */}
@@ -124,13 +127,8 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
               onChange={handleInputChange}
               onFocus={handleInputFocus}
               onKeyDown={handleKeyPress}
-              placeholder="Ask AI about beauty services, appointments..."
-              className="pr-20 text-sm"
-              style={{
-                backgroundColor: '#ffffff',
-                border: '1px solid #dca243',
-                color: '#111827'
-              }}
+              placeholder="Demandez conseil à votre assistant beauté..."
+              className="beauty-input h-12 text-sm placeholder:text-beauty-dark/60 border-beauty-accent/20 focus:border-beauty-accent bg-beauty-light/50"
               disabled={isProcessing}
               autoComplete="off"
             />
@@ -141,13 +139,10 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
                 variant="ghost"
                 size="icon"
                 onClick={handleVoiceToggle}
-                className="absolute right-10 top-1/2 -translate-y-1/2 h-7 w-7"
-                style={{
-                  color: isListening ? '#ef4444' : '#6b7280'
-                }}
+                className="absolute right-12 top-1/2 -translate-y-1/2 h-8 w-8 text-beauty-dark hover:text-beauty-accent hover:bg-beauty-accent/10 transition-all duration-300"
                 disabled={isProcessing}
               >
-                {isListening ? <MicOff className="h-3 w-3" /> : <Mic className="h-3 w-3" />}
+                {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
               </Button>
             )}
 
@@ -156,13 +151,9 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
               onClick={handleSendMessage}
               disabled={!inputValue.trim() || isProcessing}
               size="icon"
-              className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7"
-              style={{
-                backgroundColor: '#dca243',
-                color: '#ffffff'
-              }}
+              className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 bg-gradient-to-r from-beauty-primary to-beauty-accent text-beauty-light hover:shadow-champagne transition-all duration-300 rounded-sm"
             >
-              <Send className="h-3 w-3" />
+              <Send className="h-4 w-4" />
             </Button>
           </div>
 
@@ -171,41 +162,26 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
             <Button 
               size="sm"
               variant="outline"
-              className="text-xs px-3 py-1 h-auto"
-              style={{ 
-                borderColor: '#dca243', 
-                color: '#374151',
-                backgroundColor: '#ffffff'
-              }}
-              onClick={() => handleQuickAction("Book a haircut appointment")}
+              className="dior-body-sm px-4 py-2 h-auto border-beauty-accent/30 text-beauty-dark bg-beauty-light/50 hover:bg-beauty-accent/10 hover:border-beauty-accent transition-all duration-300 rounded-sm backdrop-blur-sm"
+              onClick={() => handleQuickAction("Réserver une coupe")}
             >
-              Book
+              Réserver
             </Button>
             <Button 
               size="sm"
               variant="outline"
-              className="text-xs px-3 py-1 h-auto"
-              style={{ 
-                borderColor: '#dca243', 
-                color: '#374151',
-                backgroundColor: '#ffffff'
-              }}
-              onClick={() => handleQuickAction("Find nail salons near me")}
+              className="dior-body-sm px-4 py-2 h-auto border-beauty-accent/30 text-beauty-dark bg-beauty-light/50 hover:bg-beauty-accent/10 hover:border-beauty-accent transition-all duration-300 rounded-sm backdrop-blur-sm"
+              onClick={() => handleQuickAction("Trouver un salon")}
             >
-              Find
+              Découvrir
             </Button>
             <Button 
               size="sm"
               variant="outline"
-              className="text-xs px-3 py-1 h-auto"
-              style={{ 
-                borderColor: '#dca243', 
-                color: '#374151',
-                backgroundColor: '#ffffff'
-              }}
-              onClick={() => handleQuickAction("Show my appointments")}
+              className="dior-body-sm px-4 py-2 h-auto border-beauty-accent/30 text-beauty-dark bg-beauty-light/50 hover:bg-beauty-accent/10 hover:border-beauty-accent transition-all duration-300 rounded-sm backdrop-blur-sm"
+              onClick={() => handleQuickAction("Mes rendez-vous")}
             >
-              Bookings
+              Agenda
             </Button>
           </div>
 
@@ -214,76 +190,76 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
             variant="ghost"
             size="icon"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="h-8 w-8 flex-shrink-0"
-            style={{ color: '#6b7280' }}
+            className="h-10 w-10 flex-shrink-0 text-beauty-dark hover:text-beauty-accent hover:bg-beauty-accent/10 transition-all duration-300 rounded-sm"
           >
-            {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
+            {isExpanded ? <ChevronDown className="h-5 w-5" /> : <ChevronUp className="h-5 w-5" />}
           </Button>
         </div>
       </div>
       {/* Expanded Chat Window */}
       {isExpanded && (
-        <div className="max-h-96 flex flex-col" style={{ backgroundColor: 'rgb(255, 255, 255)' }}>
+        <div className="max-h-96 flex flex-col bg-gradient-to-b from-beauty-light/95 to-beauty-cream/90 backdrop-blur-lg shadow-elegant">
           {/* Chat Header */}
-          <div className="flex items-center justify-between p-3" style={{ backgroundColor: 'rgb(249, 250, 251)', borderBottom: '1px solid rgb(229, 231, 235)' }}>
-            <div className="flex items-center gap-2">
-              <Bot className="h-4 w-4 animate-pulse" style={{ color: 'rgb(220, 162, 67)' }} />
-              <span className="text-sm font-medium" style={{ color: 'rgb(17, 24, 39)' }}>AI Beauty Assistant</span>
+          <div className="flex items-center justify-between p-4 border-b border-beauty-accent/20">
+            <div className="flex items-center gap-3">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-r from-beauty-primary to-beauty-accent flex items-center justify-center">
+                <Bot className="h-4 w-4 text-beauty-light animate-pulse" />
+              </div>
+              <span className="dior-heading-sm text-beauty-dark">Assistante Beauté DIOR</span>
             </div>
             <Button
               variant="ghost"
               size="icon"
               onClick={() => setIsExpanded(false)}
-              className="h-6 w-6"
-              style={{ color: 'rgb(107, 114, 128)' }}
+              className="h-8 w-8 text-beauty-dark hover:text-beauty-accent hover:bg-beauty-accent/10 transition-all duration-300 rounded-sm"
             >
               <ChevronDown className="h-4 w-4" />
             </Button>
           </div>
 
           {/* Messages */}
-          <ScrollArea className="flex-1 max-h-60 p-3" ref={scrollRef} style={{ backgroundColor: 'rgb(255, 255, 255)' }}>
-            <div className="space-y-3">
+          <ScrollArea className="flex-1 max-h-60 p-4" ref={scrollRef}>
+            <div className="space-y-4">
               {messages.length === 0 && (
-                <div className="text-center py-4">
-                  <Bot className="h-8 w-8 mx-auto mb-2" style={{ color: 'rgba(220, 162, 67, 0.5)' }} />
-                  <p style={{ color: 'rgb(107, 114, 128)', fontSize: '14px' }}>Hi! I'm your AI beauty assistant.</p>
-                  <p style={{ color: 'rgb(107, 114, 128)', fontSize: '14px' }}>Ask me about appointments, salons, or services!</p>
+                <div className="text-center py-8">
+                  <div className="h-12 w-12 rounded-full bg-gradient-to-r from-beauty-primary to-beauty-accent flex items-center justify-center mx-auto mb-4">
+                    <Bot className="h-6 w-6 text-beauty-light" />
+                  </div>
+                  <p className="dior-body text-beauty-dark mb-2">Bonjour, je suis votre assistante beauté.</p>
+                  <p className="dior-body-sm text-beauty-dark/70">Posez-moi vos questions sur les soins, rendez-vous et salons!</p>
                 </div>
               )}
               {messages.map((message) => (
                 <div
                   key={message.id}
-                  className={`flex gap-2 ${!message.isAI ? 'flex-row-reverse' : 'flex-row'}`}
+                  className={`flex gap-3 ${!message.isAI ? 'flex-row-reverse' : 'flex-row'}`}
                 >
-                  <div className={cn(
-                    "w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
-                  )} style={{
-                    backgroundColor: !message.isAI ? 'rgb(220, 162, 67)' : 'rgb(243, 244, 246)',
-                    color: !message.isAI ? 'rgb(255, 255, 255)' : 'rgb(107, 114, 128)',
-                    border: !message.isAI ? 'none' : '1px solid rgb(229, 231, 235)'
-                  }}>
-                    {!message.isAI ? <User className="h-3 w-3" /> : <Bot className="h-3 w-3" />}
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                    !message.isAI 
+                      ? 'bg-gradient-to-r from-beauty-primary to-beauty-accent text-beauty-light' 
+                      : 'bg-beauty-cream border border-beauty-accent/20 text-beauty-dark'
+                  }`}>
+                    {!message.isAI ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
                   </div>
-                  <div className={cn("max-w-[80%] p-2 rounded-lg text-sm")} style={{
-                    backgroundColor: !message.isAI ? 'rgb(220, 162, 67)' : 'rgb(249, 250, 251)',
-                    color: !message.isAI ? 'rgb(255, 255, 255)' : 'rgb(17, 24, 39)',
-                    border: !message.isAI ? 'none' : '1px solid rgba(229, 231, 235, 0.5)'
-                  }}>
-                    <p className="whitespace-pre-wrap">{message.content}</p>
+                  <div className={`max-w-[80%] p-4 rounded-lg dior-body ${
+                    !message.isAI 
+                      ? 'bg-gradient-to-r from-beauty-primary to-beauty-accent text-beauty-light shadow-champagne' 
+                      : 'bg-beauty-cream/50 text-beauty-dark border border-beauty-accent/20 backdrop-blur-sm'
+                  }`}>
+                    <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
                   </div>
                 </div>
               ))}
               {isProcessing && (
-                <div className="flex gap-2">
-                  <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgb(243, 244, 246)', border: '1px solid rgb(229, 231, 235)' }}>
-                    <Bot className="h-3 w-3 animate-pulse" style={{ color: 'rgb(107, 114, 128)' }} />
+                <div className="flex gap-3">
+                  <div className="w-8 h-8 rounded-full bg-beauty-cream border border-beauty-accent/20 flex items-center justify-center">
+                    <Bot className="h-4 w-4 text-beauty-dark animate-pulse" />
                   </div>
-                  <div className="p-2 rounded-lg" style={{ backgroundColor: 'rgb(249, 250, 251)', border: '1px solid rgba(229, 231, 235, 0.5)' }}>
+                  <div className="p-4 rounded-lg bg-beauty-cream/50 border border-beauty-accent/20 backdrop-blur-sm">
                     <div className="flex gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: 'rgb(220, 162, 67)' }}></div>
-                      <div className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: 'rgb(220, 162, 67)', animationDelay: '0.1s' }}></div>
-                      <div className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ backgroundColor: 'rgb(220, 162, 67)', animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 rounded-full bg-beauty-accent animate-bounce"></div>
+                      <div className="w-2 h-2 rounded-full bg-beauty-accent animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 rounded-full bg-beauty-accent animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                     </div>
                   </div>
                 </div>
@@ -293,28 +269,25 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
         </div>
       )}
 
-      {/* Chat Input Bar - Only visible when expanded for additional functionality */}
-      <div className="p-3" style={{ backgroundColor: '#ffffff' }}>
-        <div className="flex items-center gap-2 max-w-4xl mx-auto">
-          {/* Status Indicators */}
-          {(isProcessing || isListening) && (
-            <div className="text-center w-full">
-              {isProcessing && (
-                <div className="text-xs flex items-center justify-center gap-2" style={{ color: '#6b7280' }}>
-                  <div className="animate-spin h-3 w-3 rounded-full" style={{ border: '2px solid #dca243', borderTopColor: 'transparent' }}></div>
-                  AI is thinking...
-                </div>
-              )}
-              {isListening && (
-                <div className="text-xs flex items-center justify-center gap-2" style={{ color: '#ef4444' }}>
-                  <div className="animate-pulse h-3 w-3 rounded-full" style={{ backgroundColor: '#ef4444' }}></div>
-                  Listening... Speak now
-                </div>
-              )}
-            </div>
-          )}
+      {/* Status Indicators */}
+      {isExpanded && (isProcessing || isListening) && (
+        <div className="p-4 bg-gradient-to-r from-beauty-light/95 to-beauty-cream/90 backdrop-blur-lg border-t border-beauty-accent/20">
+          <div className="text-center w-full">
+            {isProcessing && (
+              <div className="dior-body-sm flex items-center justify-center gap-3 text-beauty-dark">
+                <div className="animate-spin h-4 w-4 rounded-full border-2 border-beauty-accent border-t-transparent"></div>
+                L'IA réfléchit...
+              </div>
+            )}
+            {isListening && (
+              <div className="dior-body-sm flex items-center justify-center gap-3 text-beauty-accent">
+                <div className="animate-pulse h-4 w-4 rounded-full bg-beauty-accent"></div>
+                Écoute en cours... Parlez maintenant
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
