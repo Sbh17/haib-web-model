@@ -14,12 +14,6 @@ interface PersistentChatBarProps {
 const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  
-  // Hide assistant on welcome and auth screens
-  const hideOnPages = ['/welcome', '/auth', '/register'];
-  if (hideOnPages.includes(location.pathname)) {
-    return null;
-  }
   const [isExpanded, setIsExpanded] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -51,6 +45,12 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages, isExpanded]);
+  
+  // Hide assistant on welcome and auth screens - AFTER all hooks are called
+  const hideOnPages = ['/welcome', '/auth', '/register'];
+  if (hideOnPages.includes(location.pathname)) {
+    return null;
+  }
 
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isProcessing) return;
