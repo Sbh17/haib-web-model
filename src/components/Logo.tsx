@@ -1,8 +1,6 @@
 
 import React from 'react';
-import darkLogo from '@/assets/haib-logo-dark.png';
-import lightLogo from '@/assets/haib-logo-light.png';
-import { useTheme } from '@/context/ThemeContext';
+import blackLogo from '@/assets/haib-logo-black.png';
 
 interface LogoProps {
   className?: string;
@@ -11,15 +9,10 @@ interface LogoProps {
 }
 
 const Logo: React.FC<LogoProps> = ({ className = '', width = 120, height = 40 }) => {
-  const { theme } = useTheme();
-  
-  // Use dark logo for light theme, light logo for dark theme
-  const logoSrc = theme === 'light' ? darkLogo : lightLogo;
-  
   return (
     <div className={`flex items-center ${className}`}>
       <img
-        src={logoSrc}
+        src={blackLogo}
         alt="HAIB Logo"
         width={width}
         height={height}
