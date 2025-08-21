@@ -1,6 +1,6 @@
 
 import React from 'react';
-import blackLogo from '@/assets/haib-logo-black.png';
+import haibLogo from '/lovable-uploads/0d3558d9-bc4c-4700-92c4-a2959fffbaad.png';
 
 interface LogoProps {
   className?: string;
@@ -12,7 +12,7 @@ const Logo: React.FC<LogoProps> = ({ className = '', width = 120, height = 40 })
   return (
     <div className={`flex items-center ${className}`}>
       <img
-        src={blackLogo}
+        src={haibLogo}
         alt="HAIB Logo"
         width={width}
         height={height}
