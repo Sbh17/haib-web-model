@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import AuthRedirect from '@/components/AuthRedirect';
-import SimpleChatWidget from '@/components/chat/SimpleChatWidget';
+import GlobalAIChatFooter from '@/components/chat/GlobalAIChatFooter';
 
 // Import pages
 import Welcome from '@/pages/Welcome';
@@ -20,7 +20,6 @@ import Promotions from '@/pages/Promotions';
 import Settings from '@/pages/Settings';
 import Profile from '@/pages/Profile';
 import ProfileSettings from '@/pages/ProfileSettings';
-import Chat from '@/pages/Chat';
 import Auth from '@/pages/Auth';
 import Register from '@/pages/Register';
 import NotFound from '@/pages/NotFound';
@@ -111,17 +110,15 @@ const AppContent: React.FC = () => {
                 <ProfileSettings />
               </ProtectedRoute>
             } />
-            <Route path="/chat" element={
-              <ProtectedRoute>
-                <Chat onBookAppointment={handleBookAppointment} />
-              </ProtectedRoute>
-            } />
             <Route path="/welcome" element={<Welcome />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/register" element={<Register />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
+
+        {/* Global AI Chat Footer - Available on all pages */}
+        <GlobalAIChatFooter onBookAppointment={handleBookAppointment} />
 
       </div>
     </AuthRedirect>
