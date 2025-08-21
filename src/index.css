@@ -59,30 +59,30 @@
     --sidebar-border: 0 0% 90%;
     --sidebar-ring: 0 0% 0%;
 
-    /* Luxury Beauty Theme Colors */
-    --beauty-primary: 24 9% 10%;       /* Rich dark charcoal */
-    --beauty-secondary: 44 13% 23%;     /* Warm dark brown */
-    --beauty-accent: 43 74% 66%;        /* Elegant gold */
+    /* Luxury Beauty Theme Colors - Black & White DIOR */
+    --beauty-primary: 0 0% 0%;          /* Pure black */
+    --beauty-secondary: 0 0% 15%;       /* Dark gray */
+    --beauty-accent: 0 0% 25%;          /* Medium gray */
     --beauty-dark: 0 0% 5%;             /* Deep black */
     --beauty-light: 0 0% 100%;          /* Pure white */
-    --beauty-rose: 343 89% 89%;         /* Soft rose gold */
-    --beauty-cream: 45 23% 95%;         /* Warm cream */
+    --beauty-rose: 0 0% 90%;            /* Light gray */
+    --beauty-cream: 0 0% 98%;           /* Off white */
     --beauty-success: 145 42% 62%;      /* Mint green */
     --beauty-warning: 32 93% 54%;       /* Orange */
     --beauty-info: 217 44% 56%;         /* Blue */
     
-    /* Luxury Design System - DIOR Inspired */
-    --gradient-dior: linear-gradient(135deg, hsl(0 0% 8%), hsl(40 15% 12%));
-    --gradient-champagne: linear-gradient(135deg, hsl(40 60% 85%), hsl(45 70% 90%));
-    --gradient-pearl: linear-gradient(135deg, hsl(40 30% 95%), hsl(40 20% 98%));
-    --gradient-noir: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 10%));
+    /* Luxury Design System - DIOR Black & White */
+    --gradient-dior: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 10%));
+    --gradient-pearl: linear-gradient(135deg, hsl(0 0% 95%), hsl(0 0% 100%));
+    --gradient-noir: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 5%));
+    --gradient-elegant: linear-gradient(135deg, hsl(0 0% 98%), hsl(0 0% 100%));
     
     /* Premium Shadows */
     --shadow-dior: 0 8px 32px -8px hsl(0 0% 0% / 0.4);
-    --shadow-champagne: 0 10px 30px -10px hsl(40 70% 55% / 0.3);
+    --shadow-elegant: 0 10px 30px -10px hsl(0 0% 0% / 0.15);
     --shadow-soft: 0 4px 20px -2px hsl(0 0% 0% / 0.1);
     --shadow-inner: inset 0 2px 4px hsl(0 0% 0% / 0.1);
-    --shadow-elegant: 0 20px 40px -10px hsl(0 0% 0% / 0.2);
+    --shadow-luxury: 0 20px 40px -10px hsl(0 0% 0% / 0.2);
   }
 
   .dark {
@@ -123,35 +123,31 @@
     --sidebar-border: 0 0% 15%;
     --sidebar-ring: 0 0% 98%;
 
-    /* Luxury Beauty Theme Colors - Dark Mode */
-    --beauty-primary: 43 74% 66%;      /* Gold for dark mode */
-    --beauty-secondary: 44 23% 83%;    /* Light warm tone */
-    --beauty-accent: 24 9% 85%;        /* Light charcoal */
+    /* Luxury Beauty Theme Colors - Dark Mode Black & White */
+    --beauty-primary: 0 0% 100%;       /* Pure white for dark mode */
+    --beauty-secondary: 0 0% 85%;      /* Light gray for dark mode */
+    --beauty-accent: 0 0% 75%;         /* Medium gray for dark mode */
     --beauty-dark: 0 0% 98%;           /* Light for dark mode */
     --beauty-light: 0 0% 5%;           /* Dark background for dark mode */
-    --beauty-rose: 343 79% 83%;        /* Lighter rose gold */
-    --beauty-cream: 45 13% 15%;        /* Dark cream */
+    --beauty-rose: 0 0% 10%;           /* Dark gray for dark mode */
+    --beauty-cream: 0 0% 7%;           /* Dark background */
     --beauty-success: 145 42% 62%;     /* Mint green (same) */
     --beauty-warning: 32 93% 54%;      /* Orange (same) */
     --beauty-info: 217 44% 56%;        /* Blue (same) */
     
-    /* Dark mode luxury gradients */
-    --gradient-dior: linear-gradient(135deg, hsl(0 0% 5%), hsl(40 15% 8%));
-    --gradient-champagne: linear-gradient(135deg, hsl(40 50% 75%), hsl(45 60% 80%));
-    --gradient-pearl: linear-gradient(135deg, hsl(40 20% 85%), hsl(40 15% 88%));
+    /* Dark mode luxury gradients - Black & White */
+    --gradient-dior: linear-gradient(135deg, hsl(0 0% 3%), hsl(0 0% 8%));
+    --gradient-pearl: linear-gradient(135deg, hsl(0 0% 5%), hsl(0 0% 10%));
     --gradient-noir: linear-gradient(135deg, hsl(0 0% 0%), hsl(0 0% 5%));
-    --gradient-luxury: linear-gradient(135deg, hsl(var(--beauty-accent)), hsl(var(--beauty-primary)));
-    --gradient-gold: linear-gradient(135deg, hsl(var(--beauty-primary)), hsl(43 84% 76%));
-    --gradient-rose: linear-gradient(135deg, hsl(var(--beauty-rose)), hsl(343 89% 89%));
+    --gradient-elegant: linear-gradient(135deg, hsl(0 0% 3%), hsl(0 0% 7%));
+    --gradient-luxury: linear-gradient(135deg, hsl(0 0% 10%), hsl(0 0% 15%));
     
     /* Dark mode luxury shadows */
     --shadow-dior: 0 8px 32px -8px hsl(0 0% 0% / 0.6);
-    --shadow-champagne: 0 10px 30px -10px hsl(40 60% 45% / 0.4);
+    --shadow-elegant: 0 10px 30px -10px hsl(0 0% 0% / 0.4);
     --shadow-soft: 0 4px 20px -2px hsl(0 0% 0% / 0.3);
     --shadow-inner: inset 0 2px 4px hsl(0 0% 0% / 0.2);
-    --shadow-elegant: 0 20px 40px -10px hsl(0 0% 0% / 0.4);
     --shadow-luxury: 0 25px 50px -12px hsl(0 0% 0% / 0.5);
-    --shadow-gold: 0 10px 30px -5px hsl(var(--beauty-primary) / 0.4);
     --shadow-elevation: 0 4px 20px hsl(0 0% 0% / 0.3);
   }
 }
@@ -181,13 +177,13 @@
 }
 
 @layer components {
-  /* Gradient utility classes */
+  /* Gradient utility classes - Black & White DIOR */
   .bg-gradient-dior {
     background: var(--gradient-dior);
   }
   
-  .bg-gradient-champagne {
-    background: var(--gradient-champagne);
+  .bg-gradient-elegant {
+    background: var(--gradient-elegant);
   }
   
   .bg-gradient-pearl {
@@ -198,21 +194,25 @@
     background: var(--gradient-noir);
   }
   
+  .bg-gradient-luxury {
+    background: var(--gradient-luxury);
+  }
+  
   /* Shadow utility classes */
   .shadow-dior {
     box-shadow: var(--shadow-dior);
   }
   
-  .shadow-champagne {
-    box-shadow: var(--shadow-champagne);
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
   }
   
   .shadow-soft {
     box-shadow: var(--shadow-soft);
   }
   
-  .shadow-elegant {
-    box-shadow: var(--shadow-elegant);
+  .shadow-luxury {
+    box-shadow: var(--shadow-luxury);
   }
 
   /* Dior-inspired Typography Classes */
@@ -254,7 +254,7 @@
   }
   
   .beauty-button {
-    @apply bg-gradient-to-r from-beauty-primary to-beauty-secondary text-beauty-light py-4 px-10 font-playfair font-medium transition-all duration-300 hover:shadow-[var(--shadow-gold)] active:scale-[0.98] tracking-luxury uppercase text-sm rounded-none;
+    @apply bg-gradient-to-r from-beauty-primary to-beauty-secondary text-beauty-light py-4 px-10 font-playfair font-medium transition-all duration-300 hover:shadow-luxury active:scale-[0.98] tracking-luxury uppercase text-sm rounded-none;
   }
   
   .beauty-input {
@@ -280,7 +280,7 @@
     content: '';
   }
   
-  .gold-accent {
+  .elegant-accent {
     @apply text-beauty-accent font-playfair font-medium tracking-luxury;
   }
   
