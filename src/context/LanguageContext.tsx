@@ -20,10 +20,10 @@ interface Translations {
   news: string;
   promotions: string;
   
-    // AI Chat
-    aiAssistant: string;
-    aiAssistantHaib: string;
-    chatPlaceholder: string;
+  // AI Chat
+  aiAssistant: string;
+  aiAssistantHaib: string;
+  chatPlaceholder: string;
   aiThinking: string;
   listeningNow: string;
   bookAppointment: string;
@@ -44,6 +44,34 @@ interface Translations {
   minutesAgo: string;
   hoursAgo: string;
   daysAgo: string;
+  
+  // Welcome Page
+  welcomeTitle: string;
+  welcomeDescription: string;
+  startJourney: string;
+  signIn: string;
+  howItWorks: string;
+  howItWorksDescription: string;
+  discover: string;
+  discoverDescription: string;
+  book: string;
+  bookDescription: string;
+  experience: string;
+  experienceDescription: string;
+  exploreHaib: string;
+  exploreDescription: string;
+  premiumSalons: string;
+  premiumSalonsDescription: string;
+  exploreSalons: string;
+  exclusiveOffers: string;
+  exclusiveOffersDescription: string;
+  viewOffers: string;
+  startBeautyJourney: string;
+  startBeautyDescription: string;
+  startNow: string;
+  beautyExcellence: string;
+  followUs: string;
+  allRightsReserved: string;
 }
 
 const translations: Record<Language, Translations> = {
@@ -89,6 +117,34 @@ const translations: Record<Language, Translations> = {
     minutesAgo: 'm ago',
     hoursAgo: 'h ago',
     daysAgo: 'd ago',
+    
+    // Welcome Page
+    welcomeTitle: 'HAIB',
+    welcomeDescription: 'Discover and book exceptional beauty services in the most beautiful salons. Experience luxury, sophistication and unmatched quality at every appointment.',
+    startJourney: 'Start Your Journey',
+    signIn: 'Sign In',
+    howItWorks: 'How It Works',
+    howItWorksDescription: 'Three simple steps to your perfect beauty experience',
+    discover: 'Discover',
+    discoverDescription: 'Find exceptional beauty salons in your area with detailed information, authentic reviews and premium services.',
+    book: 'Book',
+    bookDescription: 'Schedule your appointments effortlessly with our sophisticated booking system designed for your comfort.',
+    experience: 'Experience',
+    experienceDescription: 'Treat yourself to premium beauty treatments and share your exceptional experience with our community.',
+    exploreHaib: 'Explore HAIB',
+    exploreDescription: 'Discover the sophisticated world of premium beauty services',
+    premiumSalons: 'Premium Salons',
+    premiumSalonsDescription: 'Discover the most beautiful beauty salons in your area, explore exclusive services and read authentic reviews from our discerning community.',
+    exploreSalons: 'Explore Salons',
+    exclusiveOffers: 'Exclusive Offers',
+    exclusiveOffersDescription: 'Access exclusive promotions and special privileges from the most prestigious salons, reserved for our valued members.',
+    viewOffers: 'View Offers',
+    startBeautyJourney: 'Start Your Beauty Journey',
+    startBeautyDescription: 'Join HAIB today and discover a world of exceptional beauty services, where luxury meets convenience and every appointment becomes a memorable experience.',
+    startNow: 'Start Now',
+    beautyExcellence: 'Excellence in Beauty Services',
+    followUs: 'Follow us on',
+    allRightsReserved: 'All rights reserved.',
   },
   ar: {
     // Common UI
@@ -132,6 +188,34 @@ const translations: Record<Language, Translations> = {
     minutesAgo: 'د',
     hoursAgo: 'س',
     daysAgo: 'ي',
+    
+    // Welcome Page
+    welcomeTitle: 'هايب',
+    welcomeDescription: 'اكتشف واحجز خدمات الجمال الاستثنائية في أجمل الصالونات. اختبر الفخامة والرقي والجودة التي لا مثيل لها في كل موعد.',
+    startJourney: 'ابدأ رحلتك',
+    signIn: 'تسجيل الدخول',
+    howItWorks: 'كيف يعمل',
+    howItWorksDescription: 'ثلاث خطوات بسيطة إلى تجربة الجمال المثالية',
+    discover: 'اكتشف',
+    discoverDescription: 'اعثر على صالونات الجمال الاستثنائية في منطقتك مع معلومات مفصلة ومراجعات أصيلة وخدمات مميزة.',
+    book: 'احجز',
+    bookDescription: 'جدول مواعيدك بسهولة مع نظام الحجز المتطور المصمم لراحتك.',
+    experience: 'التجربة',
+    experienceDescription: 'دلل نفسك بعلاجات الجمال المميزة وشارك تجربتك الاستثنائية مع مجتمعنا.',
+    exploreHaib: 'استكشف هايب',
+    exploreDescription: 'اكتشف العالم المتطور لخدمات الجمال المميزة',
+    premiumSalons: 'الصالونات المميزة',
+    premiumSalonsDescription: 'اكتشف أجمل صالونات الجمال في منطقتك، واستكشف الخدمات الحصرية واقرأ المراجعات الأصيلة من مجتمعنا المميز.',
+    exploreSalons: 'استكشف الصالونات',
+    exclusiveOffers: 'عروض حصرية',
+    exclusiveOffersDescription: 'احصل على العروض الحصرية والامتيازات الخاصة من أرقى الصالونات، المخصصة لأعضائنا المميزين.',
+    viewOffers: 'عرض العروض',
+    startBeautyJourney: 'ابدأ رحلة الجمال',
+    startBeautyDescription: 'انضم إلى هايب اليوم واكتشف عالماً من خدمات الجمال الاستثنائية، حيث يلتقي الفخامة مع الراحة ويصبح كل موعد تجربة لا تُنسى.',
+    startNow: 'ابدأ الآن',
+    beautyExcellence: 'التميز في خدمات الجمال',
+    followUs: 'تابعنا على',
+    allRightsReserved: 'جميع الحقوق محفوظة.',
   },
   it: {
     // Common UI
@@ -175,6 +259,34 @@ const translations: Record<Language, Translations> = {
     minutesAgo: 'min fa',
     hoursAgo: 'ore fa',
     daysAgo: 'giorni fa',
+    
+    // Welcome Page
+    welcomeTitle: 'HAIB',
+    welcomeDescription: 'Scopri e prenota servizi di bellezza eccezionali nei saloni più belli. Vivi il lusso, la raffinatezza e la qualità ineguagliabile ad ogni appuntamento.',
+    startJourney: 'Inizia il Tuo Viaggio',
+    signIn: 'Accedi',
+    howItWorks: 'Come Funziona',
+    howItWorksDescription: 'Tre semplici passi verso la tua esperienza di bellezza perfetta',
+    discover: 'Scopri',
+    discoverDescription: 'Trova saloni di bellezza eccezionali nella tua zona con informazioni dettagliate, recensioni autentiche e servizi premium.',
+    book: 'Prenota',
+    bookDescription: 'Programma i tuoi appuntamenti senza sforzo con il nostro sistema di prenotazione sofisticato progettato per il tuo comfort.',
+    experience: 'Esperienza',
+    experienceDescription: 'Concediti trattamenti di bellezza premium e condividi la tua esperienza eccezionale con la nostra comunità.',
+    exploreHaib: 'Esplora HAIB',
+    exploreDescription: 'Scopri il mondo sofisticato dei servizi di bellezza premium',
+    premiumSalons: 'Saloni Premium',
+    premiumSalonsDescription: 'Scopri i saloni di bellezza più belli della tua zona, esplora servizi esclusivi e leggi recensioni autentiche dalla nostra comunità esigente.',
+    exploreSalons: 'Esplora i Saloni',
+    exclusiveOffers: 'Offerte Esclusive',
+    exclusiveOffersDescription: 'Accedi a promozioni esclusive e privilegi speciali dai saloni più prestigiosi, riservati ai nostri membri stimati.',
+    viewOffers: 'Vedi le Offerte',
+    startBeautyJourney: 'Inizia il Tuo Viaggio di Bellezza',
+    startBeautyDescription: 'Unisciti a HAIB oggi e scopri un mondo di servizi di bellezza eccezionali, dove il lusso incontra la comodità e ogni appuntamento diventa un\'esperienza memorabile.',
+    startNow: 'Inizia Ora',
+    beautyExcellence: 'Eccellenza nei Servizi di Bellezza',
+    followUs: 'Seguici su',
+    allRightsReserved: 'Tutti i diritti riservati.',
   }
 };
 
