@@ -124,9 +124,11 @@ const Index: React.FC = () => {
               Handpicked sanctuaries of beauty where excellence meets luxury
             </p>
           </div>
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {salonsLoading ? (
-              <LoadingSpinner />
+              <div className="col-span-full flex justify-center">
+                <LoadingSpinner />
+              </div>
             ) : (
               featuredSalons.map((salon) => (
                 <SalonCard key={salon.id} salon={salon} />
@@ -170,15 +172,17 @@ const Index: React.FC = () => {
               4.5+ Rated Excellence
             </Badge>
           </div>
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {salonsLoading ? (
-              <LoadingSpinner />
+              <div className="col-span-full flex justify-center">
+                <LoadingSpinner />
+              </div>
             ) : topRatedSalons.length > 0 ? (
               topRatedSalons.map((salon) => (
                 <SalonCard key={salon.id} salon={salon} />
               ))
             ) : (
-              <Card className="p-6 text-center">
+              <Card className="col-span-full p-6 text-center">
                 <p className="text-muted-foreground">No top-rated salons available at the moment</p>
               </Card>
             )}
