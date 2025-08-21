@@ -92,7 +92,7 @@ const Header: React.FC = () => {
         {/* Center - Logo - Absolutely centered */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
           <div onClick={() => navigate('/home')} className="cursor-pointer flex items-center group">
-            <Logo width={100} height={32} className="transition-transform duration-300 group-hover:scale-105" />
+            <Logo width={120} height={40} className="transition-transform duration-300 group-hover:scale-105" />
           </div>
         </div>
 

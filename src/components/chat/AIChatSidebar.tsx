@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, Send, Bot, User, Mic, MicOff, Home, Search, Calendar, Settings } from 'lucide-react';
+import { MessageCircle, Send, Bot, User, Mic, MicOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -24,12 +24,7 @@ interface AIChatSidebarProps {
   onBookAppointment?: (bookingData: any) => void;
 }
 
-const navigationItems = [
-  { title: "Accueil", url: "/home", icon: Home },
-  { title: "Recherche", url: "/search", icon: Search },
-  { title: "Rendez-vous", url: "/appointments", icon: Calendar },
-  { title: "Paramètres", url: "/settings", icon: Settings },
-];
+// Remove navigation items - sidebar is chat-only now
 
 const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
   const navigate = useNavigate();
@@ -105,10 +100,7 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
     }, 100);
   };
 
-  const currentPath = location.pathname;
-  const isActive = (path: string) => currentPath === path;
-  const getNavCls = ({ isActive }: { isActive: boolean }) =>
-    isActive ? "bg-muted text-foreground font-medium" : "hover:bg-muted/50";
+  // Remove navigation logic - chat-only sidebar
 
   return (
     <Sidebar className={cn("border-r border-border", collapsed ? "w-16" : "w-80")} collapsible="icon">
@@ -122,26 +114,7 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
       </SidebarHeader>
 
       <SidebarContent className="flex flex-col h-full">
-        {/* Navigation */}
-        <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navigationItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink to={item.url} end className={getNavCls}>
-                      <item.icon className="mr-2 h-4 w-4" />
-                      {!collapsed && <span>{item.title}</span>}
-                    </NavLink>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        {/* Chat Section */}
+        {/* Chat Section - Full sidebar dedicated to chat */}
         {!collapsed && (
           <SidebarGroup className="flex-1 flex flex-col">
             <SidebarGroupLabel>Chat Assistant</SidebarGroupLabel>
