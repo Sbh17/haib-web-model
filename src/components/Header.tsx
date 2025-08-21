@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, User, Search, Menu, MessageCircle } from 'lucide-react';
+import { ArrowLeft, User, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { useSidebar } from '@/components/ui/sidebar';
+import { SidebarTrigger, useSidebar } from '@/components/ui/sidebar';
 import Logo from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
 import NotificationPanel from '@/components/NotificationPanel';
@@ -79,9 +79,7 @@ const Header: React.FC = () => {
               <span className="hidden md:inline font-inter font-light tracking-wide">Back</span>
             </Button>
           ) : (
-            <Button variant="ghost" size="sm" className="md:hidden text-beauty-dark hover:text-beauty-accent hover:bg-beauty-accent/10 transition-all duration-300 rounded-sm">
-              <Menu className="h-5 w-5" />
-            </Button>
+            showSidebar && <SidebarTrigger className="text-beauty-dark hover:text-beauty-accent hover:bg-beauty-accent/10 transition-all duration-300 rounded-sm" />
           )}
           
           {getPageTitle() && (
@@ -107,15 +105,6 @@ const Header: React.FC = () => {
             className="hidden md:flex text-beauty-dark hover:text-beauty-accent hover:bg-beauty-accent/10 transition-all duration-300 rounded-sm"
           >
             <Search className="h-4 w-4" />
-          </Button>
-          
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => navigate('/chat')}
-            className="text-beauty-dark hover:text-beauty-accent hover:bg-beauty-accent/10 transition-all duration-300 rounded-sm"
-          >
-            <MessageCircle className="h-4 w-4" />
           </Button>
           
           <NotificationPanel />
