@@ -21,9 +21,9 @@ const AuthRedirect: React.FC<AuthRedirectProps> = ({ children }) => {
       return;
     }
 
-    // If user is authenticated and on welcome or auth page, redirect to chat
+    // If user is authenticated and on welcome or auth page, redirect to home
     if (user && (location.pathname === '/welcome' || location.pathname === '/auth')) {
-      navigate('/chat', { replace: true });
+      navigate('/home', { replace: true });
       return;
     }
   }, [user, isLoading, location.pathname, navigate]);
