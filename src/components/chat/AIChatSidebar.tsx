@@ -17,7 +17,8 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { useEnhancedChat } from '@/hooks/useEnhancedChat';
-import { useNavigate, useLocation, NavLink } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useLanguage } from '@/context/LanguageContext';
 import { cn } from '@/lib/utils';
 
 interface AIChatSidebarProps {
@@ -28,6 +29,7 @@ interface AIChatSidebarProps {
 
 const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
   const location = useLocation();
+  const { t, isRTL } = useLanguage();
   
   // Hide sidebar on welcome and auth screens - CHECK THIS FIRST BEFORE ANY HOOKS
   const hideOnPages = ['/welcome', '/auth', '/register'];
@@ -101,16 +103,14 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
     }, 100);
   };
 
-  // Remove navigation logic - chat-only sidebar
-
   return (
-    <Sidebar className={cn("border-r border-border", collapsed ? "w-16" : "w-80")} collapsible="icon">
+    <Sidebar className={cn("border-r border-border", collapsed ? "w-16" : "w-80", isRTL && "border-l border-r-0")} collapsible="icon">
       <SidebarHeader className="p-4 border-b border-border">
-        <div className="flex items-center gap-3">
+        <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
           <div className="h-8 w-8 rounded-full bg-foreground flex items-center justify-center">
             <Bot className="h-4 w-4 text-background animate-pulse" />
           </div>
-          {!collapsed && <span className="font-medium text-foreground">Assistant IA DIOR</span>}
+          {!collapsed && <span className="font-medium text-foreground">{t.aiAssistantDior}</span>}
         </div>
       </SidebarHeader>
 
@@ -118,33 +118,33 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
         {/* Chat Section - Full sidebar dedicated to chat */}
         {!collapsed && (
           <SidebarGroup className="flex-1 flex flex-col">
-            <SidebarGroupLabel>Chat Assistant</SidebarGroupLabel>
+            <SidebarGroupLabel>{t.aiAssistant}</SidebarGroupLabel>
             
             {/* Quick Actions */}
             <div className="p-4 space-y-2">
               <Button 
                 size="sm"
                 variant="outline"
-                className="w-full justify-start text-sm"
-                onClick={() => handleQuickAction("Réserver une coupe")}
+                className={cn("w-full text-sm", isRTL ? "justify-end" : "justify-start")}
+                onClick={() => handleQuickAction(t.bookAppointment)}
               >
-                Réserver un rendez-vous
+                {t.bookAppointment}
               </Button>
               <Button 
                 size="sm"
                 variant="outline"
-                className="w-full justify-start text-sm"
-                onClick={() => handleQuickAction("Trouver un salon")}
+                className={cn("w-full text-sm", isRTL ? "justify-end" : "justify-start")}
+                onClick={() => handleQuickAction(t.findSalon)}
               >
-                Trouver un salon
+                {t.findSalon}
               </Button>
               <Button 
                 size="sm"
                 variant="outline"
-                className="w-full justify-start text-sm"
-                onClick={() => handleQuickAction("Mes rendez-vous")}
+                className={cn("w-full text-sm", isRTL ? "justify-end" : "justify-start")}
+                onClick={() => handleQuickAction(t.viewSchedule)}
               >
-                Voir mon agenda
+                {t.viewSchedule}
               </Button>
             </div>
 
@@ -156,14 +156,17 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
                     <div className="h-12 w-12 rounded-full bg-foreground flex items-center justify-center mx-auto mb-4">
                       <Bot className="h-6 w-6 text-background" />
                     </div>
-                    <p className="text-sm font-medium mb-2">Bonjour, je suis votre assistante beauté.</p>
-                    <p className="text-xs text-muted-foreground">Posez-moi vos questions sur les soins, rendez-vous et salons!</p>
+                    <p className="text-sm font-medium mb-2">{t.welcomeMessage}</p>
+                    <p className="text-xs text-muted-foreground">{t.welcomeSubMessage}</p>
                   </div>
                 )}
                 {messages.map((message) => (
                   <div
                     key={message.id}
-                    className={`flex gap-3 ${!message.isAI ? 'flex-row-reverse' : 'flex-row'}`}
+                    className={cn(
+                      "flex gap-3",
+                      !message.isAI ? (isRTL ? 'flex-row' : 'flex-row-reverse') : (isRTL ? 'flex-row-reverse' : 'flex-row')
+                    )}
                   >
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                       !message.isAI 
@@ -177,12 +180,12 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
                         ? 'bg-foreground text-background' 
                         : 'bg-muted/50 text-foreground border border-border'
                     }`}>
-                      <p className="whitespace-pre-wrap leading-relaxed">{message.content}</p>
+                      <p className={cn("whitespace-pre-wrap leading-relaxed", isRTL && "text-right")}>{message.content}</p>
                     </div>
                   </div>
                 ))}
                 {isProcessing && (
-                  <div className="flex gap-3">
+                  <div className={cn("flex gap-3", isRTL && "flex-row-reverse")}>
                     <div className="w-8 h-8 rounded-full bg-muted border border-border flex items-center justify-center">
                       <Bot className="h-4 w-4 text-foreground animate-pulse" />
                     </div>
@@ -201,17 +204,17 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
             {/* Status Indicators */}
             {(isProcessing || isListening) && (
               <div className="p-4 border-t border-border">
-                <div className="text-center w-full">
+                <div className={cn("text-center w-full", isRTL && "text-right")}>
                   {isProcessing && (
-                    <div className="text-xs flex items-center justify-center gap-3 text-muted-foreground">
+                    <div className={cn("text-xs flex items-center gap-3 text-muted-foreground", isRTL ? "justify-end" : "justify-center")}>
                       <div className="animate-spin h-3 w-3 rounded-full border border-foreground border-t-transparent"></div>
-                      L'IA réfléchit...
+                      {t.aiThinking}
                     </div>
                   )}
                   {isListening && (
-                    <div className="text-xs flex items-center justify-center gap-3 text-foreground">
+                    <div className={cn("text-xs flex items-center gap-3 text-foreground", isRTL ? "justify-end" : "justify-center")}>
                       <div className="animate-pulse h-3 w-3 rounded-full bg-foreground"></div>
-                      Écoute en cours... Parlez maintenant
+                      {t.listeningNow}
                     </div>
                   )}
                 </div>
@@ -224,15 +227,15 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
       {/* Chat Input */}
       {!collapsed && (
         <SidebarFooter className="p-4 border-t border-border">
-          <div className="flex gap-2">
+          <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
             <div className="flex-1 relative">
               <Input
                 ref={inputRef}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyPress}
-                placeholder="Posez votre question..."
-                className="text-sm pr-20"
+                placeholder={t.askQuestion}
+                className={cn("text-sm pr-20", isRTL && "text-right pl-20 pr-4")}
                 disabled={isProcessing}
                 autoComplete="off"
               />
@@ -243,7 +246,7 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
                   variant="ghost"
                   size="icon"
                   onClick={handleVoiceToggle}
-                  className="absolute right-10 top-1/2 -translate-y-1/2 h-6 w-6"
+                  className={cn("absolute top-1/2 -translate-y-1/2 h-6 w-6", isRTL ? "left-10" : "right-10")}
                   disabled={isProcessing}
                 >
                   {isListening ? <MicOff className="h-3 w-3" /> : <Mic className="h-3 w-3" />}
@@ -255,7 +258,7 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
                 onClick={handleSendMessage}
                 disabled={!inputValue.trim() || isProcessing}
                 size="icon"
-                className="absolute right-1 top-1/2 -translate-y-1/2 h-6 w-6"
+                className={cn("absolute top-1/2 -translate-y-1/2 h-6 w-6", isRTL ? "left-1" : "right-1")}
               >
                 <Send className="h-3 w-3" />
               </Button>

@@ -8,11 +8,15 @@ import Logo from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
 import NotificationPanel from '@/components/NotificationPanel';
 import { useAuth } from '@/context/AuthContext';
+import { useLanguage } from '@/context/LanguageContext';
+import LanguageSelector from '@/components/LanguageSelector';
+import { cn } from '@/lib/utils';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
+  const { t, isRTL } = useLanguage();
   
   // Only get sidebar context if we're in a sidebar-enabled route
   let toggleSidebar: (() => void) | undefined;
@@ -47,27 +51,30 @@ const Header: React.FC = () => {
       case '/':
         return '';
       case '/search':
-        return 'Search';
+        return t.search;
       case '/appointments':
-        return 'Appointments';
+        return t.appointments;
       case '/news':
-        return 'News';
+        return t.news;
       case '/promotions':
-        return 'Promotions';
+        return t.promotions;
       case '/profile':
-        return 'Profile';
+        return t.profile;
       case '/settings':
-        return 'Settings';
+        return t.settings;
       default:
         return '';
     }
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-beauty-accent/20 bg-gradient-to-r from-beauty-light/95 to-beauty-cream/95 backdrop-blur-lg shadow-elegant theme-transition">
-      <div className="flex h-16 items-center justify-between px-6">
+    <header className={cn(
+      "sticky top-0 z-40 w-full border-b border-beauty-accent/20 bg-gradient-to-r from-beauty-light/95 to-beauty-cream/95 backdrop-blur-lg shadow-elegant theme-transition",
+      isRTL && "border-l border-r-0"
+    )}>
+      <div className={cn("flex h-16 items-center justify-between px-6", isRTL && "flex-row-reverse")}>
         {/* Left side - Fixed width */}
-        <div className="flex items-center gap-4 w-32">
+        <div className={cn("flex items-center gap-4 w-32", isRTL && "flex-row-reverse")}>
           {!isHomePage ? (
             <Button
               variant="ghost"
@@ -75,15 +82,15 @@ const Header: React.FC = () => {
               onClick={handleBack}
               className="flex items-center gap-2 text-beauty-dark hover:text-beauty-accent hover:bg-beauty-accent/10 transition-all duration-300 rounded-sm"
             >
-              <ArrowLeft className="h-4 w-4" />
-              <span className="hidden md:inline font-inter font-light tracking-wide">Back</span>
+              <ArrowLeft className={cn("h-4 w-4", isRTL && "rotate-180")} />
+              <span className="hidden md:inline font-inter font-light tracking-wide">{t.back}</span>
             </Button>
           ) : (
             showSidebar && <SidebarTrigger className="text-beauty-dark hover:text-beauty-accent hover:bg-beauty-accent/10 transition-all duration-300 rounded-sm" />
           )}
           
           {getPageTitle() && (
-            <h1 className="dior-heading-sm text-beauty-dark hidden sm:block">
+            <h1 className={cn("dior-heading-sm text-beauty-dark hidden sm:block", isRTL && "text-right")}>
               {getPageTitle()}
             </h1>
           )}
@@ -97,7 +104,7 @@ const Header: React.FC = () => {
         </div>
 
         {/* Right side - Fixed width to match left */}
-        <div className="flex items-center gap-3 w-32 justify-end">
+        <div className={cn("flex items-center gap-3 w-32 justify-end", isRTL && "flex-row-reverse justify-start")}>
           <Button
             variant="ghost"
             size="sm"
@@ -107,6 +114,7 @@ const Header: React.FC = () => {
             <Search className="h-4 w-4" />
           </Button>
           
+          <LanguageSelector />
           <NotificationPanel />
           <ThemeToggle />
 

@@ -6,6 +6,7 @@ import { AuthProvider } from '@/context/AuthContext';
 import { FavoritesProvider } from '@/context/FavoritesContext';
 import { LocationProvider } from '@/context/LocationContext';
 import { ThemeProvider } from '@/context/ThemeContext';
+import { LanguageProvider } from '@/context/LanguageContext';
 import { Toaster } from '@/components/ui/toaster';
 import { PushNotificationService } from '@/services/pushNotifications';
 
@@ -47,16 +48,18 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <ThemeProvider>
-          <FavoritesProvider>
-            <LocationProvider>
-              <Router>
-                <AppContent />
-              </Router>
-              <Toaster />
-            </LocationProvider>
-          </FavoritesProvider>
-        </ThemeProvider>
+        <LanguageProvider>
+          <ThemeProvider>
+            <FavoritesProvider>
+              <LocationProvider>
+                <Router>
+                  <AppContent />
+                </Router>
+                <Toaster />
+              </LocationProvider>
+            </FavoritesProvider>
+          </ThemeProvider>
+        </LanguageProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
