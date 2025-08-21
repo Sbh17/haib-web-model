@@ -66,8 +66,8 @@ const Header: React.FC = () => {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-14 items-center justify-between px-4">
-        {/* Left side */}
-        <div className="flex items-center gap-3">
+        {/* Left side - Fixed width */}
+        <div className="flex items-center gap-3 w-32">
           {!isHomePage ? (
             <Button
               variant="ghost"
@@ -91,15 +91,15 @@ const Header: React.FC = () => {
           )}
         </div>
 
-        {/* Center - Logo */}
-        <div className="flex-1 flex justify-center">
+        {/* Center - Logo - Absolutely centered */}
+        <div className="absolute left-1/2 transform -translate-x-1/2">
           <div onClick={() => navigate('/home')} className="cursor-pointer flex items-center">
             <Logo width={100} height={32} />
           </div>
         </div>
 
-        {/* Right side */}
-        <div className="flex items-center gap-2">
+        {/* Right side - Fixed width to match left */}
+        <div className="flex items-center gap-2 w-32 justify-end">
           <Button
             variant="ghost"
             size="sm"
