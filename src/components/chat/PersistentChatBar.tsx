@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, Send, X, Bot, User, Mic, MicOff, ChevronUp, ChevronDown, Sparkles } from 'lucide-react';
+import { MessageCircle, Send, X, Bot, User, Mic, MicOff, ChevronUp, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -115,10 +115,7 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
         <div className="flex items-center gap-4 max-w-4xl mx-auto">
           {/* AI Assistant Label */}
           <div className="flex items-center gap-2 flex-shrink-0">
-            <div className="relative">
-              <User className="h-5 w-5 text-beauty-accent animate-pulse" />
-              <Sparkles className="h-2 w-2 text-beauty-accent absolute -top-1 -right-1 animate-pulse" />
-            </div>
+            <Bot className="h-5 w-5 text-beauty-accent animate-pulse" />
             <span className="dior-label text-beauty-dark">AI Assistant</span>
           </div>
           
@@ -206,10 +203,7 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
           <div className="flex items-center justify-between p-4 border-b border-beauty-accent/20">
             <div className="flex items-center gap-3">
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-beauty-primary to-beauty-accent flex items-center justify-center">
-                <div className="relative">
-                  <User className="h-4 w-4 text-beauty-light animate-pulse" />
-                  <Sparkles className="h-2 w-2 text-beauty-light absolute -top-0.5 -right-0.5 animate-pulse" />
-                </div>
+                <Bot className="h-4 w-4 text-beauty-light animate-pulse" />
               </div>
               <span className="dior-heading-sm text-beauty-dark">Assistante Beauté DIOR</span>
             </div>
@@ -229,10 +223,7 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
               {messages.length === 0 && (
                 <div className="text-center py-8">
                   <div className="h-12 w-12 rounded-full bg-gradient-to-r from-beauty-primary to-beauty-accent flex items-center justify-center mx-auto mb-4">
-                    <div className="relative">
-                      <User className="h-6 w-6 text-beauty-light" />
-                      <Sparkles className="h-3 w-3 text-beauty-light absolute -top-1 -right-1" />
-                    </div>
+                    <Bot className="h-6 w-6 text-beauty-light" />
                   </div>
                   <p className="dior-body text-beauty-dark mb-2">Bonjour, je suis votre assistante beauté.</p>
                   <p className="dior-body-sm text-beauty-dark/70">Posez-moi vos questions sur les soins, rendez-vous et salons!</p>
@@ -248,12 +239,7 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
                       ? 'bg-gradient-to-r from-beauty-primary to-beauty-accent text-beauty-light' 
                       : 'bg-beauty-cream border border-beauty-accent/20 text-beauty-dark'
                   }`}>
-                    {!message.isAI ? <User className="h-4 w-4" /> : (
-                      <div className="relative">
-                        <User className="h-4 w-4" />
-                        <Sparkles className="h-2 w-2 absolute -top-0.5 -right-0.5" />
-                      </div>
-                    )}
+                    {!message.isAI ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
                   </div>
                   <div className={`max-w-[80%] p-4 rounded-lg dior-body ${
                     !message.isAI 
@@ -267,10 +253,7 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
               {isProcessing && (
                 <div className="flex gap-3">
                   <div className="w-8 h-8 rounded-full bg-beauty-cream border border-beauty-accent/20 flex items-center justify-center">
-                    <div className="relative">
-                      <User className="h-4 w-4 text-beauty-dark animate-pulse" />
-                      <Sparkles className="h-2 w-2 text-beauty-dark absolute -top-0.5 -right-0.5 animate-pulse" />
-                    </div>
+                    <Bot className="h-4 w-4 text-beauty-dark animate-pulse" />
                   </div>
                   <div className="p-4 rounded-lg bg-beauty-cream/50 border border-beauty-accent/20 backdrop-blur-sm">
                     <div className="flex gap-1">

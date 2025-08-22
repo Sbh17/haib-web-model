@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bot, User, Sparkles } from 'lucide-react';
+import { Bot, User } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 export interface ChatMessage {
@@ -28,10 +28,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, onBookAppointment })
       {message.isAI && (
         <Avatar className="h-8 w-8 bg-primary">
           <AvatarFallback>
-            <div className="relative">
-              <User className="h-4 w-4 text-primary-foreground" />
-              <Sparkles className="h-2 w-2 text-primary-foreground absolute -top-0.5 -right-0.5" />
-            </div>
+            <Bot className="h-4 w-4 text-primary-foreground" />
           </AvatarFallback>
         </Avatar>
       )}

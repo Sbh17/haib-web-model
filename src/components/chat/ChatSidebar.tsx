@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, X, Send, Bot, ArrowRight, Sparkles, User } from 'lucide-react';
+import { MessageSquare, X, Send, Bot, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -144,10 +144,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({ onBookAppointment }) => {
         <div className="flex items-center justify-between p-6 border-b bg-gradient-to-r from-primary/5 to-transparent">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 bg-primary rounded-xl flex items-center justify-center">
-              <div className="relative">
-                <User className="h-5 w-5 text-primary-foreground" />
-                <Sparkles className="h-2 w-2 text-primary-foreground absolute -top-1 -right-1" />
-              </div>
+              <Bot className="h-5 w-5 text-primary-foreground" />
             </div>
             <div>
               <h3 className="font-semibold text-lg">AI Assistant</h3>

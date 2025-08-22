@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, ArrowUp, User, Sparkles } from 'lucide-react';
+import { Bot, X, Send, ArrowUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
@@ -105,10 +105,7 @@ const SleekChatWidget: React.FC<SleekChatWidgetProps> = ({ onBookAppointment }) 
           <div className="flex items-center justify-between p-6 pb-4">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center shadow-lg">
-                <div className="relative">
-                  <User className="h-5 w-5 text-primary-foreground" />
-                  <Sparkles className="h-2 w-2 text-primary-foreground absolute -top-1 -right-1" />
-                </div>
+                <Bot className="h-5 w-5 text-primary-foreground" />
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">AI Assistant</h3>
@@ -193,13 +190,10 @@ const SleekChatWidget: React.FC<SleekChatWidgetProps> = ({ onBookAppointment }) 
           <X className="h-6 w-6 transition-transform duration-300" />
         ) : (
           <div className="relative">
-            <div className="relative">
-              <User className="h-7 w-7 transition-transform duration-300" />
-              <Sparkles className="h-3 w-3 transition-transform duration-300 absolute -top-1 -right-1" />
-              {/* Pulsing indicator */}
-              <div className="absolute -top-2 -right-2 h-4 w-4 bg-green-400 rounded-full animate-pulse shadow-lg" />
-              <div className="absolute -top-2 -right-2 h-4 w-4 bg-green-400 rounded-full animate-ping" />
-            </div>
+            <Bot className="h-7 w-7 transition-transform duration-300" />
+            {/* Pulsing indicator */}
+            <div className="absolute -top-2 -right-2 h-4 w-4 bg-green-400 rounded-full animate-pulse shadow-lg" />
+            <div className="absolute -top-2 -right-2 h-4 w-4 bg-green-400 rounded-full animate-ping" />
           </div>
         )}
       </Button>

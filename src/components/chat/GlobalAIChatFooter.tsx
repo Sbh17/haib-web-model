@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, Send, X, Bot, User, Mic, MicOff, Volume2, VolumeX, Minimize2, Sparkles } from 'lucide-react';
+import { MessageCircle, Send, X, Bot, User, Mic, MicOff, Volume2, VolumeX, Minimize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -111,10 +111,7 @@ const GlobalAIChatFooter: React.FC<GlobalAIChatFooterProps> = ({ onBookAppointme
         <CardHeader className="pb-3 px-4 bg-gradient-to-r from-primary/5 to-primary/10">
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2 text-sm">
-              <div className="relative">
-                <User className="h-4 w-4 text-primary animate-pulse" />
-                <Sparkles className="h-2 w-2 text-primary absolute -top-0.5 -right-0.5 animate-pulse" />
-              </div>
+              <Bot className="h-4 w-4 text-primary animate-pulse" />
               AI Beauty Assistant
             </CardTitle>
             <div className="flex gap-1">
@@ -146,10 +143,7 @@ const GlobalAIChatFooter: React.FC<GlobalAIChatFooterProps> = ({ onBookAppointme
       <CardHeader className="pb-3 px-4 bg-gradient-to-r from-primary/5 to-primary/10">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
-            <div className="relative">
-              <User className="h-5 w-5 text-primary animate-pulse" />
-              <Sparkles className="h-2 w-2 text-primary absolute -top-1 -right-1 animate-pulse" />
-            </div>
+            <Bot className="h-5 w-5 text-primary animate-pulse" />
             AI Beauty Assistant
           </CardTitle>
           <div className="flex gap-1">
@@ -221,12 +215,7 @@ const GlobalAIChatFooter: React.FC<GlobalAIChatFooterProps> = ({ onBookAppointme
                     ? 'bg-primary text-primary-foreground shadow-sm' 
                     : 'bg-muted text-muted-foreground border border-border'
                 }`}>
-                  {!message.isAI ? <User className="h-3 w-3 md:h-4 md:w-4" /> : (
-                    <div className="relative">
-                      <User className="h-3 w-3 md:h-4 md:w-4" />
-                      <Sparkles className="h-1 w-1 md:h-2 md:w-2 absolute -top-0 -right-0 md:-top-0.5 md:-right-0.5" />
-                    </div>
-                  )}
+                  {!message.isAI ? <User className="h-3 w-3 md:h-4 md:w-4" /> : <Bot className="h-3 w-3 md:h-4 md:w-4" />}
                 </div>
                 <div className={`max-w-[75%] md:max-w-[70%] p-3 rounded-2xl shadow-sm ${
                   !message.isAI
@@ -243,10 +232,7 @@ const GlobalAIChatFooter: React.FC<GlobalAIChatFooterProps> = ({ onBookAppointme
             {isProcessing && (
               <div className="flex gap-2 md:gap-3">
                 <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-muted border border-border flex items-center justify-center">
-                  <div className="relative">
-                    <User className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground animate-pulse" />
-                    <Sparkles className="h-1 w-1 md:h-2 md:w-2 text-muted-foreground absolute -top-0 -right-0 md:-top-0.5 md:-right-0.5 animate-pulse" />
-                  </div>
+                  <Bot className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground animate-pulse" />
                 </div>
                 <div className="bg-muted/80 p-3 rounded-2xl border border-border/50">
                   <div className="flex gap-1">
