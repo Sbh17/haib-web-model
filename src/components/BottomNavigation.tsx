@@ -4,13 +4,23 @@ import { Link, useLocation } from 'react-router-dom';
 import { Home, Search, Calendar, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/context/AuthContext';
+import { useSidebar } from '@/components/ui/sidebar';
 
 const BottomNavigation: React.FC = () => {
   const location = useLocation();
   const { user } = useAuth();
   
-  // Don't show bottom navigation if user is not authenticated or on specific pages
-  const hideNav = location.pathname === '/welcome' || location.pathname === '/auth' || !user;
+  // Check if sidebar is expanded (only available in sidebar context)
+  let sidebarExpanded = false;
+  try {
+    const { state } = useSidebar();
+    sidebarExpanded = state !== "collapsed";
+  } catch {
+    // Not in sidebar context, sidebar not expanded
+  }
+  
+  // Don't show bottom navigation if user is not authenticated, on specific pages, or AI sidebar is expanded
+  const hideNav = location.pathname === '/welcome' || location.pathname === '/auth' || !user || sidebarExpanded;
   
   if (hideNav) {
     return null;
