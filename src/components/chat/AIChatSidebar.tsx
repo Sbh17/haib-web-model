@@ -58,7 +58,14 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
     enableVoice: true 
   });
 
-  // Check if we should hide sidebar
+  // Auto scroll to bottom when messages update
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  // Check if we should hide sidebar - after ALL hooks are called
   const hideOnPages = ['/welcome', '/auth', '/register'];
   const shouldHide = hideOnPages.includes(location.pathname);
   
@@ -66,13 +73,6 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
   if (shouldHide) {
     return null;
   }
-
-  // Auto scroll to bottom when messages update
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [messages]);
 
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isProcessing) return;
