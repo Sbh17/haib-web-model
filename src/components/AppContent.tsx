@@ -21,6 +21,8 @@ import Promotions from '@/pages/Promotions';
 import Settings from '@/pages/Settings';
 import Profile from '@/pages/Profile';
 import ProfileSettings from '@/pages/ProfileSettings';
+import AccountSecurity from '@/pages/AccountSecurity';
+import PrivacySettings from '@/pages/PrivacySettings';
 import Auth from '@/pages/Auth';
 import Register from '@/pages/Register';
 import NotFound from '@/pages/NotFound';
@@ -113,6 +115,21 @@ const AppContent: React.FC = () => {
                 <Route path="/profile/settings" element={
                   <ProtectedRoute>
                     <ProfileSettings />
+                  </ProtectedRoute>
+                } />
+                <Route path="/profile-settings" element={
+                  <ProtectedRoute>
+                    <ProfileSettings />
+                  </ProtectedRoute>
+                } />
+                <Route path="/account-security" element={
+                  <ProtectedRoute>
+                    <AccountSecurity />
+                  </ProtectedRoute>
+                } />
+                <Route path="/privacy-settings" element={
+                  <ProtectedRoute>
+                    <PrivacySettings />
                   </ProtectedRoute>
                 } />
                 <Route path="/welcome" element={<Welcome />} />
