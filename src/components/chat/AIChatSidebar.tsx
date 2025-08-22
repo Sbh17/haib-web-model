@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, Send, Bot, User, Mic, MicOff } from 'lucide-react';
+import { MessageCircle, Send, Bot, User, Mic, MicOff, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -117,7 +117,10 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
       <SidebarHeader className="p-4 border-b border-border">
         <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
           <div className="h-8 w-8 rounded-full bg-foreground flex items-center justify-center">
-            <Bot className="h-4 w-4 text-background animate-pulse" />
+            <div className="relative">
+              <User className="h-4 w-4 text-background" />
+              <Sparkles className="h-2 w-2 text-background absolute -top-1 -right-1" />
+            </div>
           </div>
           {!collapsed && <span className="font-medium text-foreground">{t.aiAssistantHaib}</span>}
         </div>
@@ -163,7 +166,10 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
                 {messages.length === 0 && (
                   <div className="text-center py-8">
                     <div className="h-12 w-12 rounded-full bg-foreground flex items-center justify-center mx-auto mb-4">
-                      <Bot className="h-6 w-6 text-background" />
+                      <div className="relative">
+                        <User className="h-6 w-6 text-background" />
+                        <Sparkles className="h-3 w-3 text-background absolute -top-1 -right-1" />
+                      </div>
                     </div>
                     <p className="text-sm font-medium mb-2">{t.welcomeMessage}</p>
                     <p className="text-xs text-muted-foreground">{t.welcomeSubMessage}</p>
@@ -182,7 +188,12 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
                         ? 'bg-foreground text-background' 
                         : 'bg-muted border border-border text-foreground'
                     }`}>
-                      {!message.isAI ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                      {!message.isAI ? <User className="h-4 w-4" /> : (
+                        <div className="relative">
+                          <User className="h-4 w-4" />
+                          <Sparkles className="h-2 w-2 absolute -top-0.5 -right-0.5" />
+                        </div>
+                      )}
                     </div>
                     <div className={`max-w-[80%] p-3 rounded-lg text-sm ${
                       !message.isAI 
@@ -196,7 +207,10 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
                 {isProcessing && (
                   <div className={cn("flex gap-3", isRTL && "flex-row-reverse")}>
                     <div className="w-8 h-8 rounded-full bg-muted border border-border flex items-center justify-center">
-                      <Bot className="h-4 w-4 text-foreground animate-pulse" />
+                      <div className="relative">
+                        <User className="h-4 w-4 text-foreground animate-pulse" />
+                        <Sparkles className="h-2 w-2 text-foreground absolute -top-0.5 -right-0.5 animate-pulse" />
+                      </div>
                     </div>
                     <div className="p-3 rounded-lg bg-muted/50 border border-border">
                       <div className="flex gap-1">

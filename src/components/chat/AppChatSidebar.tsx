@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, Send, Mic, X, Bot, User } from 'lucide-react';
+import { MessageCircle, Send, Mic, X, Bot, User, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -149,7 +149,10 @@ const AppChatSidebar: React.FC<AppChatSidebarProps> = ({ onBookAppointment }) =>
       <SidebarHeader className="p-4 border-b border-border">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Bot className="h-6 w-6 text-primary" />
+            <div className="relative">
+              <User className="h-6 w-6 text-primary" />
+              <Sparkles className="h-3 w-3 text-primary absolute -top-1 -right-1" />
+            </div>
             <h2 className="font-semibold text-lg">AI Assistant</h2>
           </div>
           <SidebarTrigger>
@@ -202,7 +205,12 @@ const AppChatSidebar: React.FC<AppChatSidebarProps> = ({ onBookAppointment }) =>
                         ? 'bg-primary text-primary-foreground' 
                         : 'bg-muted text-muted-foreground'
                     }`}>
-                      {!message.isAI ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                      {!message.isAI ? <User className="h-4 w-4" /> : (
+                        <div className="relative">
+                          <User className="h-4 w-4" />
+                          <Sparkles className="h-2 w-2 absolute -top-0.5 -right-0.5" />
+                        </div>
+                      )}
                     </div>
                     <div className={`max-w-[70%] p-3 rounded-lg ${
                       !message.isAI
@@ -219,7 +227,10 @@ const AppChatSidebar: React.FC<AppChatSidebarProps> = ({ onBookAppointment }) =>
                 {isProcessing && (
                   <div className="flex gap-3">
                     <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-                      <Bot className="h-4 w-4 text-muted-foreground" />
+                      <div className="relative">
+                        <User className="h-4 w-4 text-muted-foreground" />
+                        <Sparkles className="h-2 w-2 text-muted-foreground absolute -top-0.5 -right-0.5" />
+                      </div>
                     </div>
                     <div className="bg-muted p-3 rounded-lg">
                       <div className="flex gap-1">
