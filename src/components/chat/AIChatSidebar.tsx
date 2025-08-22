@@ -28,7 +28,7 @@ interface AIChatSidebarProps {
 // Remove navigation items - sidebar is chat-only now
 
 const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
-  // Always call hooks in consistent order
+  // Always call ALL hooks consistently - never conditional
   const location = useLocation();
   const { t, isRTL } = useLanguage();
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
     enableVoice: true 
   });
 
-  // Auto scroll to bottom when messages update
+  // Auto scroll to bottom when messages update - ALWAYS call this hook
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
