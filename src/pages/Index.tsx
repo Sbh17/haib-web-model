@@ -73,20 +73,6 @@ const Index: React.FC = () => {
               Where luxury meets beauty. Experience exceptional treatments in the finest salons, curated for the discerning clientele.
             </p>
 
-            {/* Location Status */}
-            <div className="flex items-center justify-center mb-8 dior-body text-white/70">
-              <MapPin className="h-4 w-4 mr-2" />
-              {userLocation ? (
-                <span>Location enabled - Finding nearby salons</span>
-              ) : (
-                <button 
-                  onClick={requestLocation} 
-                  className="underline hover:text-white/90 transition-colors tracking-wide"
-                >
-                  Enable location for better recommendations
-                </button>
-              )}
-            </div>
 
             {/* Luxury Search Bar */}
             <div className="relative max-w-4xl mx-auto">
