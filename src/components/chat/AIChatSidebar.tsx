@@ -237,7 +237,7 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyPress}
-                placeholder={t.askQuestion}
+                placeholder="Ask me anything about HAIB.AI"
                 className={cn("text-sm pr-20", isRTL && "text-right pl-20 pr-4")}
                 disabled={isProcessing}
                 autoComplete="off"
