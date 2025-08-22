@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, Send, X, Bot, User, Mic, MicOff, ChevronUp, ChevronDown } from 'lucide-react';
+import aiWomanThinking from '@/assets/ai-woman-thinking.png';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -252,8 +253,12 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
               ))}
               {isProcessing && (
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-beauty-cream border border-beauty-accent/20 flex items-center justify-center">
-                    <Bot className="h-4 w-4 text-beauty-dark animate-pulse" />
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-r from-beauty-light to-beauty-cream border border-beauty-accent/30 flex items-center justify-center overflow-hidden">
+                    <img 
+                      src={aiWomanThinking} 
+                      alt="AI thinking" 
+                      className="w-6 h-6 object-cover animate-pulse"
+                    />
                   </div>
                   <div className="p-4 rounded-lg bg-beauty-cream/50 border border-beauty-accent/20 backdrop-blur-sm">
                     <div className="flex gap-1">

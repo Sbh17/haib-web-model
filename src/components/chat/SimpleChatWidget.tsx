@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, Send, X, Bot, User } from 'lucide-react';
+import aiWomanThinking from '@/assets/ai-woman-thinking.png';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -192,8 +193,12 @@ const SimpleChatWidget: React.FC<SimpleChatWidgetProps> = ({ onBookAppointment }
             ))}
             {isProcessing && (
               <div className="flex gap-2 md:gap-3">
-                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-muted flex items-center justify-center">
-                  <Bot className="h-3 w-3 md:h-4 md:w-4 text-muted-foreground" />
+                <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-gradient-to-r from-primary/20 to-accent/20 flex items-center justify-center overflow-hidden">
+                  <img 
+                    src={aiWomanThinking} 
+                    alt="AI thinking" 
+                    className="w-4 h-4 md:w-5 md:h-5 object-cover animate-pulse"
+                  />
                 </div>
                 <div className="bg-muted p-2 md:p-3 rounded-lg">
                   <div className="flex gap-1">
