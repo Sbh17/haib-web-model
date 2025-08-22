@@ -107,7 +107,7 @@ const AIChatSidebar: React.FC<AIChatSidebarProps> = ({ onBookAppointment }) => {
   };
 
   return (
-    <Sidebar className={cn("border-r border-border", collapsed ? "w-16" : "w-80", isRTL && "border-l border-r-0")} collapsible="icon">
+    <Sidebar className={cn("border-r border-border", collapsed ? "w-16" : "w-96", isRTL && "border-l border-r-0")} collapsible="icon">
       <SidebarHeader className="p-4 border-b border-border">
         <div className={cn("flex items-center gap-3", isRTL && "flex-row-reverse")}>
           <div className="h-8 w-8 rounded-full bg-foreground flex items-center justify-center">
