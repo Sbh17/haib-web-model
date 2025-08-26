@@ -39,12 +39,20 @@ const HAIBLogo: React.FC<HAIBLogoProps> = ({ className = '', size = 'lg' }) => {
         H
       </span>
       
-      {/* AI in white square */}
+      {/* A in white square */}
       <div className={cn(
         "bg-white border-2 border-white/20 flex items-center justify-center font-bold text-black tracking-wider shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl",
         sizeClasses[size].square
       )}>
-        AI
+        A
+      </div>
+      
+      {/* I in white square */}
+      <div className={cn(
+        "bg-white border-2 border-white/20 flex items-center justify-center font-bold text-black tracking-wider shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl",
+        sizeClasses[size].square
+      )}>
+        I
       </div>
       
       {/* B */}
