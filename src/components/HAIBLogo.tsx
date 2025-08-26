@@ -11,10 +11,10 @@ const HAIBLogo: React.FC<HAIBLogoProps> = ({ className = '', size = 'lg' }) => {
   const { t, isRTL } = useLanguage();
   
   const sizeClasses = {
-    sm: { text: 'text-xl', square: 'w-10 h-6 text-xs px-2' },
-    md: { text: 'text-2xl', square: 'w-12 h-8 text-sm px-3' },
-    lg: { text: 'text-3xl', square: 'w-14 h-10 text-lg px-3' },
-    xl: { text: 'text-4xl', square: 'w-16 h-12 text-xl px-4' }
+    sm: { text: 'text-2xl', square: 'w-12 h-8 text-sm px-2' },
+    md: { text: 'text-4xl', square: 'w-16 h-10 text-base px-3' },
+    lg: { text: 'text-6xl', square: 'w-20 h-12 text-xl px-4' },
+    xl: { text: 'text-8xl', square: 'w-24 h-16 text-3xl px-5' }
   };
   
   const gapClasses = {
