@@ -11,17 +11,17 @@ const HAIBLogo: React.FC<HAIBLogoProps> = ({ className = '', size = 'lg' }) => {
   const { t, isRTL } = useLanguage();
   
   const sizeClasses = {
-    sm: { text: 'text-2xl', square: 'w-12 h-8 text-sm px-2' },
-    md: { text: 'text-4xl', square: 'w-16 h-10 text-base px-3' },
-    lg: { text: 'text-6xl', square: 'w-20 h-12 text-xl px-4' },
-    xl: { text: 'text-8xl', square: 'w-24 h-16 text-3xl px-5' }
+    sm: 'text-2xl',
+    md: 'text-4xl',
+    lg: 'text-6xl',
+    xl: 'text-8xl'
   };
   
   const gapClasses = {
-    sm: 'gap-1',
-    md: 'gap-2', 
-    lg: 'gap-3',
-    xl: 'gap-4'
+    sm: 'gap-4',
+    md: 'gap-6', 
+    lg: 'gap-8',
+    xl: 'gap-12'
   };
 
   return (
@@ -31,37 +31,37 @@ const HAIBLogo: React.FC<HAIBLogoProps> = ({ className = '', size = 'lg' }) => {
       isRTL && "flex-row-reverse",
       className
     )}>
-      {/* H in white square */}
-      <div className={cn(
-        "bg-white border-2 border-white/20 flex items-center justify-center font-bold text-black tracking-wider shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl",
-        sizeClasses[size].square
+      {/* H letter */}
+      <span className={cn(
+        "font-bold text-white tracking-wider transition-all duration-300",
+        sizeClasses[size]
       )}>
         H
-      </div>
+      </span>
       
-      {/* A in white square */}
-      <div className={cn(
-        "bg-white border-2 border-white/20 flex items-center justify-center font-bold text-black tracking-wider shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl",
-        sizeClasses[size].square
+      {/* A letter */}
+      <span className={cn(
+        "font-bold text-white tracking-wider transition-all duration-300",
+        sizeClasses[size]
       )}>
         A
-      </div>
+      </span>
       
-      {/* I in white square */}
-      <div className={cn(
-        "bg-white border-2 border-white/20 flex items-center justify-center font-bold text-black tracking-wider shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl",
-        sizeClasses[size].square
+      {/* I letter */}
+      <span className={cn(
+        "font-bold text-white tracking-wider transition-all duration-300",
+        sizeClasses[size]
       )}>
         I
-      </div>
+      </span>
       
-      {/* B in white square */}
-      <div className={cn(
-        "bg-white border-2 border-white/20 flex items-center justify-center font-bold text-black tracking-wider shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl",
-        sizeClasses[size].square
+      {/* B letter */}
+      <span className={cn(
+        "font-bold text-white tracking-wider transition-all duration-300",
+        sizeClasses[size]
       )}>
         B
-      </div>
+      </span>
     </div>
   );
 };
