@@ -69,13 +69,13 @@ const Header: React.FC = () => {
 
   return (
     <header className={cn(
-      "sticky top-0 z-40 w-full border-b border-beauty-accent/20 bg-gradient-to-r from-beauty-light/95 to-beauty-cream/95 backdrop-blur-lg shadow-elegant theme-transition transition-all duration-300",
-      sidebarOpen ? "h-12" : "h-16", // Minimize when sidebar is open
+      "sticky top-0 z-40 border-b border-beauty-accent/20 bg-gradient-to-r from-beauty-light/95 to-beauty-cream/95 backdrop-blur-lg shadow-elegant theme-transition transition-all duration-300",
+      sidebarOpen ? "h-12 ml-0" : "h-16 w-full",
       isRTL && "border-l border-r-0"
     )}>
       <div className={cn(
-        "flex items-center justify-between px-6 transition-all duration-300",
-        sidebarOpen ? "h-12" : "h-16", // Match container height
+        "flex items-center justify-between transition-all duration-300",
+        sidebarOpen ? "h-12 px-4" : "h-16 px-6",
         isRTL && "flex-row-reverse"
       )}>
         {/* Left side - Fixed width */}
