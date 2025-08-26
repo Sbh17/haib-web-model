@@ -15,6 +15,7 @@ import {
   Youtube
 } from 'lucide-react';
 import WelcomeSalonPartnership from '@/components/WelcomeSalonPartnership';
+import HAIBLogo from '@/components/HAIBLogo';
 import { useLanguage } from '@/context/LanguageContext';
 import { cn } from '@/lib/utils';
 
@@ -27,9 +28,9 @@ const Welcome: React.FC = () => {
       <section className="luxury-hero pt-24 pb-32 px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-noir opacity-90"></div>
         <div className={cn("relative z-10 max-w-6xl mx-auto text-center", isRTL && "rtl")}>
-          <h1 className="dior-heading-xl text-beauty-light mb-8 animate-fade-in tracking-luxury">
-            {t.welcomeTitle}
-          </h1>
+          <div className="mb-8 animate-fade-in">
+            <HAIBLogo size="xl" className="mb-4" />
+          </div>
           <div className="h-1 w-32 mx-auto mb-8 bg-gradient-to-r from-beauty-accent to-beauty-secondary"></div>
           <p className={cn("dior-body-lg text-beauty-light/90 mb-12 max-w-3xl mx-auto leading-relaxed", isRTL && "text-right")}>
             {t.welcomeDescription}
