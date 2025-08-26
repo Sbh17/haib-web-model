@@ -41,7 +41,7 @@ const HAIBLogo: React.FC<HAIBLogoProps> = ({ className = '', size = 'lg' }) => {
       
       {/* A letter */}
       <span className={cn(
-        "font-inter font-medium text-white tracking-wider transition-all duration-300",
+        "font-inter font-medium text-white tracking-wider transition-all duration-300 underline underline-offset-4",
         sizeClasses[size]
       )}>
         A
@@ -49,7 +49,7 @@ const HAIBLogo: React.FC<HAIBLogoProps> = ({ className = '', size = 'lg' }) => {
       
       {/* I letter */}
       <span className={cn(
-        "font-inter font-medium text-white tracking-wider transition-all duration-300",
+        "font-inter font-medium text-white tracking-wider transition-all duration-300 underline underline-offset-4",
         sizeClasses[size]
       )}>
         I
