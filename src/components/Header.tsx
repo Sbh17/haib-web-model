@@ -70,7 +70,7 @@ const Header: React.FC = () => {
   return (
     <header className={cn(
       "sticky top-0 z-40 border-b border-beauty-accent/20 bg-gradient-to-r from-beauty-light/95 to-beauty-cream/95 backdrop-blur-lg shadow-elegant theme-transition transition-all duration-300",
-      sidebarOpen ? "h-12 ml-0" : "h-16 w-full",
+      sidebarOpen ? "h-12" : "h-16",
       isRTL && "border-l border-r-0"
     )}>
       <div className={cn(
