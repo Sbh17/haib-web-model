@@ -101,10 +101,10 @@ const Header: React.FC = () => {
           <div onClick={() => navigate('/home')} className="cursor-pointer flex items-center group">
             {isHomePage ? (
               <div className="flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
-                <span className="dior-heading-xl text-beauty-light font-bold tracking-luxury text-3xl">H</span>
-                <span className="dior-heading-xl text-beauty-light font-bold tracking-luxury text-3xl">A</span>
-                <span className="dior-heading-xl text-beauty-light font-bold tracking-luxury text-3xl">I</span>
-                <span className="dior-heading-xl text-beauty-light font-bold tracking-luxury text-3xl">B</span>
+                <span className="dior-heading-xl text-black font-bold tracking-luxury text-3xl">H</span>
+                <span className="dior-heading-xl text-black font-bold tracking-luxury text-3xl">A</span>
+                <span className="dior-heading-xl text-black font-bold tracking-luxury text-3xl">I</span>
+                <span className="dior-heading-xl text-black font-bold tracking-luxury text-3xl">B</span>
               </div>
             ) : (
               <Logo width={120} height={40} className="transition-transform duration-300 group-hover:scale-105" />
