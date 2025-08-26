@@ -100,7 +100,7 @@ const Header: React.FC = () => {
         <div className="absolute left-1/2 transform -translate-x-1/2">
           <div onClick={() => navigate('/home')} className="cursor-pointer flex items-center group">
             {isHomePage ? (
-              <div className="flex items-center gap-2 transition-transform duration-300 group-hover:scale-105">
+              <div className="flex items-center gap-6 transition-transform duration-300 group-hover:scale-105">
                 <span className="dior-heading-xl text-black font-bold tracking-luxury text-3xl">H</span>
                 <span className="dior-heading-xl text-black font-bold tracking-luxury text-3xl">A</span>
                 <span className="dior-heading-xl text-black font-bold tracking-luxury text-3xl">I</span>
