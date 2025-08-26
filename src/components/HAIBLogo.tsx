@@ -40,7 +40,7 @@ const HAIBLogo: React.FC<HAIBLogoProps> = ({ className = '', size = 'lg' }) => {
       </span>
       
       {/* A and I letters in white square */}
-      <div className="bg-white rounded-sm px-1 py-0.5 flex items-center gap-1">
+      <div className="bg-white rounded-sm px-0.5 py-0 flex items-center gap-1">
         <span className={cn(
           "font-luxury font-bold text-black tracking-wider transition-all duration-300",
           sizeClasses[size]
