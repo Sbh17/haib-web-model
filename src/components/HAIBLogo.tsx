@@ -31,22 +31,28 @@ const HAIBLogo: React.FC<HAIBLogoProps> = ({ className = '', size = 'lg' }) => {
       isRTL && "flex-row-reverse",
       className
     )}>
-      {/* H letter */}
-      <span className={cn(
-        "font-luxury font-bold text-white tracking-wider transition-all duration-300",
-        sizeClasses[size]
-      )}>
-        H
-      </span>
+      {/* H letter in white square */}
+      <div className="bg-white rounded-sm px-2 pb-1 pt-0 flex items-center justify-center">
+        <span className={cn(
+          "font-luxury font-bold text-black tracking-wider transition-all duration-300",
+          sizeClasses[size]
+        )}>
+          H
+        </span>
+      </div>
       
-      {/* A and I letters in white square */}
-      <div className="bg-white rounded-sm px-2 py-1 flex items-center gap-4">
+      {/* A letter in white square */}
+      <div className="bg-white rounded-sm px-2 pb-1 pt-0 flex items-center justify-center">
         <span className={cn(
           "font-luxury font-bold text-black tracking-wider transition-all duration-300",
           sizeClasses[size]
         )}>
           A
         </span>
+      </div>
+      
+      {/* I letter in white square */}
+      <div className="bg-white rounded-sm px-2 pb-1 pt-0 flex items-center justify-center">
         <span className={cn(
           "font-luxury font-bold text-black tracking-wider transition-all duration-300",
           sizeClasses[size]
@@ -55,13 +61,15 @@ const HAIBLogo: React.FC<HAIBLogoProps> = ({ className = '', size = 'lg' }) => {
         </span>
       </div>
       
-      {/* B letter */}
-      <span className={cn(
-        "font-luxury font-bold text-white tracking-wider transition-all duration-300",
-        sizeClasses[size]
-      )}>
-        B
-      </span>
+      {/* B letter in white square */}
+      <div className="bg-white rounded-sm px-2 pb-1 pt-0 flex items-center justify-center">
+        <span className={cn(
+          "font-luxury font-bold text-black tracking-wider transition-all duration-300",
+          sizeClasses[size]
+        )}>
+          B
+        </span>
+      </div>
     </div>
   );
 };
