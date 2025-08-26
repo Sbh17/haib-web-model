@@ -31,6 +31,7 @@ const Welcome: React.FC = () => {
           <div className="mb-8 animate-fade-in">
             <HAIBLogo size="xl" className="mb-4" />
           </div>
+          <div className="h-1 w-32 mx-auto mb-8 bg-gradient-to-r from-beauty-accent to-beauty-secondary"></div>
           <p className={cn("dior-body-lg text-beauty-light/90 mb-12 max-w-3xl mx-auto leading-relaxed", isRTL && "text-right")}>
             {t.welcomeDescription}
           </p>
