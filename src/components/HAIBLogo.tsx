@@ -31,13 +31,13 @@ const HAIBLogo: React.FC<HAIBLogoProps> = ({ className = '', size = 'lg' }) => {
       isRTL && "flex-row-reverse",
       className
     )}>
-      {/* H */}
-      <span className={cn(
-        "dior-heading-xl text-beauty-light font-bold tracking-luxury",
-        sizeClasses[size].text
+      {/* H in white square */}
+      <div className={cn(
+        "bg-white border-2 border-white/20 flex items-center justify-center font-bold text-black tracking-wider shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl",
+        sizeClasses[size].square
       )}>
         H
-      </span>
+      </div>
       
       {/* A in white square */}
       <div className={cn(
@@ -55,13 +55,13 @@ const HAIBLogo: React.FC<HAIBLogoProps> = ({ className = '', size = 'lg' }) => {
         I
       </div>
       
-      {/* B */}
-      <span className={cn(
-        "dior-heading-xl text-beauty-light font-bold tracking-luxury",
-        sizeClasses[size].text
+      {/* B in white square */}
+      <div className={cn(
+        "bg-white border-2 border-white/20 flex items-center justify-center font-bold text-black tracking-wider shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl",
+        sizeClasses[size].square
       )}>
         B
-      </span>
+      </div>
     </div>
   );
 };
