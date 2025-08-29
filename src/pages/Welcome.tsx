@@ -115,7 +115,7 @@ const Welcome: React.FC = () => {
           <div className="text-center mb-20">
             <div className="relative inline-block">
               <div className="absolute -inset-3 bg-gradient-luxury opacity-20 blur-2xl rounded-lg animate-pulse"></div>
-              <h2 className="relative dior-heading-lg text-beauty-dark mb-6 tracking-luxury drop-shadow-lg">{t.exploreHaib}</h2>
+              <h2 className="relative text-3xl font-bold text-foreground mb-6">Discover Our Services</h2>
             </div>
             <div className="h-1 w-32 mx-auto mb-8 bg-gradient-to-r from-beauty-accent via-beauty-primary to-beauty-secondary shadow-luxury"></div>
             <p className="dior-body-lg text-beauty-dark/80 max-w-3xl mx-auto leading-relaxed font-light">{t.exploreDescription}</p>
