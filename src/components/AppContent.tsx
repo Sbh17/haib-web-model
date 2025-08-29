@@ -23,6 +23,10 @@ import Profile from '@/pages/Profile';
 import ProfileSettings from '@/pages/ProfileSettings';
 import AccountSecurity from '@/pages/AccountSecurity';
 import PrivacySettings from '@/pages/PrivacySettings';
+import AdminDashboard from '@/pages/AdminDashboard';
+import OwnerDashboard from '@/pages/OwnerDashboard';
+import Favorites from '@/pages/Favorites';
+import Reviews from '@/pages/Reviews';
 import Auth from '@/pages/Auth';
 import Register from '@/pages/Register';
 import NotFound from '@/pages/NotFound';
@@ -127,9 +131,24 @@ const AppContent: React.FC = () => {
                     <AccountSecurity />
                   </ProtectedRoute>
                 } />
-                <Route path="/privacy-settings" element={
+                <Route path="/admin/dashboard" element={
                   <ProtectedRoute>
-                    <PrivacySettings />
+                    <AdminDashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/owner/salons" element={
+                  <ProtectedRoute>
+                    <OwnerDashboard />
+                  </ProtectedRoute>
+                } />
+                <Route path="/favorites" element={
+                  <ProtectedRoute>
+                    <Favorites />
+                  </ProtectedRoute>
+                } />
+                <Route path="/reviews" element={
+                  <ProtectedRoute>
+                    <Reviews />
                   </ProtectedRoute>
                 } />
                 <Route path="/welcome" element={<Welcome />} />
