@@ -56,7 +56,7 @@ const Welcome: React.FC = () => {
                 </Button>
               </Link>
               <Link to="/auth">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto border-white/20 text-white hover:bg-white/10">
+                <Button variant="secondary" size="lg" className="w-full sm:w-auto">
                   {t.signIn}
                 </Button>
               </Link>
