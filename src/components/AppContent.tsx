@@ -30,6 +30,8 @@ import Reviews from '@/pages/Reviews';
 import Auth from '@/pages/Auth';
 import Register from '@/pages/Register';
 import NotFound from '@/pages/NotFound';
+import VIPPartnership from '@/pages/VIPPartnership';
+import PartnershipStatus from '@/pages/PartnershipStatus';
 
 const AppContent: React.FC = () => {
   const navigate = useNavigate();
@@ -154,6 +156,12 @@ const AppContent: React.FC = () => {
                 <Route path="/welcome" element={<Welcome />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/vip-partnership" element={<VIPPartnership />} />
+                <Route path="/partnership-status" element={
+                  <ProtectedRoute>
+                    <PartnershipStatus />
+                  </ProtectedRoute>
+                } />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
