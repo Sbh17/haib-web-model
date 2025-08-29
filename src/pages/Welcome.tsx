@@ -65,6 +65,9 @@ const Welcome: React.FC = () => {
         </div>
       </section>
 
+      {/* Salon Partnership Section */}
+      <WelcomeSalonPartnership />
+
       {/* How It Works Section */}
       <section className="py-16 px-6 bg-muted/30">
         <div className="max-w-4xl mx-auto">
@@ -212,9 +215,6 @@ const Welcome: React.FC = () => {
           </div>
         </div>
       </section>
-      
-      {/* Salon Partnership Section */}
-      <WelcomeSalonPartnership />
       
       {/* Elite CTA Section - Ultra Luxury */}
       <section className="luxury-hero py-40 px-6 relative overflow-hidden">
