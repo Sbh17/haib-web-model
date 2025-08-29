@@ -263,7 +263,7 @@ const SalonDetail: React.FC = () => {
           {promotions.length > 0 && (
             <TabsTrigger value="promotions">Offers</TabsTrigger>
           )}
-          <TabsTrigger value="reviews">Reviews</TabsTrigger>
+          <TabsTrigger value="reviews" id="reviews-tab">Reviews</TabsTrigger>
         </TabsList>
         
         {/* Services Tab */}
