@@ -28,79 +28,133 @@ const Welcome: React.FC = () => {
     <div className={cn("min-h-screen bg-background theme-transition", isRTL && "rtl")}>
       {/* Split-Screen Hero Section */}
       <section className="luxury-hero pt-24 pb-32 px-6 relative overflow-hidden min-h-screen flex">
-        <div className="absolute inset-0 bg-gradient-noir opacity-90"></div>
+        <div className="absolute inset-0 bg-gradient-noir opacity-95"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-beauty-accent/10 via-transparent to-beauty-primary/10 animate-pulse"></div>
+        
+        {/* Floating Luxury Elements */}
+        <div className="absolute top-20 left-10 w-2 h-2 bg-beauty-accent rounded-full animate-ping opacity-70"></div>
+        <div className="absolute top-40 right-20 w-1 h-1 bg-beauty-secondary rounded-full animate-pulse"></div>
+        <div className="absolute bottom-32 left-20 w-1.5 h-1.5 bg-beauty-accent rounded-full animate-ping opacity-60"></div>
         
         {/* Left Side - Content */}
         <div className={cn("w-full lg:w-1/2 flex flex-col justify-center relative z-10", isRTL && "lg:order-2")}>
           <div className="max-w-2xl mx-auto lg:mx-0">
             <div className="animate-fade-in mb-12">
-              <HAIBLogo size="xl" className="mb-8" />
-              <p className={cn("dior-body-lg text-beauty-light/90 mb-12 leading-relaxed", isRTL && "text-right")}>
-                {t.welcomeDescription}
-              </p>
+              <div className="relative mb-12">
+                <div className="absolute -inset-4 bg-gradient-to-r from-beauty-accent/20 to-beauty-primary/20 rounded-full blur-3xl animate-pulse"></div>
+                <HAIBLogo size="xl" className="relative drop-shadow-2xl" />
+              </div>
+              
+              <div className="relative">
+                <div className="absolute -inset-2 bg-gradient-luxury opacity-30 blur-2xl rounded-lg animate-pulse"></div>
+                <h1 className="relative dior-display text-beauty-light mb-8 drop-shadow-xl leading-tight">
+                  {t.welcomeTitle}
+                </h1>
+              </div>
+              
+              <div className="relative backdrop-blur-sm bg-beauty-light/5 border border-beauty-accent/30 rounded-2xl p-8 shadow-luxury">
+                <p className={cn("dior-body-lg text-beauty-light/95 leading-relaxed font-light", isRTL && "text-right")}>
+                  {t.welcomeDescription}
+                </p>
+              </div>
             </div>
             
             <div className={cn("flex flex-col sm:flex-row gap-6 justify-center", isRTL && "sm:flex-row-reverse")}>
-              <Link to="/register" className="animate-slide-up">
-                <Button className="beauty-button shadow-champagne">
-                  {t.startJourney}
-                  <ArrowRightIcon className={cn("w-5 h-5 ml-3", isRTL && "mr-3 ml-0 rotate-180")} />
+              <Link to="/register" className="animate-slide-up group">
+                <Button className="beauty-button-premium shadow-champagne-xl group-hover:shadow-champagne-glow transform group-hover:scale-105 transition-all duration-500">
+                  <span className="relative z-10 flex items-center">
+                    {t.startJourney}
+                    <ArrowRightIcon className={cn("w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-300", isRTL && "mr-3 ml-0 rotate-180 group-hover:-translate-x-1")} />
+                  </span>
+                  <div className="absolute inset-0 bg-gradient-luxury opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"></div>
                 </Button>
               </Link>
-              <Link to="/auth" className="animate-slide-up">
+              <Link to="/auth" className="animate-slide-up group">
                 <Button 
                   variant="outline" 
                   size="lg" 
-                  className="border-beauty-accent text-beauty-light hover:bg-beauty-accent hover:text-beauty-dark bg-transparent backdrop-blur-sm transition-all duration-500 py-4 px-10 font-playfair tracking-luxury"
+                  className="border-2 border-beauty-accent/50 text-beauty-light hover:bg-beauty-accent/20 hover:text-beauty-light bg-transparent backdrop-blur-xl transition-all duration-700 py-4 px-10 font-playfair tracking-luxury shadow-luxury hover:shadow-champagne-glow hover:border-beauty-accent transform group-hover:scale-105"
                 >
-                  {t.signIn}
+                  <span className="relative z-10">{t.signIn}</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-beauty-accent/10 to-beauty-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-lg"></div>
                 </Button>
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Right Side - Interactive Cards Preview */}
-        <div className={cn("hidden lg:flex w-1/2 items-center justify-center p-16 bg-gradient-to-br from-beauty-light/20 to-beauty-cream/30", isRTL && "order-1")}>
+        {/* Right Side - Luxury Interactive Elements */}
+        <div className={cn("hidden lg:flex w-1/2 items-center justify-center p-16 relative", isRTL && "order-1")}>
+          <div className="absolute inset-0 bg-gradient-to-l from-beauty-light/5 to-transparent"></div>
           <div className="relative w-full max-w-md">
-            {/* Floating Cards */}
-            <div className="absolute inset-0 animate-pulse">
-              <div className="bg-card border border-beauty-accent/20 rounded-2xl p-6 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-beauty-accent rounded-full flex items-center justify-center">
-                    <BrainIcon className="w-6 h-6 text-beauty-light" />
+            {/* Premium Floating Cards with Luxury Effects */}
+            <div className="absolute inset-0 animate-float" style={{ animationDelay: '0s' }}>
+              <div className="luxury-card-premium group hover:shadow-champagne-glow transition-all duration-700 transform rotate-3 hover:rotate-1 hover:scale-105">
+                <div className="absolute inset-0 bg-gradient-luxury opacity-20 rounded-2xl"></div>
+                <div className="relative p-8">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-beauty-accent to-beauty-primary rounded-2xl flex items-center justify-center shadow-luxury group-hover:shadow-champagne-glow transition-shadow duration-500">
+                      <BrainIcon className="w-7 h-7 text-beauty-light drop-shadow-lg" />
+                    </div>
+                    <div>
+                      <div className="font-playfair font-semibold text-beauty-light text-lg tracking-luxury">AI Discovery</div>
+                      <div className="text-sm text-beauty-light/70 font-light">Intelligent matching</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-semibold text-foreground">AI Discovery</div>
-                    <div className="text-sm text-muted-foreground">Smart recommendations</div>
+                  <div className="h-px bg-gradient-to-r from-beauty-accent/30 to-transparent mb-4"></div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs text-beauty-light/60 font-light tracking-wide">PREMIUM</span>
+                    <div className="flex gap-1">
+                      <div className="w-1 h-1 bg-beauty-accent rounded-full animate-pulse"></div>
+                      <div className="w-1 h-1 bg-beauty-secondary rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+                      <div className="w-1 h-1 bg-beauty-primary rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             
-            <div className="absolute top-16 left-8 animate-fade-in" style={{ animationDelay: '0.5s' }}>
-              <div className="bg-card border border-beauty-accent/20 rounded-2xl p-6 shadow-2xl transform -rotate-2 hover:rotate-0 transition-transform duration-500">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-beauty-secondary rounded-full flex items-center justify-center">
-                    <CalendarIcon className="w-6 h-6 text-beauty-light" />
+            <div className="absolute top-20 left-8 animate-float" style={{ animationDelay: '1s' }}>
+              <div className="luxury-card-premium group hover:shadow-champagne-glow transition-all duration-700 transform -rotate-2 hover:rotate-0 hover:scale-105">
+                <div className="absolute inset-0 bg-gradient-to-br from-beauty-secondary/20 to-beauty-accent/20 rounded-2xl"></div>
+                <div className="relative p-8">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-beauty-secondary to-beauty-accent rounded-2xl flex items-center justify-center shadow-luxury group-hover:shadow-champagne-glow transition-shadow duration-500">
+                      <CalendarIcon className="w-7 h-7 text-beauty-light drop-shadow-lg" />
+                    </div>
+                    <div>
+                      <div className="font-playfair font-semibold text-beauty-light text-lg tracking-luxury">Seamless Booking</div>
+                      <div className="text-sm text-beauty-light/70 font-light">Effortless experience</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-semibold text-foreground">Quick Booking</div>
-                    <div className="text-sm text-muted-foreground">Seamless experience</div>
+                  <div className="h-px bg-gradient-to-r from-beauty-secondary/30 to-transparent mb-4"></div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs text-beauty-light/60 font-light tracking-wide">EXCLUSIVE</span>
+                    <SparklesIcon className="w-4 h-4 text-beauty-secondary animate-pulse" />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="absolute top-32 right-4 animate-fade-in" style={{ animationDelay: '1s' }}>
-              <div className="bg-card border border-beauty-accent/20 rounded-2xl p-6 shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-500">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-beauty-primary rounded-full flex items-center justify-center">
-                    <SparklesIcon className="w-6 h-6 text-beauty-light" />
+            <div className="absolute top-40 right-4 animate-float" style={{ animationDelay: '2s' }}>
+              <div className="luxury-card-premium group hover:shadow-champagne-glow transition-all duration-700 transform rotate-1 hover:rotate-0 hover:scale-105">
+                <div className="absolute inset-0 bg-gradient-to-tl from-beauty-primary/20 to-beauty-accent/20 rounded-2xl"></div>
+                <div className="relative p-8">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-14 h-14 bg-gradient-to-br from-beauty-primary to-beauty-secondary rounded-2xl flex items-center justify-center shadow-luxury group-hover:shadow-champagne-glow transition-shadow duration-500">
+                      <SparklesIcon className="w-7 h-7 text-beauty-light drop-shadow-lg" />
+                    </div>
+                    <div>
+                      <div className="font-playfair font-semibold text-beauty-light text-lg tracking-luxury">Luxury Service</div>
+                      <div className="text-sm text-beauty-light/70 font-light">Unmatched quality</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-semibold text-foreground">Luxury Service</div>
-                    <div className="text-sm text-muted-foreground">Premium quality</div>
+                  <div className="h-px bg-gradient-to-r from-beauty-primary/30 to-transparent mb-4"></div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-xs text-beauty-light/60 font-light tracking-wide">ELITE</span>
+                    <div className="w-6 h-6 border border-beauty-primary/50 rounded-full flex items-center justify-center">
+                      <div className="w-2 h-2 bg-beauty-primary rounded-full animate-pulse"></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -109,98 +163,195 @@ const Welcome: React.FC = () => {
         </div>
       </section>
 
-      {/* Card-Based Features Section */}
-      <section className="py-24 px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-playfair text-foreground mb-4">{t.howItWorks}</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">{t.howItWorksDescription}</p>
+      {/* Luxury Features Section */}
+      <section className="py-32 px-8 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-beauty-cream/20 to-beauty-light/30"></div>
+        <div className="absolute top-10 right-10 w-32 h-32 bg-beauty-accent/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 left-20 w-20 h-20 bg-beauty-primary/5 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <div className="relative inline-block">
+              <div className="absolute -inset-2 bg-gradient-luxury opacity-20 blur-xl rounded-lg animate-pulse"></div>
+              <h2 className="relative dior-heading-lg text-beauty-dark mb-6 tracking-luxury drop-shadow-lg">{t.howItWorks}</h2>
+            </div>
+            <div className="h-1 w-32 mx-auto mb-8 bg-gradient-to-r from-beauty-accent via-beauty-primary to-beauty-secondary shadow-lg"></div>
+            <p className="dior-body-lg text-beauty-dark/80 max-w-3xl mx-auto leading-relaxed font-light">{t.howItWorksDescription}</p>
           </div>
           
-          {/* Masonry-style Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
-            {/* Discover Card */}
+          {/* Premium Masonry Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Discover Card - Enhanced Luxury */}
             <div className="group">
-              <div className="bg-card border border-border hover:border-beauty-accent/50 rounded-2xl p-8 h-full hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                <div className="w-16 h-16 bg-beauty-accent/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <BrainIcon className="w-8 h-8 text-beauty-accent" />
+              <div className="luxury-card-premium hover:shadow-champagne-glow transition-all duration-700 transform hover:-translate-y-4 hover:rotate-1 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-beauty-accent/10 via-transparent to-beauty-primary/10 opacity-60"></div>
+                <div className="absolute top-0 right-0 w-20 h-20 bg-beauty-accent/10 rounded-full -translate-y-10 translate-x-10 blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                <div className="relative p-10">
+                  <div className="w-20 h-20 bg-gradient-to-br from-beauty-accent to-beauty-primary rounded-3xl flex items-center justify-center mb-8 shadow-luxury group-hover:shadow-champagne-glow group-hover:scale-110 transition-all duration-500 border border-beauty-accent/20">
+                    <BrainIcon className="w-10 h-10 text-beauty-light drop-shadow-xl" />
+                  </div>
+                  <h3 className="dior-heading-sm text-beauty-dark mb-6 tracking-luxury">{t.discover}</h3>
+                  <div className="h-px bg-gradient-to-r from-beauty-accent/40 to-transparent mb-6"></div>
+                  <p className="dior-body text-beauty-dark/70 leading-relaxed font-light">{t.discoverDescription}</p>
+                  <div className="absolute bottom-4 right-4 flex gap-1">
+                    <div className="w-1 h-1 bg-beauty-accent rounded-full animate-pulse"></div>
+                    <div className="w-1 h-1 bg-beauty-primary rounded-full animate-pulse" style={{ animationDelay: '0.3s' }}></div>
+                    <div className="w-1 h-1 bg-beauty-secondary rounded-full animate-pulse" style={{ animationDelay: '0.6s' }}></div>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-semibold text-foreground mb-4">{t.discover}</h3>
-                <p className="text-muted-foreground leading-relaxed">{t.discoverDescription}</p>
               </div>
             </div>
             
-            {/* Book Card */}
+            {/* Book Card - Premium Design */}
             <div className="group lg:row-span-1">
-              <div className="bg-gradient-to-br from-beauty-accent/5 to-beauty-secondary/5 border border-border hover:border-beauty-accent/50 rounded-2xl p-8 h-full hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                <div className="w-16 h-16 bg-beauty-secondary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <CalendarIcon className="w-8 h-8 text-beauty-secondary" />
+              <div className="luxury-card-premium hover:shadow-champagne-glow transition-all duration-700 transform hover:-translate-y-4 hover:-rotate-1 relative overflow-hidden min-h-full">
+                <div className="absolute inset-0 bg-gradient-to-tl from-beauty-secondary/10 via-transparent to-beauty-accent/10 opacity-60"></div>
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-beauty-secondary/10 rounded-full translate-y-12 -translate-x-12 blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                <div className="relative p-10 h-full flex flex-col">
+                  <div className="w-20 h-20 bg-gradient-to-br from-beauty-secondary to-beauty-accent rounded-3xl flex items-center justify-center mb-8 shadow-luxury group-hover:shadow-champagne-glow group-hover:scale-110 transition-all duration-500 border border-beauty-secondary/20">
+                    <CalendarIcon className="w-10 h-10 text-beauty-light drop-shadow-xl" />
+                  </div>
+                  <h3 className="dior-heading-sm text-beauty-dark mb-6 tracking-luxury">{t.book}</h3>
+                  <div className="h-px bg-gradient-to-r from-beauty-secondary/40 to-transparent mb-6"></div>
+                  <p className="dior-body text-beauty-dark/70 leading-relaxed font-light flex-grow">{t.bookDescription}</p>
+                  <div className="mt-6 p-4 bg-beauty-secondary/5 rounded-xl border border-beauty-secondary/20">
+                    <div className="text-xs font-playfair text-beauty-secondary/80 tracking-wide mb-1">EXPERIENCE LEVEL</div>
+                    <div className="text-lg font-semibold text-beauty-secondary tracking-luxury">Seamless & Effortless</div>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-semibold text-foreground mb-4">{t.book}</h3>
-                <p className="text-muted-foreground leading-relaxed">{t.bookDescription}</p>
               </div>
             </div>
             
-            {/* Experience Card */}
+            {/* Experience Card - Elite Design */}
             <div className="group">
-              <div className="bg-card border border-border hover:border-beauty-accent/50 rounded-2xl p-8 h-full hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-                <div className="w-16 h-16 bg-beauty-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <SparklesIcon className="w-8 h-8 text-beauty-primary" />
+              <div className="luxury-card-premium hover:shadow-champagne-glow transition-all duration-700 transform hover:-translate-y-4 hover:rotate-1 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-bl from-beauty-primary/10 via-transparent to-beauty-accent/10 opacity-60"></div>
+                <div className="absolute top-0 left-0 w-16 h-16 bg-beauty-primary/10 rounded-full -translate-y-8 -translate-x-8 blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                <div className="relative p-10">
+                  <div className="w-20 h-20 bg-gradient-to-br from-beauty-primary to-beauty-secondary rounded-3xl flex items-center justify-center mb-8 shadow-luxury group-hover:shadow-champagne-glow group-hover:scale-110 transition-all duration-500 border border-beauty-primary/20">
+                    <SparklesIcon className="w-10 h-10 text-beauty-light drop-shadow-xl" />
+                  </div>
+                  <h3 className="dior-heading-sm text-beauty-dark mb-6 tracking-luxury">{t.experience}</h3>
+                  <div className="h-px bg-gradient-to-r from-beauty-primary/40 to-transparent mb-6"></div>
+                  <p className="dior-body text-beauty-dark/70 leading-relaxed font-light">{t.experienceDescription}</p>
+                  <div className="absolute bottom-4 left-4">
+                    <div className="w-8 h-8 border-2 border-beauty-primary/30 rounded-full flex items-center justify-center">
+                      <div className="w-3 h-3 bg-beauty-primary rounded-full animate-pulse"></div>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-semibold text-foreground mb-4">{t.experience}</h3>
-                <p className="text-muted-foreground leading-relaxed">{t.experienceDescription}</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Services Cards Section */}
-      <section className="py-24 px-8 bg-muted/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-playfair text-foreground mb-4">{t.exploreHaib}</h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">{t.exploreDescription}</p>
+      {/* Elite Services Section */}
+      <section className="py-32 px-8 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-beauty-dark/5 via-beauty-cream/20 to-beauty-light/10"></div>
+        <div className="absolute inset-0 bg-gradient-pearl opacity-30"></div>
+        
+        {/* Floating Luxury Particles */}
+        <div className="absolute top-16 left-1/4 w-2 h-2 bg-beauty-accent rounded-full animate-ping opacity-40"></div>
+        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-beauty-primary rounded-full animate-pulse"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-beauty-secondary rounded-full animate-ping opacity-50"></div>
+        
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <div className="relative inline-block">
+              <div className="absolute -inset-3 bg-gradient-luxury opacity-20 blur-2xl rounded-lg animate-pulse"></div>
+              <h2 className="relative dior-heading-lg text-beauty-dark mb-6 tracking-luxury drop-shadow-lg">{t.exploreHaib}</h2>
+            </div>
+            <div className="h-1 w-32 mx-auto mb-8 bg-gradient-to-r from-beauty-accent via-beauty-primary to-beauty-secondary shadow-luxury"></div>
+            <p className="dior-body-lg text-beauty-dark/80 max-w-3xl mx-auto leading-relaxed font-light">{t.exploreDescription}</p>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Premium Salons Card */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Premium Salons - Ultra Luxury Card */}
             <div className="group">
-              <div className="bg-card border border-border hover:border-beauty-accent/50 rounded-2xl p-10 h-full hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
-                <div className="flex items-start gap-6 mb-8">
-                  <div className="w-16 h-16 bg-beauty-accent/10 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    <BotIcon className="w-8 h-8 text-beauty-accent" />
+              <div className="luxury-card-elite hover:shadow-champagne-glow transition-all duration-700 transform hover:-translate-y-3 hover:rotate-1 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-beauty-accent/10 via-beauty-primary/5 to-transparent opacity-80"></div>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-beauty-accent/5 rounded-full -translate-y-16 translate-x-16 blur-3xl group-hover:scale-125 transition-transform duration-700"></div>
+                
+                <div className="relative p-12">
+                  <div className="flex items-start gap-8 mb-10">
+                    <div className="w-20 h-20 bg-gradient-to-br from-beauty-accent to-beauty-primary rounded-3xl flex items-center justify-center shadow-luxury group-hover:shadow-champagne-glow group-hover:scale-110 transition-all duration-500 border-2 border-beauty-accent/20 flex-shrink-0">
+                      <BotIcon className="w-10 h-10 text-beauty-light drop-shadow-xl" />
+                    </div>
+                    <div className="flex-grow">
+                      <h3 className="dior-heading-sm text-beauty-dark mb-6 tracking-luxury">{t.premiumSalons}</h3>
+                      <div className="h-px bg-gradient-to-r from-beauty-accent/50 to-transparent mb-6"></div>
+                      <p className="dior-body text-beauty-dark/70 leading-relaxed font-light">{t.premiumSalonsDescription}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-2xl font-semibold text-foreground mb-4">{t.premiumSalons}</h3>
-                    <p className="text-muted-foreground leading-relaxed mb-8">{t.premiumSalonsDescription}</p>
+                  
+                  <div className="mb-8">
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="text-xs font-playfair text-beauty-accent/80 tracking-widest">AI-POWERED</span>
+                      <div className="flex gap-1">
+                        <div className="w-1 h-1 bg-beauty-accent rounded-full animate-pulse"></div>
+                        <div className="w-1 h-1 bg-beauty-primary rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+                        <div className="w-1 h-1 bg-beauty-secondary rounded-full animate-pulse" style={{ animationDelay: '0.8s' }}></div>
+                      </div>
+                    </div>
                   </div>
+                  
+                  <Link to="/search">
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-2 border-beauty-accent/30 text-beauty-dark hover:bg-beauty-accent hover:text-beauty-light hover:border-beauty-accent transition-all duration-500 font-playfair tracking-luxury py-6 text-lg shadow-luxury hover:shadow-champagne-glow backdrop-blur-sm group-hover:scale-105 transform"
+                    >
+                      <span className="relative z-10 flex items-center justify-center">
+                        {t.exploreSalons} 
+                        <ArrowRightIcon className={cn("w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-300", isRTL && "mr-3 ml-0 rotate-180 group-hover:-translate-x-1")} />
+                      </span>
+                      <div className="absolute inset-0 bg-gradient-luxury opacity-0 group-hover:opacity-20 transition-opacity duration-500 rounded-lg"></div>
+                    </Button>
+                  </Link>
                 </div>
-                <Link to="/search">
-                  <Button variant="outline" className="w-full group-hover:bg-beauty-accent group-hover:text-beauty-light group-hover:border-beauty-accent transition-all duration-300">
-                    {t.exploreSalons} <ArrowRightIcon className={cn("w-4 h-4", isRTL ? "mr-2 rotate-180" : "ml-2")} />
-                  </Button>
-                </Link>
               </div>
             </div>
             
-            {/* Exclusive Offers Card */}
+            {/* Exclusive Offers - Elite Luxury Card */}
             <div className="group">
-              <div className="bg-gradient-to-br from-beauty-primary/5 to-beauty-accent/5 border border-border hover:border-beauty-primary/50 rounded-2xl p-10 h-full hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
-                <div className="flex items-start gap-6 mb-8">
-                  <div className="w-16 h-16 bg-beauty-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                    <SparklesIcon className="w-8 h-8 text-beauty-primary" />
+              <div className="luxury-card-elite hover:shadow-champagne-glow transition-all duration-700 transform hover:-translate-y-3 hover:-rotate-1 relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tl from-beauty-primary/10 via-beauty-secondary/5 to-transparent opacity-80"></div>
+                <div className="absolute bottom-0 left-0 w-28 h-28 bg-beauty-primary/5 rounded-full translate-y-14 -translate-x-14 blur-3xl group-hover:scale-125 transition-transform duration-700"></div>
+                
+                <div className="relative p-12">
+                  <div className="flex items-start gap-8 mb-10">
+                    <div className="w-20 h-20 bg-gradient-to-br from-beauty-primary to-beauty-secondary rounded-3xl flex items-center justify-center shadow-luxury group-hover:shadow-champagne-glow group-hover:scale-110 transition-all duration-500 border-2 border-beauty-primary/20 flex-shrink-0">
+                      <SparklesIcon className="w-10 h-10 text-beauty-light drop-shadow-xl" />
+                    </div>
+                    <div className="flex-grow">
+                      <h3 className="dior-heading-sm text-beauty-dark mb-6 tracking-luxury">{t.exclusiveOffers}</h3>
+                      <div className="h-px bg-gradient-to-r from-beauty-primary/50 to-transparent mb-6"></div>
+                      <p className="dior-body text-beauty-dark/70 leading-relaxed font-light">{t.exclusiveOffersDescription}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-2xl font-semibold text-foreground mb-4">{t.exclusiveOffers}</h3>
-                    <p className="text-muted-foreground leading-relaxed mb-8">{t.exclusiveOffersDescription}</p>
+                  
+                  <div className="mb-8">
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="text-xs font-playfair text-beauty-primary/80 tracking-widest">MEMBERS ONLY</span>
+                      <div className="w-8 h-8 border-2 border-beauty-primary/30 rounded-full flex items-center justify-center">
+                        <SparklesIcon className="w-4 h-4 text-beauty-primary animate-pulse" />
+                      </div>
+                    </div>
                   </div>
+                  
+                  <Link to="/promotions">
+                    <Button 
+                      variant="outline" 
+                      className="w-full border-2 border-beauty-primary/30 text-beauty-dark hover:bg-beauty-primary hover:text-beauty-light hover:border-beauty-primary transition-all duration-500 font-playfair tracking-luxury py-6 text-lg shadow-luxury hover:shadow-champagne-glow backdrop-blur-sm group-hover:scale-105 transform"
+                    >
+                      <span className="relative z-10 flex items-center justify-center">
+                        {t.viewOffers} 
+                        <ArrowRightIcon className={cn("w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-300", isRTL && "mr-3 ml-0 rotate-180 group-hover:-translate-x-1")} />
+                      </span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-beauty-primary/10 to-beauty-secondary/10 opacity-0 group-hover:opacity-20 transition-opacity duration-500 rounded-lg"></div>
+                    </Button>
+                  </Link>
                 </div>
-                <Link to="/promotions">
-                  <Button variant="outline" className="w-full group-hover:bg-beauty-primary group-hover:text-beauty-light group-hover:border-beauty-primary transition-all duration-300">
-                    {t.viewOffers} <ArrowRightIcon className={cn("w-4 h-4", isRTL ? "mr-2 rotate-180" : "ml-2")} />
-                  </Button>
-                </Link>
               </div>
             </div>
           </div>
@@ -210,21 +361,69 @@ const Welcome: React.FC = () => {
       {/* Salon Partnership Section */}
       <WelcomeSalonPartnership />
       
-      {/* CTA Section - Final Luxury Touch */}
-      <section className="luxury-hero py-32 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-noir opacity-95"></div>
+      {/* Elite CTA Section - Ultra Luxury */}
+      <section className="luxury-hero py-40 px-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-noir opacity-98"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-beauty-accent/5 via-transparent to-beauty-primary/5 animate-pulse"></div>
+        
+        {/* Luxury Floating Elements */}
+        <div className="absolute top-20 left-1/4 w-3 h-3 bg-beauty-accent rounded-full animate-ping opacity-30"></div>
+        <div className="absolute top-1/3 right-1/4 w-2 h-2 bg-beauty-secondary rounded-full animate-pulse opacity-40"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-2.5 h-2.5 bg-beauty-primary rounded-full animate-ping opacity-35"></div>
+        <div className="absolute top-1/2 right-1/3 w-1 h-1 bg-beauty-accent rounded-full animate-pulse opacity-50"></div>
+        
         <div className={cn("relative z-10 max-w-6xl mx-auto text-center", isRTL && "rtl")}>
-          <h2 className="dior-heading-lg text-beauty-light mb-8 tracking-luxury">{t.startBeautyJourney}</h2>
-          <div className="h-1 w-32 mx-auto mb-12 bg-gradient-to-r from-beauty-accent to-beauty-secondary"></div>
-          <p className={cn("dior-body-lg text-beauty-light/90 mb-16 max-w-3xl mx-auto leading-relaxed", isRTL && "text-right")}>
-            {t.startBeautyDescription}
-          </p>
+          <div className="relative mb-12">
+            <div className="absolute -inset-4 bg-gradient-luxury opacity-40 blur-3xl rounded-lg animate-pulse"></div>
+            <h2 className="relative dior-display text-beauty-light mb-8 tracking-luxury drop-shadow-2xl leading-tight">
+              {t.startBeautyJourney}
+            </h2>
+          </div>
           
-          <Link to="/register">
-            <Button className="beauty-button shadow-champagne animate-pulse hover:animate-none">
-              {t.startNow} <ArrowRightIcon className={cn("w-5 h-5", isRTL ? "mr-3 rotate-180" : "ml-3")} />
-            </Button>
-          </Link>
+          <div className="h-2 w-40 mx-auto mb-16 bg-gradient-to-r from-beauty-accent via-beauty-primary to-beauty-secondary shadow-champagne-glow rounded-full"></div>
+          
+          <div className="relative backdrop-blur-md bg-beauty-light/5 border-2 border-beauty-accent/30 rounded-3xl p-12 mb-20 shadow-luxury max-w-4xl mx-auto">
+            <div className="absolute inset-0 bg-gradient-luxury opacity-10 rounded-3xl"></div>
+            <p className={cn("relative dior-body-xl text-beauty-light/95 leading-relaxed font-light tracking-wide", isRTL && "text-right")}>
+              {t.startBeautyDescription}
+            </p>
+            <div className="absolute top-4 right-4 flex gap-1">
+              <div className="w-1 h-1 bg-beauty-accent rounded-full animate-pulse"></div>
+              <div className="w-1 h-1 bg-beauty-primary rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+              <div className="w-1 h-1 bg-beauty-secondary rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+            </div>
+          </div>
+          
+          <div className="relative group">
+            <div className="absolute -inset-3 bg-gradient-luxury opacity-30 blur-2xl rounded-full animate-pulse group-hover:opacity-50 transition-opacity duration-500"></div>
+            <Link to="/register">
+              <Button className="relative beauty-button-premium shadow-champagne-xl group-hover:shadow-champagne-glow transform group-hover:scale-110 transition-all duration-700 text-xl py-8 px-16">
+                <span className="relative z-10 flex items-center font-playfair tracking-luxury">
+                  {t.startNow} 
+                  <ArrowRightIcon className={cn("w-7 h-7 ml-4 group-hover:translate-x-2 transition-transform duration-500", isRTL && "mr-4 ml-0 rotate-180 group-hover:-translate-x-2")} />
+                </span>
+                <div className="absolute inset-0 bg-gradient-luxury opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-full"></div>
+              </Button>
+            </Link>
+          </div>
+          
+          {/* Luxury Trust Indicators */}
+          <div className="flex justify-center items-center gap-8 mt-16 opacity-60">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-beauty-accent rounded-full animate-pulse"></div>
+              <span className="text-beauty-light/70 text-sm font-light tracking-wide">AI-POWERED</span>
+            </div>
+            <div className="w-px h-6 bg-beauty-light/20"></div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-beauty-secondary rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
+              <span className="text-beauty-light/70 text-sm font-light tracking-wide">LUXURY</span>
+            </div>
+            <div className="w-px h-6 bg-beauty-light/20"></div>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-beauty-primary rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
+              <span className="text-beauty-light/70 text-sm font-light tracking-wide">EXCLUSIVE</span>
+            </div>
+          </div>
         </div>
       </section>
       
