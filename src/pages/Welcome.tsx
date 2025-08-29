@@ -27,49 +27,35 @@ const Welcome: React.FC = () => {
   return (
     <div className={cn("min-h-screen bg-background theme-transition", isRTL && "rtl")}>
       {/* Split-Screen Hero Section */}
-      <section className="min-h-screen flex relative overflow-hidden">
+      <section className="luxury-hero pt-24 pb-32 px-6 relative overflow-hidden min-h-screen flex">
+        <div className="absolute inset-0 bg-gradient-noir opacity-90"></div>
+        
         {/* Left Side - Content */}
-        <div className={cn("w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-16 relative z-10", isRTL && "lg:order-2")}>
+        <div className={cn("w-full lg:w-1/2 flex flex-col justify-center relative z-10", isRTL && "lg:order-2")}>
           <div className="max-w-2xl mx-auto lg:mx-0">
             <div className="animate-fade-in mb-12">
-              <HAIBLogo size="lg" className="mb-8" />
-              <h1 className="text-5xl lg:text-7xl font-playfair font-light text-foreground mb-6 tracking-tight">
-                AI-Powered
-                <span className="block text-beauty-accent font-medium">Beauty</span>
-              </h1>
-              <p className="text-xl text-muted-foreground leading-relaxed mb-12">
+              <HAIBLogo size="xl" className="mb-8" />
+              <p className={cn("dior-body-lg text-beauty-light/90 mb-12 leading-relaxed", isRTL && "text-right")}>
                 {t.welcomeDescription}
               </p>
             </div>
             
-            <div className={cn("flex flex-col sm:flex-row gap-4 mb-16", isRTL && "sm:flex-row-reverse")}>
+            <div className={cn("flex flex-col sm:flex-row gap-6 justify-center", isRTL && "sm:flex-row-reverse")}>
               <Link to="/register" className="animate-slide-up">
-                <Button size="lg" className="w-full sm:w-auto bg-beauty-accent hover:bg-beauty-accent/90 text-beauty-light">
+                <Button className="beauty-button shadow-champagne">
                   {t.startJourney}
                   <ArrowRightIcon className={cn("w-5 h-5 ml-3", isRTL && "mr-3 ml-0 rotate-180")} />
                 </Button>
               </Link>
               <Link to="/auth" className="animate-slide-up">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="border-beauty-accent text-beauty-light hover:bg-beauty-accent hover:text-beauty-dark bg-transparent backdrop-blur-sm transition-all duration-500 py-4 px-10 font-playfair tracking-luxury"
+                >
                   {t.signIn}
                 </Button>
               </Link>
-            </div>
-
-            {/* Stats Cards */}
-            <div className="grid grid-cols-3 gap-4">
-              <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg p-4 hover:shadow-lg transition-all duration-300">
-                <div className="text-2xl font-bold text-beauty-accent">15K+</div>
-                <div className="text-sm text-muted-foreground">Users</div>
-              </div>
-              <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg p-4 hover:shadow-lg transition-all duration-300">
-                <div className="text-2xl font-bold text-beauty-accent">2min</div>
-                <div className="text-sm text-muted-foreground">Booking</div>
-              </div>
-              <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg p-4 hover:shadow-lg transition-all duration-300">
-                <div className="text-2xl font-bold text-beauty-accent">4.9★</div>
-                <div className="text-sm text-muted-foreground">Rating</div>
-              </div>
             </div>
           </div>
         </div>
@@ -100,7 +86,7 @@ const Welcome: React.FC = () => {
                   </div>
                   <div>
                     <div className="font-semibold text-foreground">Quick Booking</div>
-                    <div className="text-sm text-muted-foreground">In 2 minutes</div>
+                    <div className="text-sm text-muted-foreground">Seamless experience</div>
                   </div>
                 </div>
               </div>
@@ -151,11 +137,7 @@ const Welcome: React.FC = () => {
                   <CalendarIcon className="w-8 h-8 text-beauty-secondary" />
                 </div>
                 <h3 className="text-2xl font-semibold text-foreground mb-4">{t.book}</h3>
-                <p className="text-muted-foreground leading-relaxed mb-6">{t.bookDescription}</p>
-                <div className="bg-beauty-secondary/10 rounded-lg p-4">
-                  <div className="text-sm font-medium text-beauty-secondary">Average booking time</div>
-                  <div className="text-2xl font-bold text-beauty-secondary">2 minutes</div>
-                </div>
+                <p className="text-muted-foreground leading-relaxed">{t.bookDescription}</p>
               </div>
             </div>
             
