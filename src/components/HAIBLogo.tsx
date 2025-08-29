@@ -20,8 +20,8 @@ const HAIBLogo: React.FC<HAIBLogoProps> = ({ className = '', size = 'lg' }) => {
   const gapClasses = {
     sm: 'gap-0.5',
     md: 'gap-0.5', 
-    lg: 'gap-1',
-    xl: 'gap-1'
+    lg: 'gap-0.5',
+    xl: 'gap-0.5'
   };
 
   return (
