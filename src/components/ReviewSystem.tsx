@@ -117,14 +117,16 @@ const ReviewSystem: React.FC<ReviewSystemProps> = ({
     const sizeClass = size === 'lg' ? 'h-6 w-6' : 'h-4 w-4';
     
     return (
-      <div className="flex">
+      <div className="flex gap-0.5">
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
             className={cn(
               sizeClass,
-              interactive && 'cursor-pointer hover:scale-110 transition-transform',
-              star <= rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
+              interactive && 'cursor-pointer hover:scale-110 transition-all duration-200 hover:drop-shadow-sm',
+              star <= rating 
+                ? 'fill-primary text-primary drop-shadow-sm' 
+                : 'text-muted-foreground/40 hover:text-muted-foreground transition-colors'
             )}
             onClick={interactive ? () => handleStarClick(star) : undefined}
           />
@@ -142,32 +144,36 @@ const ReviewSystem: React.FC<ReviewSystemProps> = ({
   };
 
   return (
-    <div className={cn('space-y-6', className)}>
+    <div className={cn('space-y-8', className)}>
       {/* Rating Overview */}
-      <Card className="p-6">
-        <div className="grid md:grid-cols-2 gap-6">
+      <Card className="glass-card p-8 border-0 bg-gradient-to-br from-background/80 to-background/40 backdrop-blur-xl">
+        <div className="grid md:grid-cols-2 gap-8">
           {/* Overall Rating */}
-          <div className="text-center md:text-left">
-            <div className="flex items-center justify-center md:justify-start gap-2 mb-2">
-              <span className="text-4xl font-bold">{ratingStats.average.toFixed(1)}</span>
+          <div className="text-center md:text-left space-y-4">
+            <div className="flex items-center justify-center md:justify-start gap-4 mb-4">
+              <span className="dior-elegance text-5xl font-light bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                {ratingStats.average.toFixed(1)}
+              </span>
               {renderStars(Math.round(ratingStats.average), false, 'lg')}
             </div>
-            <p className="text-gray-600">Based on {ratingStats.total} reviews</p>
+            <p className="text-muted-foreground font-medium">
+              Based on <span className="text-foreground font-semibold">{ratingStats.total}</span> reviews
+            </p>
           </div>
 
           {/* Rating Distribution */}
-          <div className="space-y-2">
+          <div className="space-y-3">
             {ratingStats.distribution.map(({ rating, count, percentage }) => (
-              <div key={rating} className="flex items-center gap-2">
-                <span className="text-sm w-4">{rating}</span>
-                <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                <div className="flex-1 bg-gray-200 rounded-full h-2">
+              <div key={rating} className="flex items-center gap-3 group">
+                <span className="text-sm font-medium w-4 text-muted-foreground">{rating}</span>
+                <Star className="h-4 w-4 fill-primary/80 text-primary/80" />
+                <div className="flex-1 bg-muted/30 rounded-full h-2.5 overflow-hidden">
                   <div
-                    className="bg-yellow-400 h-2 rounded-full transition-all"
+                    className="beauty-gradient h-full rounded-full transition-all duration-700 ease-out shadow-sm"
                     style={{ width: `${percentage}%` }}
                   />
                 </div>
-                <span className="text-sm text-gray-600 w-8">{count}</span>
+                <span className="text-sm font-medium text-muted-foreground w-8 group-hover:text-foreground transition-colors">{count}</span>
               </div>
             ))}
           </div>
@@ -176,40 +182,57 @@ const ReviewSystem: React.FC<ReviewSystemProps> = ({
 
       {/* Write Review Section */}
       {canWriteReview && (
-        <Card className="p-6">
+        <Card className="glass-card p-8 border-0 bg-gradient-to-br from-background/60 to-secondary/20 backdrop-blur-xl">
           {!showWriteReview ? (
-            <div className="text-center">
-              <h3 className="font-medium mb-2">Share Your Experience</h3>
-              <p className="text-gray-600 mb-4">Help others by writing a review</p>
-              <Button onClick={() => setShowWriteReview(true)}>
+            <div className="text-center space-y-6">
+              <div className="space-y-3">
+                <h3 className="dior-elegance text-xl font-light text-foreground">Share Your Experience</h3>
+                <p className="text-muted-foreground">Help others discover excellence</p>
+              </div>
+              <Button 
+                onClick={() => setShowWriteReview(true)}
+                className="luxury-gradient hover:shadow-luxury transition-all duration-300 px-8 py-3"
+              >
                 Write a Review
               </Button>
             </div>
           ) : (
-            <div className="space-y-4">
-              <h3 className="font-medium">Write Your Review</h3>
+            <div className="space-y-6">
+              <h3 className="dior-elegance text-xl font-light text-foreground">Your Review</h3>
               
               {/* Rating Selection */}
-              <div>
-                <label className="block text-sm font-medium mb-2">Rating</label>
-                {renderStars(newReview.rating, true, 'lg')}
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-foreground">Rating</label>
+                <div className="flex justify-center md:justify-start">
+                  {renderStars(newReview.rating, true, 'lg')}
+                </div>
               </div>
 
               {/* Comment */}
-              <div>
-                <label className="block text-sm font-medium mb-2">Your Review</label>
+              <div className="space-y-3">
+                <label className="block text-sm font-medium text-foreground">Your Experience</label>
                 <Textarea
-                  placeholder="Share your experience with this salon..."
+                  placeholder="Share the details of your experience..."
                   value={newReview.comment}
                   onChange={(e) => setNewReview(prev => ({ ...prev, comment: e.target.value }))}
                   rows={4}
+                  className="glass-card border-muted/50 bg-background/50 backdrop-blur-sm focus:bg-background/80 transition-all"
                 />
               </div>
 
               {/* Actions */}
-              <div className="flex gap-2">
-                <Button onClick={handleSubmitReview}>Submit Review</Button>
-                <Button variant="outline" onClick={() => setShowWriteReview(false)}>
+              <div className="flex gap-3 justify-center md:justify-start">
+                <Button 
+                  onClick={handleSubmitReview}
+                  className="luxury-gradient hover:shadow-luxury transition-all duration-300 px-6"
+                >
+                  Submit Review
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowWriteReview(false)}
+                  className="glass-card border-muted/50 hover:bg-muted/20 transition-all"
+                >
                   Cancel
                 </Button>
               </div>
@@ -219,15 +242,20 @@ const ReviewSystem: React.FC<ReviewSystemProps> = ({
       )}
 
       {/* Filters and Sorting */}
-      <Card className="p-4">
-        <div className="flex flex-wrap gap-4 items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium">Filter by rating:</span>
-            <div className="flex gap-1">
+      <Card className="glass-card p-6 border-0 bg-gradient-to-r from-background/60 to-secondary/10 backdrop-blur-sm">
+        <div className="flex flex-wrap gap-6 items-center justify-between">
+          <div className="flex items-center gap-4">
+            <span className="text-sm font-medium text-foreground">Filter by rating:</span>
+            <div className="flex gap-2">
               <Button
                 variant={filters.rating === null ? "default" : "outline"}
                 size="sm"
                 onClick={() => setFilters(prev => ({ ...prev, rating: null }))}
+                className={cn(
+                  filters.rating === null 
+                    ? "luxury-gradient text-white shadow-luxury" 
+                    : "glass-card border-muted/50 hover:bg-muted/20"
+                )}
               >
                 All
               </Button>
@@ -237,7 +265,12 @@ const ReviewSystem: React.FC<ReviewSystemProps> = ({
                   variant={filters.rating === rating ? "default" : "outline"}
                   size="sm"
                   onClick={() => setFilters(prev => ({ ...prev, rating }))}
-                  className="flex items-center gap-1"
+                  className={cn(
+                    "flex items-center gap-1",
+                    filters.rating === rating
+                      ? "luxury-gradient text-white shadow-luxury"
+                      : "glass-card border-muted/50 hover:bg-muted/20"
+                  )}
                 >
                   {rating}
                   <Star className="h-3 w-3" />
@@ -246,14 +279,14 @@ const ReviewSystem: React.FC<ReviewSystemProps> = ({
             </div>
           </div>
 
-          <Separator orientation="vertical" className="h-6" />
+          <Separator orientation="vertical" className="h-6 bg-border/50" />
 
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium">Sort by:</span>
+          <div className="flex items-center gap-3">
+            <span className="text-sm font-medium text-foreground">Sort by:</span>
             <select
               value={filters.sortBy}
               onChange={(e) => setFilters(prev => ({ ...prev, sortBy: e.target.value as any }))}
-              className="text-sm border rounded px-2 py-1"
+              className="glass-card text-sm border border-muted/50 rounded-lg px-3 py-2 bg-background/50 backdrop-blur-sm focus:bg-background/80 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
             >
               <option value="newest">Newest</option>
               <option value="oldest">Oldest</option>
@@ -266,66 +299,72 @@ const ReviewSystem: React.FC<ReviewSystemProps> = ({
       </Card>
 
       {/* Reviews List */}
-      <div className="space-y-4">
+      <div className="space-y-6">
         {filteredReviews.length === 0 ? (
-          <Card className="p-8 text-center">
-            <User className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-            <h3 className="font-medium mb-2">No reviews yet</h3>
-            <p className="text-gray-600">Be the first to share your experience!</p>
+          <Card className="glass-card p-12 text-center border-0 bg-gradient-to-br from-background/40 to-secondary/10 backdrop-blur-sm">
+            <div className="space-y-4">
+              <User className="h-16 w-16 mx-auto text-muted-foreground/50" />
+              <div className="space-y-2">
+                <h3 className="dior-elegance text-lg font-light text-foreground">No reviews yet</h3>
+                <p className="text-muted-foreground">Be the first to share your experience!</p>
+              </div>
+            </div>
           </Card>
         ) : (
           filteredReviews.map((review) => (
-            <Card key={review.id} className="p-6">
-              <div className="flex items-start gap-4">
-                <Avatar>
+            <Card key={review.id} className="glass-card p-6 border-0 bg-gradient-to-br from-background/60 to-background/30 backdrop-blur-sm hover:shadow-luxury transition-all duration-300 group">
+              <div className="flex items-start gap-6">
+                <Avatar className="ring-2 ring-primary/20 group-hover:ring-primary/40 transition-all">
                   <AvatarImage src={`https://i.pravatar.cc/150?u=${review.userId}`} />
-                  <AvatarFallback>
+                  <AvatarFallback className="bg-primary/10 text-primary">
                     <User className="h-4 w-4" />
                   </AvatarFallback>
                 </Avatar>
                 
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
+                <div className="flex-1 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
                       {renderStars(review.rating)}
-                      <span className="text-sm text-gray-600">
+                      <span className="text-sm text-muted-foreground font-medium">
                         {formatDate(review.createdAt)}
                       </span>
                     </div>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
                       <Flag className="h-4 w-4" />
                     </Button>
                   </div>
                   
-                  <p className="text-gray-700 mb-4">{review.comment}</p>
+                  <p className="text-foreground leading-relaxed">{review.comment}</p>
                   
                   {/* Helpful buttons */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm text-gray-600">Was this helpful?</span>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleHelpfulVote(review.id, true)}
-                      className={cn(
-                        'text-green-600 hover:text-green-700',
-                        helpfulVotes[review.id] === true && 'bg-green-50'
-                      )}
-                    >
-                      <ThumbsUp className="h-4 w-4 mr-1" />
-                      Yes
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleHelpfulVote(review.id, false)}
-                      className={cn(
-                        'text-red-600 hover:text-red-700',
-                        helpfulVotes[review.id] === false && 'bg-red-50'
-                      )}
-                    >
-                      <ThumbsDown className="h-4 w-4 mr-1" />
-                      No
-                    </Button>
+                  <div className="flex items-center gap-4 pt-2">
+                    <span className="text-sm text-muted-foreground">Was this helpful?</span>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleHelpfulVote(review.id, true)}
+                        className={cn(
+                          'text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50/50 transition-all',
+                          helpfulVotes[review.id] === true && 'bg-emerald-50 shadow-sm'
+                        )}
+                      >
+                        <ThumbsUp className="h-4 w-4 mr-2" />
+                        Yes
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleHelpfulVote(review.id, false)}
+                        className={cn(
+                          'text-red-600 hover:text-red-700 hover:bg-red-50/50 transition-all',
+                          helpfulVotes[review.id] === false && 'bg-red-50 shadow-sm'
+                        )}
+                      >
+                        <ThumbsDown className="h-4 w-4 mr-2" />
+                        No
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
