@@ -65,37 +65,6 @@ const Welcome: React.FC = () => {
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="py-16 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BrainIcon className="w-8 h-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">AI Discovery</h3>
-              <p className="text-muted-foreground">Intelligent matching for perfect salon recommendations</p>
-            </div>
-            
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <CalendarIcon className="w-8 h-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Easy Booking</h3>
-              <p className="text-muted-foreground">Seamless appointment scheduling at your fingertips</p>
-            </div>
-            
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <SparklesIcon className="w-8 h-8 text-primary" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Premium Service</h3>
-              <p className="text-muted-foreground">Experience luxury beauty services like never before</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* How It Works Section */}
       <section className="py-16 px-6 bg-muted/30">
         <div className="max-w-4xl mx-auto">
