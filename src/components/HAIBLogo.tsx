@@ -18,10 +18,10 @@ const HAIBLogo: React.FC<HAIBLogoProps> = ({ className = '', size = 'lg' }) => {
   };
   
   const gapClasses = {
-    sm: 'gap-0',
-    md: 'gap-0', 
-    lg: 'gap-0',
-    xl: 'gap-0'
+    sm: 'gap-0.5',
+    md: 'gap-0.5', 
+    lg: 'gap-0.5',
+    xl: 'gap-0.5'
   };
 
   return (
@@ -39,19 +39,21 @@ const HAIBLogo: React.FC<HAIBLogoProps> = ({ className = '', size = 'lg' }) => {
         H
       </span>
       
-      {/* A and I letters */}
-      <span className={cn(
-        "font-luxury font-bold text-white tracking-wider transition-all duration-300",
-        sizeClasses[size]
-      )}>
-        A
-      </span>
-      <span className={cn(
-        "font-luxury font-bold text-white tracking-wider transition-all duration-300",
-        sizeClasses[size]
-      )}>
-        I
-      </span>
+      {/* A and I letters in white square */}
+      <div className="bg-white rounded-sm px-0 py-0 flex items-center gap-0.5">
+        <span className={cn(
+          "font-luxury font-bold text-black tracking-wider transition-all duration-300",
+          sizeClasses[size]
+        )}>
+          A
+        </span>
+        <span className={cn(
+          "font-luxury font-bold text-black tracking-wider transition-all duration-300",
+          sizeClasses[size]
+        )}>
+          I
+        </span>
+      </div>
       
       {/* B letter */}
       <span className={cn(
