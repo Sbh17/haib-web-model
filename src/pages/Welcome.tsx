@@ -17,6 +17,7 @@ import {
   Youtube
 } from 'lucide-react';
 import WelcomeSalonPartnership from '@/components/WelcomeSalonPartnership';
+import HAIBLogo from '@/components/HAIBLogo';
 
 import { useLanguage } from '@/context/LanguageContext';
 import { cn } from '@/lib/utils';
@@ -26,19 +27,23 @@ const Welcome: React.FC = () => {
   
   return (
     <div className={cn("min-h-screen bg-background", isRTL && "rtl")}>
-      {/* Hero Section */}
-      <section className="pt-24 pb-16 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-secondary/5"></div>
+      {/* Luxury Header Section */}
+      <section className="pt-24 pb-16 px-6 relative overflow-hidden bg-black">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20"></div>
         
         {/* Content */}
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center">
-            <div className="mb-8">
-              <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
+            <div className="mb-12">
+              <div className="mb-8">
+                <HAIBLogo size="xl" className="mx-auto" />
+              </div>
+              
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
                 {t.welcomeTitle}
               </h1>
               
-              <p className={cn("text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed", isRTL && "text-right")}>
+              <p className={cn("text-lg text-white/80 max-w-2xl mx-auto leading-relaxed", isRTL && "text-right")}>
                 {t.welcomeDescription}
               </p>
             </div>
@@ -51,7 +56,7 @@ const Welcome: React.FC = () => {
                 </Button>
               </Link>
               <Link to="/auth">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto border-white/20 text-white hover:bg-white/10">
                   {t.signIn}
                 </Button>
               </Link>
