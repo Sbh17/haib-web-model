@@ -122,7 +122,7 @@ const VIPPartnershipLanding: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
               <Button 
                 size="lg"
-                onClick={() => navigate('/salon-request')}
+                onClick={() => navigate('/partnership-application')}
                 className="bg-gradient-dior text-beauty-light hover:shadow-luxury px-12 py-6 text-lg font-medium tracking-wide"
               >
                 Apply for Partnership <ArrowRight className="w-5 h-5 ml-2" />
@@ -312,7 +312,7 @@ const VIPPartnershipLanding: React.FC = () => {
                 
                 <Button 
                   size="lg"
-                  onClick={() => navigate('/salon-request')}
+                  onClick={() => navigate('/partnership-application')}
                   className="bg-gradient-dior text-beauty-light hover:shadow-luxury w-full mb-6 py-6 text-lg"
                 >
                   Begin VIP Application <ArrowRight className="w-5 h-5 ml-2" />
