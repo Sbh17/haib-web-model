@@ -6,8 +6,10 @@ import {
   ArrowRight as ArrowRightIcon, 
   Star as StarIcon, 
   Calendar as CalendarIcon, 
-  Search as SearchIcon, 
+  Brain as BrainIcon, 
   MapPin as MapPinIcon,
+  Bot as BotIcon,
+  Sparkles as SparklesIcon,
   Instagram,
   Facebook,
   Twitter,
@@ -69,7 +71,7 @@ const Welcome: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
             <div className={cn("flex flex-col items-center text-center group animate-fade-in", isRTL && "items-end text-right")}>
               <div className="luxury-card w-24 h-24 flex items-center justify-center mb-8 group-hover:shadow-champagne transition-all duration-500 border border-beauty-accent/20">
-                <SearchIcon className="w-12 h-12 text-beauty-accent" />
+                <BrainIcon className="w-12 h-12 text-beauty-accent" />
               </div>
               <h3 className="dior-heading-sm text-beauty-dark mb-6 tracking-luxury">{t.discover}</h3>
               <p className={cn("dior-body text-beauty-dark/70 leading-relaxed", isRTL && "text-right")}>
@@ -89,7 +91,7 @@ const Welcome: React.FC = () => {
             
             <div className={cn("flex flex-col items-center text-center group animate-fade-in", isRTL && "items-end text-right")}>
               <div className="luxury-card w-24 h-24 flex items-center justify-center mb-8 group-hover:shadow-champagne transition-all duration-500 border border-beauty-accent/20">
-                <StarIcon className="w-12 h-12 text-beauty-accent" />
+                <SparklesIcon className="w-12 h-12 text-beauty-accent" />
               </div>
               <h3 className="dior-heading-sm text-beauty-dark mb-6 tracking-luxury">{t.experience}</h3>
               <p className={cn("dior-body text-beauty-dark/70 leading-relaxed", isRTL && "text-right")}>
@@ -115,7 +117,7 @@ const Welcome: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div className="luxury-card p-12 group hover:shadow-luxury transition-all duration-500 border border-beauty-accent/20 backdrop-blur-sm">
               <h3 className={cn("dior-heading-sm text-beauty-dark mb-8 flex items-center tracking-luxury", isRTL && "flex-row-reverse")}>
-                <MapPinIcon className={cn("w-8 h-8 text-beauty-accent", isRTL ? "ml-4" : "mr-4")} />
+                <BotIcon className={cn("w-8 h-8 text-beauty-accent", isRTL ? "ml-4" : "mr-4")} />
                 {t.premiumSalons}
               </h3>
               <p className={cn("dior-body text-beauty-dark/70 mb-10 leading-relaxed", isRTL && "text-right")}>
@@ -133,7 +135,7 @@ const Welcome: React.FC = () => {
             
             <div className="luxury-card p-12 group hover:shadow-luxury transition-all duration-500 border border-beauty-accent/20 backdrop-blur-sm">
               <h3 className={cn("dior-heading-sm text-beauty-dark mb-8 flex items-center tracking-luxury", isRTL && "flex-row-reverse")}>
-                <StarIcon className={cn("w-8 h-8 text-beauty-accent", isRTL ? "ml-4" : "mr-4")} />
+                <SparklesIcon className={cn("w-8 h-8 text-beauty-accent", isRTL ? "ml-4" : "mr-4")} />
                 {t.exclusiveOffers}
               </h3>
               <p className={cn("dior-body text-beauty-dark/70 mb-10 leading-relaxed", isRTL && "text-right")}>
