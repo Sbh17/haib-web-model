@@ -25,130 +25,201 @@ const Welcome: React.FC = () => {
   const { t, isRTL } = useLanguage();
   
   return (
-    <div className={cn("min-h-screen flex flex-col bg-background theme-transition", isRTL && "rtl")}>
-      {/* Hero Section - HAIB Luxury */}
-      <section className="luxury-hero pt-24 pb-32 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-noir opacity-90"></div>
-        <div className={cn("relative z-10 max-w-6xl mx-auto text-center", isRTL && "rtl")}>
-          <div className="mb-8 animate-fade-in">
-            <HAIBLogo size="xl" className="mb-4" />
-          </div>
-          <p className={cn("dior-body-lg text-beauty-light/90 mb-12 max-w-3xl mx-auto leading-relaxed", isRTL && "text-right")}>
-            {t.welcomeDescription}
-          </p>
-          
-          <div className={cn("flex flex-col sm:flex-row gap-6 justify-center mt-16", isRTL && "sm:flex-row-reverse")}>
-            <Link to="/register" className="animate-slide-up">
-              <Button className="beauty-button shadow-champagne">
-                {t.startJourney}
-                <ArrowRightIcon className={cn("w-5 h-5 ml-3", isRTL && "mr-3 ml-0 rotate-180")} />
-              </Button>
-            </Link>
-            <Link to="/auth" className="animate-slide-up">
-              <Button 
-                variant="outline" 
-                size="lg" 
-                className="border-beauty-accent text-beauty-light hover:bg-beauty-accent hover:text-beauty-dark bg-transparent backdrop-blur-sm transition-all duration-500 py-4 px-10 font-playfair tracking-luxury"
-              >
-                {t.signIn}
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-      
-      {/* Features Section - Luxury Process */}
-      <section className="py-32 px-6 bg-gradient-to-b from-beauty-light to-beauty-cream/50">
-        <div className="max-w-6xl mx-auto">
-          <div className={cn("text-center mb-24", isRTL && "rtl")}>
-            <h2 className="dior-heading-lg text-beauty-dark mb-6 tracking-luxury">{t.howItWorks}</h2>
-            <div className="h-1 w-24 mx-auto mb-8 bg-gradient-to-r from-beauty-accent to-beauty-secondary"></div>
-            <p className={cn("dior-body text-beauty-dark/70 max-w-2xl mx-auto leading-relaxed", isRTL && "text-right")}>
-              {t.howItWorksDescription}
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
-            <div className={cn("flex flex-col items-center text-center group animate-fade-in", isRTL && "items-end text-right")}>
-              <div className="luxury-card w-24 h-24 flex items-center justify-center mb-8 group-hover:shadow-champagne transition-all duration-500 border border-beauty-accent/20">
-                <BrainIcon className="w-12 h-12 text-beauty-accent" />
-              </div>
-              <h3 className="dior-heading-sm text-beauty-dark mb-6 tracking-luxury">{t.discover}</h3>
-              <p className={cn("dior-body text-beauty-dark/70 leading-relaxed", isRTL && "text-right")}>
-                {t.discoverDescription}
+    <div className={cn("min-h-screen bg-background theme-transition", isRTL && "rtl")}>
+      {/* Split-Screen Hero Section */}
+      <section className="min-h-screen flex relative overflow-hidden">
+        {/* Left Side - Content */}
+        <div className={cn("w-full lg:w-1/2 flex flex-col justify-center px-8 lg:px-16 relative z-10", isRTL && "lg:order-2")}>
+          <div className="max-w-2xl mx-auto lg:mx-0">
+            <div className="animate-fade-in mb-12">
+              <HAIBLogo size="lg" className="mb-8" />
+              <h1 className="text-5xl lg:text-7xl font-playfair font-light text-foreground mb-6 tracking-tight">
+                AI-Powered
+                <span className="block text-beauty-accent font-medium">Beauty</span>
+              </h1>
+              <p className="text-xl text-muted-foreground leading-relaxed mb-12">
+                {t.welcomeDescription}
               </p>
             </div>
             
-            <div className={cn("flex flex-col items-center text-center group animate-fade-in", isRTL && "items-end text-right")}>
-              <div className="luxury-card w-24 h-24 flex items-center justify-center mb-8 group-hover:shadow-champagne transition-all duration-500 border border-beauty-accent/20">
-                <CalendarIcon className="w-12 h-12 text-beauty-accent" />
-              </div>
-              <h3 className="dior-heading-sm text-beauty-dark mb-6 tracking-luxury">{t.book}</h3>
-              <p className={cn("dior-body text-beauty-dark/70 leading-relaxed", isRTL && "text-right")}>
-                {t.bookDescription}
-              </p>
-            </div>
-            
-            <div className={cn("flex flex-col items-center text-center group animate-fade-in", isRTL && "items-end text-right")}>
-              <div className="luxury-card w-24 h-24 flex items-center justify-center mb-8 group-hover:shadow-champagne transition-all duration-500 border border-beauty-accent/20">
-                <SparklesIcon className="w-12 h-12 text-beauty-accent" />
-              </div>
-              <h3 className="dior-heading-sm text-beauty-dark mb-6 tracking-luxury">{t.experience}</h3>
-              <p className={cn("dior-body text-beauty-dark/70 leading-relaxed", isRTL && "text-right")}>
-                {t.experienceDescription}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Explore Section - Luxury Services */}
-      <section className="py-32 px-6 bg-gradient-to-b from-beauty-cream/30 to-beauty-light relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-pearl opacity-50"></div>
-        <div className={cn("relative z-10 max-w-6xl mx-auto", isRTL && "rtl")}>
-          <div className={cn("mb-20", isRTL && "text-right")}>
-            <h2 className="dior-heading-lg text-beauty-dark mb-6 tracking-luxury">{t.exploreHaib}</h2>
-            <div className="h-1 w-24 mb-8 bg-gradient-to-r from-beauty-accent to-beauty-secondary"></div>
-            <p className={cn("dior-body text-beauty-dark/70 max-w-2xl leading-relaxed", isRTL && "text-right")}>
-              {t.exploreDescription}
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div className="luxury-card p-12 group hover:shadow-luxury transition-all duration-500 border border-beauty-accent/20 backdrop-blur-sm">
-              <h3 className={cn("dior-heading-sm text-beauty-dark mb-8 flex items-center tracking-luxury", isRTL && "flex-row-reverse")}>
-                <BotIcon className={cn("w-8 h-8 text-beauty-accent", isRTL ? "ml-4" : "mr-4")} />
-                {t.premiumSalons}
-              </h3>
-              <p className={cn("dior-body text-beauty-dark/70 mb-10 leading-relaxed", isRTL && "text-right")}>
-                {t.premiumSalonsDescription}
-              </p>
-              <Link to="/search">
-                <Button 
-                  variant="outline" 
-                  className="border-beauty-accent text-beauty-dark hover:bg-beauty-accent hover:text-beauty-light transition-all duration-300 font-playfair tracking-luxury"
-                >
-                  {t.exploreSalons} <ArrowRightIcon className={cn("w-4 h-4", isRTL ? "mr-2 rotate-180" : "ml-2")} />
+            <div className={cn("flex flex-col sm:flex-row gap-4 mb-16", isRTL && "sm:flex-row-reverse")}>
+              <Link to="/register" className="animate-slide-up">
+                <Button size="lg" className="w-full sm:w-auto bg-beauty-accent hover:bg-beauty-accent/90 text-beauty-light">
+                  {t.startJourney}
+                  <ArrowRightIcon className={cn("w-5 h-5 ml-3", isRTL && "mr-3 ml-0 rotate-180")} />
+                </Button>
+              </Link>
+              <Link to="/auth" className="animate-slide-up">
+                <Button variant="outline" size="lg" className="w-full sm:w-auto">
+                  {t.signIn}
                 </Button>
               </Link>
             </div>
+
+            {/* Stats Cards */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg p-4 hover:shadow-lg transition-all duration-300">
+                <div className="text-2xl font-bold text-beauty-accent">15K+</div>
+                <div className="text-sm text-muted-foreground">Users</div>
+              </div>
+              <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg p-4 hover:shadow-lg transition-all duration-300">
+                <div className="text-2xl font-bold text-beauty-accent">2min</div>
+                <div className="text-sm text-muted-foreground">Booking</div>
+              </div>
+              <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-lg p-4 hover:shadow-lg transition-all duration-300">
+                <div className="text-2xl font-bold text-beauty-accent">4.9★</div>
+                <div className="text-sm text-muted-foreground">Rating</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side - Interactive Cards Preview */}
+        <div className={cn("hidden lg:flex w-1/2 items-center justify-center p-16 bg-gradient-to-br from-beauty-light/20 to-beauty-cream/30", isRTL && "order-1")}>
+          <div className="relative w-full max-w-md">
+            {/* Floating Cards */}
+            <div className="absolute inset-0 animate-pulse">
+              <div className="bg-card border border-beauty-accent/20 rounded-2xl p-6 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-beauty-accent rounded-full flex items-center justify-center">
+                    <BrainIcon className="w-6 h-6 text-beauty-light" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-foreground">AI Discovery</div>
+                    <div className="text-sm text-muted-foreground">Smart recommendations</div>
+                  </div>
+                </div>
+              </div>
+            </div>
             
-            <div className="luxury-card p-12 group hover:shadow-luxury transition-all duration-500 border border-beauty-accent/20 backdrop-blur-sm">
-              <h3 className={cn("dior-heading-sm text-beauty-dark mb-8 flex items-center tracking-luxury", isRTL && "flex-row-reverse")}>
-                <SparklesIcon className={cn("w-8 h-8 text-beauty-accent", isRTL ? "ml-4" : "mr-4")} />
-                {t.exclusiveOffers}
-              </h3>
-              <p className={cn("dior-body text-beauty-dark/70 mb-10 leading-relaxed", isRTL && "text-right")}>
-                {t.exclusiveOffersDescription}
-              </p>
-              <Link to="/promotions">
-                <Button 
-                  variant="outline" 
-                  className="border-beauty-accent text-beauty-dark hover:bg-beauty-accent hover:text-beauty-light transition-all duration-300 font-playfair tracking-luxury"
-                >
-                  {t.viewOffers} <ArrowRightIcon className={cn("w-4 h-4", isRTL ? "mr-2 rotate-180" : "ml-2")} />
-                </Button>
-              </Link>
+            <div className="absolute top-16 left-8 animate-fade-in" style={{ animationDelay: '0.5s' }}>
+              <div className="bg-card border border-beauty-accent/20 rounded-2xl p-6 shadow-2xl transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-beauty-secondary rounded-full flex items-center justify-center">
+                    <CalendarIcon className="w-6 h-6 text-beauty-light" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-foreground">Quick Booking</div>
+                    <div className="text-sm text-muted-foreground">In 2 minutes</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="absolute top-32 right-4 animate-fade-in" style={{ animationDelay: '1s' }}>
+              <div className="bg-card border border-beauty-accent/20 rounded-2xl p-6 shadow-2xl transform rotate-1 hover:rotate-0 transition-transform duration-500">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-beauty-primary rounded-full flex items-center justify-center">
+                    <SparklesIcon className="w-6 h-6 text-beauty-light" />
+                  </div>
+                  <div>
+                    <div className="font-semibold text-foreground">Luxury Service</div>
+                    <div className="text-sm text-muted-foreground">Premium quality</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Card-Based Features Section */}
+      <section className="py-24 px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-playfair text-foreground mb-4">{t.howItWorks}</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">{t.howItWorksDescription}</p>
+          </div>
+          
+          {/* Masonry-style Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 auto-rows-fr">
+            {/* Discover Card */}
+            <div className="group">
+              <div className="bg-card border border-border hover:border-beauty-accent/50 rounded-2xl p-8 h-full hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div className="w-16 h-16 bg-beauty-accent/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <BrainIcon className="w-8 h-8 text-beauty-accent" />
+                </div>
+                <h3 className="text-2xl font-semibold text-foreground mb-4">{t.discover}</h3>
+                <p className="text-muted-foreground leading-relaxed">{t.discoverDescription}</p>
+              </div>
+            </div>
+            
+            {/* Book Card */}
+            <div className="group lg:row-span-1">
+              <div className="bg-gradient-to-br from-beauty-accent/5 to-beauty-secondary/5 border border-border hover:border-beauty-accent/50 rounded-2xl p-8 h-full hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div className="w-16 h-16 bg-beauty-secondary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <CalendarIcon className="w-8 h-8 text-beauty-secondary" />
+                </div>
+                <h3 className="text-2xl font-semibold text-foreground mb-4">{t.book}</h3>
+                <p className="text-muted-foreground leading-relaxed mb-6">{t.bookDescription}</p>
+                <div className="bg-beauty-secondary/10 rounded-lg p-4">
+                  <div className="text-sm font-medium text-beauty-secondary">Average booking time</div>
+                  <div className="text-2xl font-bold text-beauty-secondary">2 minutes</div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Experience Card */}
+            <div className="group">
+              <div className="bg-card border border-border hover:border-beauty-accent/50 rounded-2xl p-8 h-full hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+                <div className="w-16 h-16 bg-beauty-primary/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <SparklesIcon className="w-8 h-8 text-beauty-primary" />
+                </div>
+                <h3 className="text-2xl font-semibold text-foreground mb-4">{t.experience}</h3>
+                <p className="text-muted-foreground leading-relaxed">{t.experienceDescription}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Cards Section */}
+      <section className="py-24 px-8 bg-muted/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-playfair text-foreground mb-4">{t.exploreHaib}</h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">{t.exploreDescription}</p>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Premium Salons Card */}
+            <div className="group">
+              <div className="bg-card border border-border hover:border-beauty-accent/50 rounded-2xl p-10 h-full hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
+                <div className="flex items-start gap-6 mb-8">
+                  <div className="w-16 h-16 bg-beauty-accent/10 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                    <BotIcon className="w-8 h-8 text-beauty-accent" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-semibold text-foreground mb-4">{t.premiumSalons}</h3>
+                    <p className="text-muted-foreground leading-relaxed mb-8">{t.premiumSalonsDescription}</p>
+                  </div>
+                </div>
+                <Link to="/search">
+                  <Button variant="outline" className="w-full group-hover:bg-beauty-accent group-hover:text-beauty-light group-hover:border-beauty-accent transition-all duration-300">
+                    {t.exploreSalons} <ArrowRightIcon className={cn("w-4 h-4", isRTL ? "mr-2 rotate-180" : "ml-2")} />
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            
+            {/* Exclusive Offers Card */}
+            <div className="group">
+              <div className="bg-gradient-to-br from-beauty-primary/5 to-beauty-accent/5 border border-border hover:border-beauty-primary/50 rounded-2xl p-10 h-full hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1">
+                <div className="flex items-start gap-6 mb-8">
+                  <div className="w-16 h-16 bg-beauty-primary/10 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+                    <SparklesIcon className="w-8 h-8 text-beauty-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-semibold text-foreground mb-4">{t.exclusiveOffers}</h3>
+                    <p className="text-muted-foreground leading-relaxed mb-8">{t.exclusiveOffersDescription}</p>
+                  </div>
+                </div>
+                <Link to="/promotions">
+                  <Button variant="outline" className="w-full group-hover:bg-beauty-primary group-hover:text-beauty-light group-hover:border-beauty-primary transition-all duration-300">
+                    {t.viewOffers} <ArrowRightIcon className={cn("w-4 h-4", isRTL ? "mr-2 rotate-180" : "ml-2")} />
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
