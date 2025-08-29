@@ -119,7 +119,7 @@ const translations: Record<Language, Translations> = {
     daysAgo: 'd ago',
     
     // Welcome Page
-    welcomeTitle: 'AI-Powered Beauty Experiences',
+    welcomeTitle: '',
     welcomeDescription: 'AI-powered beauty experiences. Discover premium salons, book instantly, and let our intelligent assistant guide your perfect beauty journey.',
     startJourney: 'Start Your Journey',
     signIn: 'Sign In',
@@ -190,7 +190,7 @@ const translations: Record<Language, Translations> = {
     daysAgo: 'ي',
     
     // Welcome Page
-    welcomeTitle: 'هايب - تجارب جمال مدعومة بالذكاء الاصطناعي',
+    welcomeTitle: '',
     welcomeDescription: 'تجارب جمال مدعومة بالذكاء الاصطناعي. اكتشف الصالونات المميزة، احجز فوراً، ودع مساعدنا الذكي يوجه رحلة جمالك المثالية.',
     startJourney: 'ابدأ رحلتك',
     signIn: 'تسجيل الدخول',
@@ -261,7 +261,7 @@ const translations: Record<Language, Translations> = {
     daysAgo: 'giorni fa',
     
     // Welcome Page
-    welcomeTitle: 'Esperienze di Bellezza Potenziate dall\'AI',
+    welcomeTitle: '',
     welcomeDescription: 'Esperienze di bellezza potenziate dall\'AI. Scopri saloni premium, prenota all\'istante e lascia che il nostro assistente intelligente guidi il tuo viaggio di bellezza perfetto.',
     startJourney: 'Inizia il Tuo Viaggio',
     signIn: 'Accedi',
