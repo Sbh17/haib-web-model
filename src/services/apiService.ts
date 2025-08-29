@@ -4,15 +4,17 @@ import mockApi from './mockApi';
 import firebaseApi from './firebaseApi';
 import gcpApi from './gcpApi';
 
-// Create a unified API service that can switch between different backends
-const createApiService = () => {
+// Simple API service that switches between different backends
+let apiService: any;
+
+try {
   // Check for Google Cloud configuration first
   if (config.integrations.gcp?.projectId && config.integrations.gcp?.apiEndpoint) {
     console.log('Using Google Cloud API');
-    return gcpApi;
+    apiService = gcpApi;
   } else if (config.useFirebase) {
     console.log('Using Firebase API');
-    return {
+    apiService = {
       // Include all API methods from both services
       auth: firebaseApi.auth,
       salons: firebaseApi.salons,
@@ -26,8 +28,11 @@ const createApiService = () => {
     };
   } else {
     console.log('Using Mock API');
-    return mockApi;
+    apiService = mockApi;
   }
-};
+} catch (error) {
+  console.error('Error initializing API service, falling back to mock API:', error);
+  apiService = mockApi;
+}
 
-export default createApiService();
+export default apiService;

@@ -6,6 +6,7 @@ import { useFavorites } from '@/context/FavoritesContext';
 import { useLocation } from '@/context/LocationContext';
 import { useQuery } from '@tanstack/react-query';
 import api from '@/services/api';
+import { Salon, NewsItem } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -50,14 +51,14 @@ const Index: React.FC = () => {
   };
 
   // Get different categories of salons
-  const featuredSalons = salons.slice(0, 3);
-  const topRatedSalons = salons
+  const featuredSalons = (salons as Salon[]).slice(0, 3);
+  const topRatedSalons = (salons as Salon[])
     .filter(salon => salon.rating >= 4.5)
     .sort((a, b) => b.rating - a.rating)
     .slice(0, 3);
   
   // Get latest news (limit to 3)
-  const latestNews = news.slice(0, 3);
+  const latestNews = (news as NewsItem[]).slice(0, 3);
 
   return (
     <div className="pb-20 bg-background min-h-screen">
