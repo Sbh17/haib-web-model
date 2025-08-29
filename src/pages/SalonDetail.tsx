@@ -2,7 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 import api from '@/services/api';
+import { reviewService } from '@/services/reviewService';
 import { Salon, Service, Review, Promotion } from '@/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -13,6 +15,7 @@ import {
 } from 'lucide-react';
 import ServiceCard from '@/components/ServiceCard';
 import ReviewCard from '@/components/ReviewCard';
+import ReviewSystem from '@/components/ReviewSystem';
 import PromotionCard from '@/components/PromotionCard';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import BottomNavigation from '@/components/BottomNavigation';
@@ -21,6 +24,7 @@ const SalonDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { toast } = useToast();
   
   const [salon, setSalon] = useState<Salon | null>(null);
   const [services, setServices] = useState<Service[]>([]);
@@ -89,6 +93,34 @@ const SalonDetail: React.FC = () => {
       } 
     });
     setIsDialogOpen(false);
+  };
+
+  const handleReviewSubmit = async (reviewData: Omit<Review, 'id' | 'createdAt'>) => {
+    try {
+      const newReview = await reviewService.createReview({
+        salon_id: reviewData.salonId,
+        rating: reviewData.rating,
+        comment: reviewData.comment,
+        appointment_id: reviewData.appointmentId,
+      });
+      
+      if (newReview) {
+        // Refresh reviews
+        const updatedReviews = await reviewService.getReviewsForSalon(salon!.id);
+        setReviews(updatedReviews);
+        toast({
+          title: "Review submitted",
+          description: "Thank you for your feedback!",
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      toast({
+        title: "Error",
+        description: "Failed to submit review. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
   
   if (isLoading) {
@@ -273,15 +305,12 @@ const SalonDetail: React.FC = () => {
         
         {/* Reviews Tab */}
         <TabsContent value="reviews" className="p-6 pt-4">
-          <div className="grid grid-cols-1 gap-4">
-            {reviews.map(review => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
-          </div>
-          
-          {reviews.length === 0 && (
-            <p className="text-gray-500 text-center py-8">No reviews yet</p>
-          )}
+          <ReviewSystem
+            salonId={salon.id}
+            reviews={reviews}
+            canWriteReview={!!user}
+            onReviewSubmit={handleReviewSubmit}
+          />
         </TabsContent>
       </Tabs>
       
