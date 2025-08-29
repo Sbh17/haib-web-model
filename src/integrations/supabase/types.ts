@@ -74,6 +74,47 @@ export type Database = {
           },
         ]
       }
+      partnership_request_services: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          duration_minutes: number
+          id: string
+          name: string
+          partnership_request_id: string
+          price: number
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number
+          id?: string
+          name: string
+          partnership_request_id: string
+          price: number
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number
+          id?: string
+          name?: string
+          partnership_request_id?: string
+          price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "partnership_request_services_partnership_request_id_fkey"
+            columns: ["partnership_request_id"]
+            isOneToOne: false
+            referencedRelation: "salon_partnership_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -98,6 +139,81 @@ export type Database = {
           id?: string
           role?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      salon_partnership_requests: {
+        Row: {
+          address: string
+          admin_notes: string | null
+          business_id: string | null
+          city: string
+          cover_image: string | null
+          created_at: string
+          description: string
+          email: string
+          id: string
+          images: string[] | null
+          owner_email: string
+          owner_name: string
+          owner_phone: string | null
+          phone: string | null
+          rejection_reason: string | null
+          review_progress: number | null
+          reviewed_at: string | null
+          salon_name: string
+          social_media: Json | null
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          address: string
+          admin_notes?: string | null
+          business_id?: string | null
+          city: string
+          cover_image?: string | null
+          created_at?: string
+          description: string
+          email: string
+          id?: string
+          images?: string[] | null
+          owner_email: string
+          owner_name: string
+          owner_phone?: string | null
+          phone?: string | null
+          rejection_reason?: string | null
+          review_progress?: number | null
+          reviewed_at?: string | null
+          salon_name: string
+          social_media?: Json | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          address?: string
+          admin_notes?: string | null
+          business_id?: string | null
+          city?: string
+          cover_image?: string | null
+          created_at?: string
+          description?: string
+          email?: string
+          id?: string
+          images?: string[] | null
+          owner_email?: string
+          owner_name?: string
+          owner_phone?: string | null
+          phone?: string | null
+          rejection_reason?: string | null
+          review_progress?: number | null
+          reviewed_at?: string | null
+          salon_name?: string
+          social_media?: Json | null
+          status?: string
+          updated_at?: string
+          user_id?: string | null
         }
         Relationships: []
       }
