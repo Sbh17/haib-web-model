@@ -104,16 +104,9 @@ const Header: React.FC = () => {
         {/* Center - Logo - Absolutely centered */}
         <div className="absolute left-1/2 transform -translate-x-1/2">
           <div onClick={() => navigate('/home')} className="cursor-pointer flex items-center group">
-            {isHomePage ? (
-              <div className="flex items-center gap-6 transition-transform duration-300 group-hover:scale-105">
-                <span className="dior-heading-xl text-black font-bold tracking-luxury text-3xl">H</span>
-                <span className="dior-heading-xl text-black font-bold tracking-luxury text-3xl">A</span>
-                <span className="dior-heading-xl text-black font-bold tracking-luxury text-3xl">I</span>
-                <span className="dior-heading-xl text-black font-bold tracking-luxury text-3xl">B</span>
-              </div>
-            ) : (
-              <Logo width={120} height={40} className="transition-transform duration-300 group-hover:scale-105" />
-            )}
+            <h1 className="text-2xl md:text-3xl font-playfair font-light text-beauty-dark tracking-luxury transition-transform duration-300 group-hover:scale-105">
+              H<span className="text-beauty-accent font-medium">A</span>IB
+            </h1>
           </div>
         </div>
 
