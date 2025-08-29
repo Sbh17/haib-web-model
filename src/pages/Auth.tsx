@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/separator';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useAuth } from '@/context/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { Mail, Lock, User, Chrome, Facebook } from 'lucide-react';
+import { Mail, Lock, User, Chrome, Apple } from 'lucide-react';
 
 const signInSchema = z.object({
   email: z.string().email('Please enter a valid email'),
@@ -73,7 +73,7 @@ const Auth: React.FC = () => {
     await signUp(data.email, data.password, data.fullName.trim());
   };
 
-  const handleSocialSignIn = async (provider: 'google' | 'facebook') => {
+  const handleSocialSignIn = async (provider: 'google' | 'apple') => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: provider,
@@ -129,10 +129,10 @@ const Auth: React.FC = () => {
                 type="button"
                 variant="outline"
                 className="h-12 border-2 hover:bg-accent/50"
-                onClick={() => handleSocialSignIn('facebook')}
+                onClick={() => handleSocialSignIn('apple')}
               >
-                <Facebook className="w-5 h-5 mr-2" />
-                <span className="dior-label">Facebook</span>
+                <Apple className="w-5 h-5 mr-2" />
+                <span className="dior-label">Apple</span>
               </Button>
             </div>
             
