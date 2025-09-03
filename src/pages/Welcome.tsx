@@ -18,7 +18,6 @@ import {
 } from 'lucide-react';
 import WelcomeSalonPartnership from '@/components/WelcomeSalonPartnership';
 import HAIBLogo from '@/components/HAIBLogo';
-import DevMockSignIn from '@/components/DevMockSignIn';
 
 import { useLanguage } from '@/context/LanguageContext';
 import { cn } from '@/lib/utils';
@@ -65,9 +64,6 @@ const Welcome: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Development Mock Sign In */}
-      <DevMockSignIn />
 
       {/* Salon Partnership Section */}
       <WelcomeSalonPartnership />
