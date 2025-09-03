@@ -134,7 +134,7 @@ const Welcome: React.FC = () => {
                 <div className="relative p-12">
                   <div className="flex items-start gap-8 mb-10">
                     <div className="w-20 h-20 bg-gradient-to-br from-beauty-accent to-beauty-primary rounded-3xl flex items-center justify-center shadow-luxury group-hover:shadow-champagne-glow group-hover:scale-110 transition-all duration-500 border-2 border-beauty-accent/20 flex-shrink-0">
-                      <BotIcon className="w-10 h-10 text-beauty-light drop-shadow-xl" />
+                      <span className="text-beauty-light font-bold text-2xl drop-shadow-xl">AI</span>
                     </div>
                     <div className="flex-grow">
                       <h3 className="dior-heading-sm text-beauty-dark mb-6 tracking-luxury">{t.premiumSalons}</h3>
