@@ -156,7 +156,7 @@ const Auth: React.FC = () => {
               onClick={() => mockSignIn('user')}
               className="w-full"
             >
-              AI Sign In as Demo User
+              👤 Sign In as Demo User
             </Button>
           </div>
 

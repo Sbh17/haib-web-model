@@ -105,7 +105,7 @@ const SleekChatWidget: React.FC<SleekChatWidgetProps> = ({ onBookAppointment }) 
           <div className="flex items-center justify-between p-6 pb-4">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center shadow-lg">
-                <Bot className="h-5 w-5 text-primary-foreground" />
+                <span className="text-primary-foreground font-bold text-sm">AI</span>
               </div>
               <div>
                 <h3 className="font-semibold text-foreground">AI Assistant</h3>
@@ -190,7 +190,7 @@ const SleekChatWidget: React.FC<SleekChatWidgetProps> = ({ onBookAppointment }) 
           <X className="h-6 w-6 transition-transform duration-300" />
         ) : (
           <div className="relative">
-            <Bot className="h-7 w-7 transition-transform duration-300" />
+            <span className="h-7 w-7 font-bold text-sm flex items-center justify-center transition-transform duration-300">AI</span>
             {/* Pulsing indicator */}
             <div className="absolute -top-2 -right-2 h-4 w-4 bg-green-400 rounded-full animate-pulse shadow-lg" />
             <div className="absolute -top-2 -right-2 h-4 w-4 bg-green-400 rounded-full animate-ping" />

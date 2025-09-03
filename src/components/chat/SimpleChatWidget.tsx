@@ -128,7 +128,7 @@ const SimpleChatWidget: React.FC<SimpleChatWidgetProps> = ({ onBookAppointment }
       <CardHeader className="pb-3 px-4">
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2">
-            <Bot className="h-5 w-5 text-primary" />
+            <span className="h-5 w-5 text-primary font-bold text-xs flex items-center justify-center">AI</span>
             AI Assistant
           </CardTitle>
           <Button
@@ -177,7 +177,7 @@ const SimpleChatWidget: React.FC<SimpleChatWidgetProps> = ({ onBookAppointment }
                     ? 'bg-primary text-primary-foreground' 
                     : 'bg-muted text-muted-foreground'
                 }`}>
-                  {!message.isAI ? <User className="h-3 w-3 md:h-4 md:w-4" /> : <Bot className="h-3 w-3 md:h-4 md:w-4" />}
+                  {!message.isAI ? <User className="h-3 w-3 md:h-4 md:w-4" /> : <span className="font-bold text-xs">AI</span>}
                 </div>
                 <div className={`max-w-[75%] md:max-w-[70%] p-2 md:p-3 rounded-lg ${
                   !message.isAI

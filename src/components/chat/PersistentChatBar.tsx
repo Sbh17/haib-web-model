@@ -116,7 +116,7 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
         <div className="flex items-center gap-4 max-w-4xl mx-auto">
           {/* AI Assistant Label */}
           <div className="flex items-center gap-2 flex-shrink-0">
-            <Bot className="h-5 w-5 text-beauty-accent animate-pulse" />
+            <span className="h-5 w-5 text-beauty-accent font-bold text-xs flex items-center justify-center animate-pulse">AI</span>
             <span className="dior-label text-beauty-dark">AI Assistant</span>
           </div>
           
@@ -204,7 +204,7 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
           <div className="flex items-center justify-between p-4 border-b border-beauty-accent/20">
             <div className="flex items-center gap-3">
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-beauty-primary to-beauty-accent flex items-center justify-center">
-                <Bot className="h-4 w-4 text-beauty-light animate-pulse" />
+                <span className="text-beauty-light font-bold text-xs animate-pulse">AI</span>
               </div>
               <span className="dior-heading-sm text-beauty-dark">Assistante Beauté DIOR</span>
             </div>
@@ -224,7 +224,7 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
               {messages.length === 0 && (
                 <div className="text-center py-8">
                   <div className="h-12 w-12 rounded-full bg-gradient-to-r from-beauty-primary to-beauty-accent flex items-center justify-center mx-auto mb-4">
-                    <Bot className="h-6 w-6 text-beauty-light" />
+                    <span className="text-beauty-light font-bold text-sm">AI</span>
                   </div>
                   <p className="dior-body text-beauty-dark mb-2">Bonjour, je suis votre assistante beauté.</p>
                   <p className="dior-body-sm text-beauty-dark/70">Posez-moi vos questions sur les soins, rendez-vous et salons!</p>
@@ -240,7 +240,7 @@ const PersistentChatBar: React.FC<PersistentChatBarProps> = ({ onBookAppointment
                       ? 'bg-gradient-to-r from-beauty-primary to-beauty-accent text-beauty-light' 
                       : 'bg-beauty-cream border border-beauty-accent/20 text-beauty-dark'
                   }`}>
-                    {!message.isAI ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                    {!message.isAI ? <User className="h-4 w-4" /> : <span className="font-bold text-xs">AI</span>}
                   </div>
                   <div className={`max-w-[80%] p-4 rounded-lg dior-body ${
                     !message.isAI 
